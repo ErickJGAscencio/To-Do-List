@@ -1,7 +1,7 @@
 import './ProjectCard.css';
 import { useNavigate } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
-import { deleteProject } from '../Api/todolist.api';
+import { deleteProject } from '../api/todolist.api';
 import { EditProject } from './modal/EditProject';
 import { useEffect, useState } from 'react';
 
@@ -9,7 +9,7 @@ export function ProjectCard({ project, updateProjectInList }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(project);
+    // console.log(project);
   }, [project]);
 
   const dltProject = async () => {

@@ -5,9 +5,8 @@ import { AuthContext } from "../context/AuthContext";
 
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
+import { fetchAllProjects, getUserProfile } from "../api/todolist.api";
 
-import { getUserProfile } from "../Api/todolist.api";
-import { fetchAllProjects } from "../Api/todolist.api";
 
 export function HomePage({ filter }) {
   const navigate = useNavigate;
@@ -19,7 +18,7 @@ export function HomePage({ filter }) {
   };
 
   const updateProjectInList = (updatedProject) => {
-    console.log(updatedProject);
+    console.log(updatedProject);//CORREGIR ESTO, PORQUE NO SE ESTÁ DEVOLVIENDO LA ID PARA HACER LA BUSQUEDA DE LA TAREA.
     const updatedProjects = projects.map((project) =>
       project.pro === updatedProject.id ? updatedProject : project
     );

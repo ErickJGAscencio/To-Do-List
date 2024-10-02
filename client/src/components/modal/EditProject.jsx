@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './EditProject.css'
 import { FaPalette } from 'react-icons/fa';
 import { FaPen } from 'react-icons/fa';
-
-import { fetchTask, updateProject } from '../../Api/todolist.api';
+import { fetchTask, updateProject } from '../../api/todolist.api';
 
 export function EditProject({ project, updateProjectInList }) {
   const [idProject, setIdProject] = useState("");

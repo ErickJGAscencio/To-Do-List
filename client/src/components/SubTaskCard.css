@@ -12,7 +12,7 @@
 .subtask-card h4 {
   color: #ecf0f1;
   font-size: 1.1rem;
-  margin-bottom: -5px;
+  margin: 0;
 }
 
 .subtask-card p {
