@@ -1,0 +1,10 @@
+.main_content {
+  background-color: #e0dcdc;
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  margin-left: 140px;
+  gap: 15px;
+  overflow-y: auto;
+  height: calc(100vh - 46px * 2);
+}

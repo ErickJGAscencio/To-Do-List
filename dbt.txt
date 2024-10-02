@@ -1,0 +1,64 @@
+User
+  -username
+  -password
+  -email
+Projects
+  -projectname
+  -description
+  -color
+  -progress
+  -user_id
+Task
+  -taskname
+  -description
+  -color
+  -project_id
+Subtask
+  -subtaskname
+  -description
+  -task_id 
+
+
+"task = models.ForeignKey(Task, on_delete=models.CASCADE)"
+
+user {getUser}
+projects {getProjects, getProjectsInProgress, getProjectsCompleted}
+task {getProjectTask}
+
+EndPoints
+
+crear proyectos (con o sin tareas) a un usuario
+obtener proyectos (con o sin tareas) de un usuario
+editar proyectos de un usuario
+eliminar proyecto de un usuario
+
+obtener tarea de un proyecto
+crear tareas a un proyecto
+editar tareas de un proyecto
+eliminar tareas de un proyecto
+
+obtener subtareas de una tarea
+crear subtareas a una tarea
+editar subtareas de una tarea
+eliminar subtareas de una tarea /
+
+
+
+
+///////Editar subtarea
+                  |- pasar el objeto {subtask} desde SubTaskCard
+                  |- obtener el id de la subtask.id
+                  |- obtener el subtaskName de subtask.subtask_name
+                  |- obtener el subtaskDescription de subtask.description
+
+///////Editar tarea
+                  |- pasar el objeto {task} desde TaskCard
+                  |- obtener el id de la task.id
+                  |- obtener el taskName de task.task_name
+                  |- obtener el taskDescription de task.description
+                  |- obtener las subtasks asociadas al task.id
+                  |- mostrar en la lista las subtasks
+
+//////Editar projecto
+                  |- pasar el objeto {project} desde ProjectCard
+                  |- 

@@ -1,0 +1,47 @@
+.card {
+  background-color: #e09826;
+  border-radius: 5px;
+  padding: 8px;
+  width: 180px;
+  height: 20vh;
+  box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  /* transition: transform 0.3s ease, color 0.3s ease; */
+}
+
+
+.card:hover {
+  background-color: #9b5518;
+  color: black;
+  /* transform: scale(1.05); */
+}
+
+.card h4 {
+  color: #fff;
+  margin: 0;
+}
+
+.action-btn{
+  display: flex;
+  flex-direction: row;
+}
+
+.card p {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  height: 70px;
+  padding: 3px;
+  border-radius: 3px;
+}
+.progress-section{
+  display: flex;
+  align-items: center;
+}
+
+.progress-bar-fill {
+  flex: 1;
+  height: 10px;
+  background-color: #27ae60;
+  border-radius: 5px;
+  width: 140px;
+}

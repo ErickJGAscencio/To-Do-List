@@ -1,0 +1,33 @@
+.subtask-card {
+  background-color: #3498db; /* Fondo azul para subtareas */
+  color: white;
+  padding: 10px;
+  width: 140px;
+  margin-bottom: 4px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.subtask-card h4 {
+  color: #ecf0f1;
+  font-size: 1.1rem;
+  margin-bottom: -5px;
+}
+
+.subtask-card p {
+  color: #ecf0f1;
+  font-size: 0.9rem;
+}
+
+.subtask-card .action-btn button{
+  background-color: transparent;
+  font-size: 20px;
+  border-style: none;
+  color: white;
+  height: 100%;
+}
+
+.subtask-card .action-btn button:hover {
+  color: black;
+}
