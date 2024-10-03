@@ -31,6 +31,23 @@
   justify-content: space-evenly;
 }
 
+.action-btn button{
+  background-color: transparent;
+  font-size: 15px;
+  border-style: none;
+  color: white;
+  height: 100%;
+}
+
+.action-btn button:hover{
+  color: black;
+}
+
+.progress-bar{
+  width: 100%;
+}
+
 .progress-bar-fill {
   background-color: #1abc9c;
+  width: 100%;
 }

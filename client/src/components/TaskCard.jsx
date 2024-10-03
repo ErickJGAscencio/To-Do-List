@@ -72,17 +72,17 @@ export function TaskCard({ task, removeTask }) {
           <p>{task.description}</p>
         </div>
         <div className='action-btn'>
-          <CreateSubTask task={task} addNewSubTask={addNewSubTask} />
-          <EditTask task={task} setSubTasksFrnt={setSubTasksFrnt} />
-          <FaTrash onClick={dltTask} />
+          <button><CreateSubTask task={task} addNewSubTask={addNewSubTask} /></button>
+          <button><EditTask task={task} setSubTasksFrnt={setSubTasksFrnt} /></button>
+          <button><FaTrash onClick={dltTask} /></button>          
         </div>
-      </div>
 
-      <div className="progress-section">
-        <div className="progress-bar">
-          <div className="progress-bar-fill"></div>
+        <div className="progress-section">
+          <div className="progress-bar">
+            <div className="progress-bar-fill"></div>
+          </div>
+          <div>100%</div>
         </div>
-        <div>100%</div>
       </div>
 
       {subtasks.length > 0 && ( // Mostrar la sección de subtareas solo si existen

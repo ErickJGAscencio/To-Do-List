@@ -14,13 +14,11 @@ export function Navigation({ filter }) {
       setUseFilter("In Progress Projects");
     }
   }, [filter]);
-  
+
   return (
     <div className="nav">
       <div className="profile">
-        <h3 className="user-name">
-          Hi {isLoggedIn ? username : 'username'}!
-        </h3>
+        Hi {isLoggedIn ? username : 'username'}!
       </div>
       <p className="seccion">{useFilter}</p>
     </div>

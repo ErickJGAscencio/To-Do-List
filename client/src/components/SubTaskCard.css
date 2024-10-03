@@ -1,9 +1,9 @@
 .subtask-card {
-  background-color: #3498db; /* Fondo azul para subtareas */
+  background-color: #256a98;
   color: white;
   padding: 10px;
   width: 140px;
-  margin-bottom: 4px;
+  margin: 4px 4px 0 0;
   border-radius: 5px;
   border: none;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
@@ -22,7 +22,7 @@
 
 .subtask-card .action-btn button{
   background-color: transparent;
-  font-size: 20px;
+  font-size: 15px;
   border-style: none;
   color: white;
   height: 100%;
