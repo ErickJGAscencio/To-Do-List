@@ -54,6 +54,7 @@ html, body {
   grid-gap: 10px; 
   padding: 20px;
   margin-left: 130px;
-  height: 83vh;
+
+  height: calc(100vh - 93px);
   overflow-y: auto;
 }

@@ -1,11 +1,15 @@
 import "../components/SubTaskCard.css"
 import { FaTrash, FaCheckCircle } from 'react-icons/fa';
 import { deleteSubTask } from "../Api/todolist.api";
-import EditSubTask from "./modal/EditSubTask";
+import { EditSubTask } from "./modal/EditSubTask";
+import { useEffect, useState } from "react";
 
 export function SubTaskCard({ subtask, removeSubTask }) {
+  const [isCompleted, setIsCompleted] = useState();
 
-
+  useEffect(() => {
+    setIsCompleted(subtask.is_completed);
+  }, [subtask])
   const dltSubTask = async () => {
     try {
       const id_subtask = subtask.id;
@@ -19,11 +23,21 @@ export function SubTaskCard({ subtask, removeSubTask }) {
     }
   }
 
+  const checkBtn = async () => {
+    if (isCompleted) {
+      console.log("Actualizando estado a no completado.");
+      setIsCompleted(false);
+    } else {
+      console.log("Actualizando estado a completado.");
+      setIsCompleted(true);
+    }
+  }
+
   return (
     <div>
       <div className="subtask-card">
         <div className="action-btn">
-          <button><FaCheckCircle /></button>
+          <button><FaCheckCircle onClick={checkBtn} /></button>
           <button><EditSubTask subtask={subtask} /></button>
           <button><FaTrash onClick={dltSubTask} /></button>
         </div>

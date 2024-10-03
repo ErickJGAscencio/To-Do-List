@@ -16,8 +16,12 @@
 }
 
 .subtask-card p {
+  background-color: #629bc1;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 0;
   color: #ecf0f1;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .subtask-card .action-btn button{

@@ -6,5 +6,5 @@
   margin-left: 140px;
   gap: 15px;
   overflow-y: auto;
-  height: calc(100vh - 46px * 2);
+  height: calc(100vh - 73px);
 }
