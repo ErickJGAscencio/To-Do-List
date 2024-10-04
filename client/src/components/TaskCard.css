@@ -36,11 +36,17 @@
   color: black;
 }
 
-.progress-bar{
+.progress-bar {
   width: 100%;
+  height: 10px;  /* Altura de la barra de progreso */
+  background-color: #ecf0f1;
+  border-radius: 5px;
 }
 
 .progress-bar-fill {
-  background-color: #1abc9c;
-  width: 100%;
+  background-color: #1abc9c;  /* Color de la barra completada */
+  height: 100%;
+  width: 0;  /* El ancho lo estableces dinámicamente en el componente */
+  border-radius: 5px;
+  transition: width 0.3s ease-in-out;
 }

@@ -8,6 +8,8 @@ import EditTask from './modal/EditTask';
 
 export function TaskCard({ task, removeTask }) {
   const [subtasks, setSubTasks] = useState([]);
+  const [progress, setProgress] = useState(0);
+
 
   const addNewSubTask = (newSubTask) => {
     setSubTasks([...subtasks, newSubTask]);
@@ -50,16 +52,20 @@ export function TaskCard({ task, removeTask }) {
 
           if (res.data && res.data.length > 0) {
             setSubTasks(res.data);
+            setProgress(task.progress);  // Aquí guardas el progreso en el estado
           }
         } catch (error) {
           console.error(error);
         }
       }
     }
-    setSubTasks(subtasks);
+    // setSubTasks(subtasks);//
     getAllSubTasks();
-  }, [task, subtasks]);
+  }, [task]);
 
+  useEffect(() => {
+    setSubTasks(subtasks);
+  }, [subtasks]);
   return (
     <div className="task-card-content">
       <div className="task-card">
@@ -70,14 +76,17 @@ export function TaskCard({ task, removeTask }) {
         <div className='action-btn'>
           <button><CreateSubTask task={task} addNewSubTask={addNewSubTask} /></button>
           <button><EditTask task={task} setSubTasksFrnt={setSubTasksFrnt} /></button>
-          <button><FaTrash onClick={dltTask} /></button>          
+          <button><FaTrash onClick={dltTask} /></button>
         </div>
 
         <div className="progress-section">
           <div className="progress-bar">
-            <div className="progress-bar-fill"></div>
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${progress}%` }}  // Cambia el ancho según el progreso
+            ></div>
           </div>
-          <div>100%</div>
+          <div>{progress}%</div>  {/* Mostrar el porcentaje de progreso */}
         </div>
       </div>
 

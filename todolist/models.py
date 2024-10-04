@@ -11,14 +11,6 @@ class Project(models.Model):
   def __str__(self):
     return self.project_name
 
-  # @property
-  # def progress(self):
-  #   total_tasks = self.task_set.count()  # Total de tareas
-  #   completed_tasks = self.task_set.filter(is_completed=True).count()  # Tareas completadas
-  #   if total_tasks == 0:
-  #     return 100
-  #   return (completed_tasks / total_tasks) * 100
-
 class Task(models.Model):
   task_name = models.CharField(max_length=50)
   description = models.CharField(max_length=200) 
@@ -28,14 +20,17 @@ class Task(models.Model):
 
   def __str__(self):
     return self.task_name
-  
-  # @property
-  # def progress(self):
-  #   total_subtasks = self.subtask_set.count()
-  #   completed_subtasks = self.subtask_set.filter(is_completed=True).count()
-  #   if total_subtasks == 0:
-  #     return 100 if self.is_completed else 0
-  #   return (completed_subtasks / total_subtasks) * 100 
+
+  @property
+  def progress(self):
+    total_subtasks = self.subtask_set.count()
+    completed_subtasks = self.subtask_set.filter(is_completed=True).count()
+    
+    if total_subtasks == 0:
+      return 100 if self.is_completed else 0
+
+    return (completed_subtasks / total_subtasks) * 100
+
 
 class SubTask(models.Model):
   subtask_name = models.CharField(max_length=50)

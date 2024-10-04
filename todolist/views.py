@@ -162,7 +162,15 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         tasks = Task.objects.filter(project=id_project)
         serializer = self.get_serializer(tasks, many=True)
-        return Response(serializer.data)
+
+        # Añadiendo el progreso a cada tarea
+        task_data = serializer.data
+        for task in task_data:
+            task_instance = Task.objects.get(id=task['id'])  # Obtén la instancia de la tarea
+            task['progress'] = task_instance.progress  # Usa la propiedad calculada `progress`
+
+        return Response(task_data)
+
 
     @action(detail=False, methods=['delete'])
     def delete_task(self, request):
@@ -217,6 +225,18 @@ class TaskViewSet(viewsets.ModelViewSet):
             return Response(task_data, status=status.HTTP_200_OK)
             
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    @property
+    def progress(self):
+        total_subtasks = self.subtask_set.count()
+        completed_subtasks = self.subtask_set.filter(is_completed=True).count()
+
+        if total_subtasks == 0:
+            # Si no hay subtareas, se verifica si la tarea está marcada como completada
+            return 100 if self.is_completed else 0
+
+        return (completed_subtasks / total_subtasks) * 100
+
 
 class SubTaskViewSet(viewsets.ModelViewSet):
     queryset = SubTask.objects.all()
