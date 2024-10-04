@@ -1,10 +1,10 @@
 import "../components/SubTaskCard.css"
-import { FaTrash, FaCheckCircle } from 'react-icons/fa';
+import { FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
 import { deleteSubTask, updateSubtask } from "../Api/todolist.api";
 import { EditSubTask } from "./modal/EditSubTask";
 import { useEffect, useState } from "react";
 
-export function SubTaskCard({ subtask, removeSubTask}) {
+export function SubTaskCard({ subtask, removeSubTask }) {
   const [isCompleted, setIsCompleted] = useState();
 
   useEffect(() => {
@@ -35,10 +35,7 @@ export function SubTaskCard({ subtask, removeSubTask}) {
       };
 
       const res = await updateSubtask(idSubTask, updatedData);
-      // console.log(subtask);
-      // console.log("---");
-      // console.log(res);
-      subtask = res;
+
     } catch (error) {
       console.error('Error updating subtasks status:', error);
     }
@@ -48,11 +45,12 @@ export function SubTaskCard({ subtask, removeSubTask}) {
     <div>
       <div className="subtask-card">
         <div className="action-btn">
-          <button>
-            <FaCheckCircle 
-              onClick={checkBtn} 
-              style={{ color: isCompleted ? 'yellow' : 'black' }}
-            />
+          <button onClick={checkBtn}>
+            {isCompleted ? (
+              <FaCheckCircle style={{ color: 'yellow' }} />
+            ) : (
+              <FaRegCircle style={{ color: 'black' }} />
+            )}
           </button>
           <button><EditSubTask subtask={subtask} /></button>
           <button><FaTrash onClick={dltSubTask} /></button>

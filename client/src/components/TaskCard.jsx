@@ -19,11 +19,12 @@ export function TaskCard({ task, removeTask }) {
     setSubTasks(subtasks.filter((subtask) => subtask.id !== idToRemove));
   };
 
-  const setSubTasksFrnt = (listSubtaskUpdated) => {
-    task.task_name = listSubtaskUpdated.task_name;
-    task.description = listSubtaskUpdated.description;
-    setSubTasks(listSubtaskUpdated.subtasks);
+  const setSubTasksFrnt = (subtaskDataUpdate) => {
+    task.task_name = subtaskDataUpdate.task_name;
+    task.description = subtaskDataUpdate.description;
+    setSubTasks(subtaskDataUpdate.subtasks);
   }
+
 
   const dltTask = async () => {
     const token = localStorage.getItem("token");
@@ -86,14 +87,14 @@ export function TaskCard({ task, removeTask }) {
               style={{ width: `${progress}%` }}
             ></div>
           </div>
-          <div>{progress}%</div>  {/* Mostrar el porcentaje de progreso */}
+          <div>{progress || 0}%</div>  {/* Mostrar el porcentaje de progreso */}
         </div>
       </div>
 
       {subtasks.length > 0 && ( // Mostrar la sección de subtareas solo si existen
         <div className="content-section">
           {subtasks.map((subtask) => (
-            <SubTaskCard key={subtask.id} subtask={subtask} removeSubTask={removeSubTask} />
+            <SubTaskCard key={subtask.id} subtask={subtask} />
           ))}
         </div>
       )}

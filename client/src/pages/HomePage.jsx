@@ -56,14 +56,13 @@ export function HomePage({ filter }) {
       <div className="aside">
         <div className="action-btn">
           <CreateProject addNewProject={addNewProject} />
-          <CreateProject addNewProject={addNewProject} />
-          <CreateProject addNewProject={addNewProject} />
-          <CreateProject addNewProject={addNewProject} />
+          <p onClick={handleLogout}>Log Out</p>
+          <p>Settings</p>
         </div>
-        <div className="aux-buttons">
+        {/* <div className="aux-buttons">
           <button onClick={handleLogout}>L</button>
           <button>S</button>
-        </div>
+        </div> */}
       </div>
 
       <div className="main">

@@ -32,7 +32,7 @@ export function EditSubTask({ subtask }) {
       };
 
       const res = await updateSubtask(idSubTask, updatedData);
-      console.log('Subtask updated:', res);
+      // console.log('Subtask updated:', res);
       ///AHORA QUEDA ACTUALIZAR EL DOM PARA MOSTRAR LOS DATOS ACTUALIZADOS
       closeModal();
     } catch (error) {
@@ -54,7 +54,7 @@ export function EditSubTask({ subtask }) {
                 className='pname-input'
                 type="text"
                 placeholder="Subtask Name"
-                value={titleProject}
+                value={titleProject || ""}
                 onChange={(e) => setTitleProject(e.target.value)}
               />
             </div>
@@ -66,7 +66,7 @@ export function EditSubTask({ subtask }) {
                 <h1>Description</h1>
                 <textarea
                   placeholder="Project Description"
-                  value={descripcionProject}
+                  value={descripcionProject || ""}
                   onChange={(e) => setDescriptionProject(e.target.value)}
                 />
               </div>

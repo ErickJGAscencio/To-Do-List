@@ -53,10 +53,10 @@ export function ProjectPage() {
           <p >In Process Tasks</p>
           <p >Completed Tasks</p>
         </div>
-        <div className="aux-buttons">
+        {/* <div className="aux-buttons">
           <button onClick={handleLogout}>L</button>
           <button>S</button>
-        </div>
+        </div> */}
       </div>
       <div className="main_content">
         {tasks.map((task) => (

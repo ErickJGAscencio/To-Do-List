@@ -21,6 +21,8 @@
   margin: 0;
   color: #ecf0f1;
   font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .subtask-card .action-btn button{
