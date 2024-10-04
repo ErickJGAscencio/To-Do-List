@@ -26,20 +26,17 @@ export function SubTaskCard({ subtask, removeSubTask }) {
 
   const checkBtn = async () => {
     try {
-      if (isCompleted) {
-        setIsCompleted(false);
-      } else {
-        setIsCompleted(true);
-      }
+      const newCompletedStatus = !isCompleted;
+      setIsCompleted(newCompletedStatus);
 
       const idSubTask = subtask.id;
       const updatedData = {
-        is_completed: isCompleted
+        is_completed: newCompletedStatus
       };
 
       const res = await updateSubtask(idSubTask, updatedData);
 
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.error('Error updating subtasks status:', error);
     }
@@ -49,7 +46,12 @@ export function SubTaskCard({ subtask, removeSubTask }) {
     <div>
       <div className="subtask-card">
         <div className="action-btn">
-          <button><FaCheckCircle onClick={checkBtn} /></button>
+          <button>
+            <FaCheckCircle 
+              onClick={checkBtn} 
+              style={{ color: isCompleted ? 'yellow' : 'black' }}
+            />
+          </button>
           <button><EditSubTask subtask={subtask} /></button>
           <button><FaTrash onClick={dltSubTask} /></button>
         </div>

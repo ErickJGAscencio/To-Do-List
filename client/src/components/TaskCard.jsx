@@ -56,13 +56,9 @@ export function TaskCard({ task, removeTask }) {
         }
       }
     }
-
-    getAllSubTasks();
-  }, [task]);
-
-  useEffect(() => {
     setSubTasks(subtasks);
-  }, [subtasks]);
+    getAllSubTasks();
+  }, [task, subtasks]);
 
   return (
     <div className="task-card-content">

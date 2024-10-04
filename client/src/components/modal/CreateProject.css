@@ -28,12 +28,13 @@
   border-radius: 50px;
   font-size: 12px;
   padding: 5px;
-  color: black;
+  color: white;
   cursor: pointer;
 }
 
 .create-btn:hover{
   background-color: #c7c7c7;
+  color: #34495e;
 }
 
 .left-section {

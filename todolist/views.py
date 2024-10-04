@@ -154,12 +154,6 @@ class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-    # def get_queryset(self):
-    #     id_project = self.request.query_params.get('id_project', None)
-    #     if id_project is not None:
-    #         return Task.objects.filter(id_project=id_project)
-    #     return Task.objects.all()
-
     @action(detail=False, methods=['get'])
     def by_project(self, request):
         id_project = request.query_params.get('id_project')
