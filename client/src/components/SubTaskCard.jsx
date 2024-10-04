@@ -4,7 +4,7 @@ import { deleteSubTask, updateSubtask } from "../Api/todolist.api";
 import { EditSubTask } from "./modal/EditSubTask";
 import { useEffect, useState } from "react";
 
-export function SubTaskCard({ subtask, removeSubTask }) {
+export function SubTaskCard({ subtask, removeSubTask}) {
   const [isCompleted, setIsCompleted] = useState();
 
   useEffect(() => {
@@ -35,8 +35,10 @@ export function SubTaskCard({ subtask, removeSubTask }) {
       };
 
       const res = await updateSubtask(idSubTask, updatedData);
-
+      // console.log(subtask);
+      // console.log("---");
       // console.log(res);
+      subtask = res;
     } catch (error) {
       console.error('Error updating subtasks status:', error);
     }

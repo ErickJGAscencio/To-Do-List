@@ -1,9 +1,9 @@
 import './ProjectCard.css';
 import { useNavigate } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
-import { deleteProject } from '../api/todolist.api';
 import { EditProject } from './modal/EditProject';
 import { useEffect, useState } from 'react';
+import { deleteProject } from '../Api/todolist.api';
 
 export function ProjectCard({ project, updateProjectInList }) {
   const navigate = useNavigate();
@@ -47,7 +47,6 @@ export function ProjectCard({ project, updateProjectInList }) {
             <div>100%</div>
           </div>
         </div>
-
       </div>
     </div>
   )

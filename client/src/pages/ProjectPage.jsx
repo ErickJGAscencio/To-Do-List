@@ -3,7 +3,7 @@ import { FaArrowAltCircleLeft } from 'react-icons/fa';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect, useContext } from "react"
-import { fetchTask} from "../Api/todolist.api";
+import { fetchTask } from "../Api/todolist.api";
 
 import { CreateTask } from '../components/modal/CreateTask';
 import { TaskCard } from '../components/TaskCard';
@@ -14,7 +14,7 @@ export function ProjectPage() {
   const { logout } = useContext(AuthContext);
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
-  
+
 
   const addNewTask = (newTask) => {
     setTasks([...tasks, newTask]);
@@ -46,19 +46,21 @@ export function ProjectPage() {
   return (
     <div>
       <div className="aside">
-        <button onClick={() => navigate("/home")}> <FaArrowAltCircleLeft /> Projects</button>
-        <CreateTask id_project={id} addNewTask={addNewTask}/>
-        <button >All Task</button>
-        <button >In Process Tasks</button>
-        <button >Completed Tasks</button>
+        <div className="action-btn">
+          <p onClick={() => navigate("/home")}> <FaArrowAltCircleLeft /> Projects</p>
+          <CreateTask id_project={id} addNewTask={addNewTask} />
+          <p >All Task</p>
+          <p >In Process Tasks</p>
+          <p >Completed Tasks</p>
+        </div>
         <div className="aux-buttons">
           <button onClick={handleLogout}>L</button>
           <button>S</button>
         </div>
       </div>
-      <div className="main_content">        
+      <div className="main_content">
         {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} removeTask={ removeTask } />
+          <TaskCard key={task.id} task={task} removeTask={removeTask} />
         ))}
       </div>
     </div>

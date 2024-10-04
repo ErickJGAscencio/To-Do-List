@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './CreateProject.css';
-import { FaPalette } from 'react-icons/fa';
+import { FaPalette, FaPlus } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { createTask } from '../../Api/todolist.api';
 
@@ -55,7 +55,8 @@ export function CreateTask({ id_project, addNewTask }) {
 
   return (
     <div>
-      <button onClick={openModal}>New Task</button>
+      {/* <button onClick={openModal}>New Task</button> */}
+      <p className="create-btn" onClick={openModal}><FaPlus /> New Task</p>
 
       {isOpen && (
         <div className="modal">

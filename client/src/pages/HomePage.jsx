@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
-import { fetchAllProjects, getUserProfile } from "../api/todolist.api";
+import { fetchAllProjects, getUserProfile } from "../Api/todolist.api";
 
 
 export function HomePage({ filter }) {
@@ -54,10 +54,12 @@ export function HomePage({ filter }) {
   return (
     <div>
       <div className="aside">
-        <CreateProject addNewProject={addNewProject} />
-        <CreateProject addNewProject={addNewProject} />
-        <CreateProject addNewProject={addNewProject} />
-        <CreateProject addNewProject={addNewProject} />
+        <div className="action-btn">
+          <CreateProject addNewProject={addNewProject} />
+          <CreateProject addNewProject={addNewProject} />
+          <CreateProject addNewProject={addNewProject} />
+          <CreateProject addNewProject={addNewProject} />
+        </div>
         <div className="aux-buttons">
           <button onClick={handleLogout}>L</button>
           <button>S</button>

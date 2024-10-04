@@ -52,20 +52,20 @@ export function TaskCard({ task, removeTask }) {
 
           if (res.data && res.data.length > 0) {
             setSubTasks(res.data);
-            setProgress(task.progress);  // Aquí guardas el progreso en el estado
+            setProgress(task.progress);
           }
         } catch (error) {
           console.error(error);
         }
       }
     }
-    // setSubTasks(subtasks);//
     getAllSubTasks();
   }, [task]);
 
   useEffect(() => {
     setSubTasks(subtasks);
   }, [subtasks]);
+  
   return (
     <div className="task-card-content">
       <div className="task-card">
@@ -83,7 +83,7 @@ export function TaskCard({ task, removeTask }) {
           <div className="progress-bar">
             <div
               className="progress-bar-fill"
-              style={{ width: `${progress}%` }}  // Cambia el ancho según el progreso
+              style={{ width: `${progress}%` }}
             ></div>
           </div>
           <div>{progress}%</div>  {/* Mostrar el porcentaje de progreso */}
