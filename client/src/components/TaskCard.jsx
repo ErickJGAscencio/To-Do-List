@@ -1,10 +1,10 @@
 import './TaskCard.css';
 import { useEffect, useState } from 'react';
-import { FaPen, FaTrash } from 'react-icons/fa';
-import { CreateSubTask } from './modal/CreateSubTask';
+import { FaTrash } from 'react-icons/fa';
 import { deleteTask, fetchSubTask } from '../Api/todolist.api';
+import { CreateSubTask } from './modal/CreateSubTask';
+import { EditTask } from './modal/EditTask';
 import { SubTaskCard } from './SubTaskCard';
-import EditTask from './modal/EditTask';
 
 export function TaskCard({ task, removeTask }) {
   const [subtasks, setSubTasks] = useState([]);
@@ -23,6 +23,16 @@ export function TaskCard({ task, removeTask }) {
     task.task_name = subtaskDataUpdate.task_name;
     task.description = subtaskDataUpdate.description;
     setSubTasks(subtaskDataUpdate.subtasks);
+  }
+
+  const setSubTaskFront = (updatedSubtask) => {
+    const updatedSubtasks = [...subtasks];
+
+    const index = updatedSubtasks.findIndex(subtask => subtask.id === updatedSubtask.id);
+    if (index !== -1) {
+      updatedSubtasks[index] = updatedSubtask;
+    }
+    setSubTasks(updatedSubtasks);
   }
 
 
@@ -64,9 +74,9 @@ export function TaskCard({ task, removeTask }) {
   }, [task]);
 
   useEffect(() => {
-    setSubTasks(subtasks);
+    // setSubTasks(subtasks);
   }, [subtasks]);
-  
+
   return (
     <div className="task-card-content">
       <div className="task-card">
@@ -94,7 +104,7 @@ export function TaskCard({ task, removeTask }) {
       {subtasks.length > 0 && ( // Mostrar la sección de subtareas solo si existen
         <div className="content-section">
           {subtasks.map((subtask) => (
-            <SubTaskCard key={subtask.id} subtask={subtask} />
+            <SubTaskCard key={subtask.id} subtask={subtask} removeSubTask={removeSubTask} setSubTaskFront={setSubTaskFront} />
           ))}
         </div>
       )}

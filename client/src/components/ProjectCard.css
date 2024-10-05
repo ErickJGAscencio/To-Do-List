@@ -1,10 +1,9 @@
 .card {
-  background-color: #e09826;
+  background-color: rgba(219, 138, 52, 1);
   border-radius: 5px;
   padding: 8px;
   width: 180px;
   height: 20vh;
-  box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   /* transition: transform 0.3s ease, color 0.3s ease; */
 }
@@ -31,6 +30,8 @@
   height: 70px;
   padding: 3px;
   border-radius: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .progress-section{
   display: flex;

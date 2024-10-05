@@ -3,11 +3,11 @@ import { FaArrowAltCircleLeft } from 'react-icons/fa';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect, useContext } from "react"
-import { fetchTask } from "../Api/todolist.api";
 
 import { CreateTask } from '../components/modal/CreateTask';
 import { TaskCard } from '../components/TaskCard';
 import { AuthContext } from "../context/AuthContext";
+import { fetchTasks } from "../api/todolist.api";
 
 export function ProjectPage() {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export function ProjectPage() {
       const token = localStorage.getItem('token');
       if (token && id) {
         try {
-          const res = await fetchTask(id, token);
+          const res = await fetchTasks(id, token);
           setTasks(res.data);
         } catch (error) {
           console.error(error);

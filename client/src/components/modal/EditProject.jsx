@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
 import './EditProject.css'
-import { FaPalette } from 'react-icons/fa';
-import { FaPen } from 'react-icons/fa';
-import { fetchTask, updateProject } from '../../api/todolist.api';
+import React, { useState, useEffect } from 'react';
+import { FaPalette, FaPen } from 'react-icons/fa';
+import { fetchTasks, updateProject } from '../../api/todolist.api';
 
-export function EditProject({ project, updateProjectInList }) {
+export function EditProject({ project, updateDataProject }) {
   const [idProject, setIdProject] = useState("");
   const [titleProject, setTitleProject] = useState("");
   const [descripcionProject, setDescriptionProject] = useState("");
-  const [tasks, setTasks] = useState([]); // Para almacenar las tareas
-  const [newTask, setNewTask] = useState(""); // Nueva tarea temporal
+
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -17,13 +17,13 @@ export function EditProject({ project, updateProjectInList }) {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const res = await fetchTask(project.id, token);
+          const response = await fetchTasks(project.id, token);
 
-          if (res.data && res.data.length > 0) {
-            setTasks(res.data);
+          if (response.data && response.data.length > 0) {
+            setTasks(response.data);
           }
         } catch (error) {
-          console.error('Error sending trade request:', error);
+          console.error('Error getting task:', error);
         }
       }
     }
@@ -39,7 +39,6 @@ export function EditProject({ project, updateProjectInList }) {
 
   const openModal = async () => {
     setIsOpen(true);
-
     setIdProject(project.id);
     setTitleProject(project.project_name);
     setDescriptionProject(project.description);
@@ -59,15 +58,20 @@ export function EditProject({ project, updateProjectInList }) {
 
   const pdtProject = async () => {
     try {
-      const updatedData = {
+      const newData = {
         project_name: titleProject,
         description: descripcionProject,
         tasks: tasks
       };
 
-      await updateProject(idProject, updatedData);
-      updateProjectInList(updatedData); // Actualizar la lista en HomePage
-      // console.log(project);
+      const response = await updateProject(idProject, newData);
+
+      const updatedData = {
+        id: response.id,
+        ...newData
+      };
+
+      updateDataProject(updatedData);
       closeModal();
     } catch (error) {
       console.error('Error updating project:', error);
@@ -76,7 +80,6 @@ export function EditProject({ project, updateProjectInList }) {
 
   return (
     <div>
-      {/* <button className="btn-edit" onClick={openModal}>< FaPen /></button> */}
       <FaPen onClick={openModal} />
 
       {isOpen && (

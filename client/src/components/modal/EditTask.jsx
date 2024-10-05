@@ -67,7 +67,7 @@ export function EditTask({ task , setSubTasksFrnt}) {
         subtasks: subtasks
       };
       const res = await updateTask(idTask, updatedData);
-      setSubTasksFrnt(res)
+      setSubTasksFrnt(res);
       closeModal();
     } catch (error) {
       console.error('Error updating task:', error);

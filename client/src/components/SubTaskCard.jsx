@@ -1,10 +1,10 @@
 import "../components/SubTaskCard.css"
 import { FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
-import { deleteSubTask, updateSubtask } from "../Api/todolist.api";
 import { EditSubTask } from "./modal/EditSubTask";
 import { useEffect, useState } from "react";
+import { deleteSubTask, updateSubtask } from "../Api/todolist.api";
 
-export function SubTaskCard({ subtask, removeSubTask }) {
+export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
   const [isCompleted, setIsCompleted] = useState();
 
   useEffect(() => {
@@ -35,7 +35,8 @@ export function SubTaskCard({ subtask, removeSubTask }) {
       };
 
       const res = await updateSubtask(idSubTask, updatedData);
-
+      console.log(res);
+      setSubTaskFront(res);
     } catch (error) {
       console.error('Error updating subtasks status:', error);
     }

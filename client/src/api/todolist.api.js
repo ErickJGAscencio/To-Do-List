@@ -112,12 +112,12 @@ export const updateProject = async (id_project, updatedData) => {
 
 export const deleteProject = async (idProject, token) => {
 
-  let responseFP = await fetchTask(idProject, token);
+  let responseFP = await fetchTasks(idProject, token);
 
   if (responseFP.data.length > 0) {
-    console.log("Si tiene tareas");
+    // console.log("Si tiene tareas");
     const task = responseFP.data;
-    console.log(task);
+    // console.log(task);
 
     try {
       await Promise.all(
@@ -193,7 +193,7 @@ export const createTask = async (id_project, task_name, subtasks) => {
   return response;
 }
 
-export const fetchTask = async (id_project, token) => {
+export const fetchTasks = async (id_project, token) => {
   return await axios.get(`http://localhost:8000/todolist/api/v1/tasks/by_project/`, {
     params: {
       id_project: id_project
@@ -247,6 +247,8 @@ export const updateTask = async (id_task, updatedData) => {
       id_task,
       ...updatedData
     });
+    console.log("API");
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error updating task:', error);

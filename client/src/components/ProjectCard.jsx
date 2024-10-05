@@ -3,21 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
 import { EditProject } from './modal/EditProject';
 import { useEffect, useState } from 'react';
-import { deleteProject } from '../Api/todolist.api';
+import { deleteProject } from '../api/todolist.api';
 
-export function ProjectCard({ project, updateProjectInList }) {
+export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // console.log(project);
-  }, [project]);
 
   const dltProject = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        await deleteProject(project.id, token);
-        // Aquí puedes agregar lógica para eliminar el proyecto de la lista en HomePage
+        removeProject(project.id);
+        const response = await deleteProject(project.id, token);        
       } catch (error) {
         console.error(error);
       }
@@ -30,7 +26,7 @@ export function ProjectCard({ project, updateProjectInList }) {
         <h4>{project.project_name}</h4>
         <div className='action-btn'>
           <FaTrash onClick={dltProject} />
-          <EditProject project={project} updateProjectInList={updateProjectInList} />
+          <EditProject project={project} updateDataProject={updateDataProject} />
         </div>
         <div className="click-zone"
           onClick={() => {

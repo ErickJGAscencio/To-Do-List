@@ -5,29 +5,33 @@ import { AuthContext } from "../context/AuthContext";
 
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
-import { fetchAllProjects, getUserProfile } from "../Api/todolist.api";
+import { fetchAllProjects, getUserProfile } from "../api/todolist.api";
 
 
-export function HomePage({ filter }) {
+export function HomePage() {
   const navigate = useNavigate;
   const { logout } = useContext(AuthContext);
   const [projects, setProjects] = useState([]);
+  
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const addNewProject = (newProject) => {
     setProjects([...projects, newProject]);
   };
 
-  const updateProjectInList = (updatedProject) => {
-    console.log(updatedProject);//CORREGIR ESTO, PORQUE NO SE ESTÁ DEVOLVIENDO LA ID PARA HACER LA BUSQUEDA DE LA TAREA.
+  const removeProject = (idToRemove) => {
+    setProjects(projects.filter((project) => project.id !== idToRemove));
+  }
+
+  const updateDataProject = (updatedProject) => {
+    console.log(updatedProject);
     const updatedProjects = projects.map((project) =>
-      project.pro === updatedProject.id ? updatedProject : project
+      project.id === updatedProject.id ? updatedProject : project
     );
     setProjects(updatedProjects);
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
   };
 
   useEffect(() => {
@@ -40,7 +44,7 @@ export function HomePage({ filter }) {
           const res = await fetchAllProjects(id, token);
           setProjects(res.data);
         } catch (error) {
-          console.error(error);
+          setError(error.message);
         }
       }
     }
@@ -59,16 +63,11 @@ export function HomePage({ filter }) {
           <p onClick={handleLogout}>Log Out</p>
           <p>Settings</p>
         </div>
-        {/* <div className="aux-buttons">
-          <button onClick={handleLogout}>L</button>
-          <button>S</button>
-        </div> */}
       </div>
 
       <div className="main">
         {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} updateProjectInList={updateProjectInList}
-          />
+          <ProjectCard key={project.id} project={project} updateDataProject={updateDataProject} removeProject={removeProject} />
         ))}
       </div>
     </div>
