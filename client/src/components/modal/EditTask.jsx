@@ -27,7 +27,6 @@ export function EditTask({ task , setSubTasksFrnt}) {
           console.error(error);
         }
       }
-      console.log("asd");
     }
     getAllSubTasks();
   }, [isOpen]);

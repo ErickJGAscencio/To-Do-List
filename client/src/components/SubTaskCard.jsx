@@ -28,19 +28,19 @@ export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
     try {
       const newCompletedStatus = !isCompleted;
       setIsCompleted(newCompletedStatus);
-
+  
       const idSubTask = subtask.id;
       const updatedData = {
         is_completed: newCompletedStatus
       };
-
+  
       const res = await updateSubtask(idSubTask, updatedData);
-      console.log(res);
       setSubTaskFront(res);
     } catch (error) {
       console.error('Error updating subtasks status:', error);
     }
-  }
+  };
+  
 
   return (
     <div>

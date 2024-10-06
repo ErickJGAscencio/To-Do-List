@@ -27,14 +27,12 @@ export function TaskCard({ task, removeTask }) {
 
   const setSubTaskFront = (updatedSubtask) => {
     const updatedSubtasks = [...subtasks];
-
     const index = updatedSubtasks.findIndex(subtask => subtask.id === updatedSubtask.id);
     if (index !== -1) {
       updatedSubtasks[index] = updatedSubtask;
     }
     setSubTasks(updatedSubtasks);
   }
-
 
   const dltTask = async () => {
     const token = localStorage.getItem("token");
@@ -52,6 +50,23 @@ export function TaskCard({ task, removeTask }) {
       }
     }
   }
+
+  const setStatusTask = () => {
+    if (progress == 100) {
+      console.log("IsCompleted: " + task.task_name);
+
+      //VAMOS BIEN SOLO HAY QUE DETALLAR ALGONOS PUNTOS DEL RENDERIZADO Y MANDAR A ACTUALIZAR EL ESTADO DE LA TAREA
+    } else {
+      console.log("IsNotCompleted: " + task.task_name);
+    }
+  }
+
+  const calculateProgress = (subtasks) => {
+    if (subtasks.length === 0) return 0;
+    const completedSubtasks = subtasks.filter(subtask => subtask.is_completed).length;
+    const progress = (completedSubtasks / subtasks.length) * 100;
+    return parseFloat(progress.toFixed(0));
+  };
 
   useEffect(() => {
     async function getAllSubTasks() {
@@ -74,8 +89,10 @@ export function TaskCard({ task, removeTask }) {
   }, [task]);
 
   useEffect(() => {
-    // setSubTasks(subtasks);
-  }, [subtasks]);
+    setSubTasks(subtasks);
+    setProgress(calculateProgress(subtasks));
+    setStatusTask();
+  }, [subtasks, progress]);
 
   return (
     <div className="task-card-content">

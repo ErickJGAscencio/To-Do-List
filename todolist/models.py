@@ -10,6 +10,16 @@ class Project(models.Model):
     
   def __str__(self):
     return self.project_name
+    
+  @property
+  def progress(self):
+    total_tasks = self.task_set.count()
+    completed_task = self.task_set.filter(is_completed=True).count()
+    
+    if total_tasks == 0:
+      return 100 if self.is_completed else 0
+
+    return (completed_task / total_tasks) * 100
 
 class Task(models.Model):
   task_name = models.CharField(max_length=50)
