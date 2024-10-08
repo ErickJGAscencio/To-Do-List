@@ -41,10 +41,8 @@ export function CreateProject({ addNewProject }) {
 
     try {
       const token = localStorage.getItem('token');
-      const resUser = await getUserProfile(token);
-      const id = resUser.data.id;
       
-      const newProject = await createProject(id, titleProject, descripcionProject, tasks, token);
+      const newProject = await createProject(titleProject, descripcionProject, tasks, token);
 
       addNewProject(newProject.data);
 

@@ -105,7 +105,39 @@ class ProjectViewSet(viewsets.ModelViewSet):
         projects = Project.objects.filter(user=user_id)
         serializer = self.get_serializer(projects, many=True)
         return Response(serializer.data)
-    
+
+    @action(detail=False, methods=['post'])
+    def create_project(self, request):
+        project_name = request.data.get('project_name')
+        description = request.data.get('description')
+        user = request.user
+        tasks_data = request.data.get('tasks', [])
+
+        if not project_name or not description:
+            return Response({"error": "Project name and description are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        project = Project.objects.create(
+            project_name=project_name,
+            description=description,
+            user=user
+        )
+
+        created_tasks = []
+        for task_data in tasks_data:
+            task_name = task_data.get('task_name')
+            task_description = task_data.get('description', '')
+            
+            if task_name:
+                task = Task.objects.create(
+                    project=project,
+                    task_name=task_name,
+                    description=task_description
+                )
+                created_tasks.append(task)
+
+        serializer = self.get_serializer(project)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     @action(detail=False, methods=['delete'])
     def delete_project(self, request):
         id_project = request.query_params.get('id_project')
@@ -114,6 +146,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         try:
             project = Project.objects.get(id=id_project)
+            # TODAS LAS TAREAS RELACIONADAS AL PROYECTO SERÁN ELIMINADAS POR LA DECLARACION "on_delete=models.CASCADE" EN EL MODELO
             project.delete()
         except Project.DoesNotExist:
             return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -176,7 +209,6 @@ class TaskViewSet(viewsets.ModelViewSet):
             task['progress'] = task_instance.progress  # Usa la propiedad calculada `progress`
 
         return Response(task_data)
-
 
     @action(detail=False, methods=['delete'])
     def delete_task(self, request):

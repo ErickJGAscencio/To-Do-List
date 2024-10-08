@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
-import { fetchProjectsByUser, getUserProfile } from "../Api/todolist.api";
+import { fetchProjectsByUser, getUserProfile } from "../api/todolist.api";
 
 
 export function HomePage() {

@@ -7,7 +7,7 @@ import { useState, useEffect, useContext } from "react"
 import { CreateTask } from '../components/modal/CreateTask';
 import { TaskCard } from '../components/TaskCard';
 import { AuthContext } from "../context/AuthContext";
-import { fetchTasks } from "../api/todolist.api";
+import { fetchTasksByProject } from "../api/todolist.api";
 
 export function ProjectPage() {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ export function ProjectPage() {
       const token = localStorage.getItem('token');
       if (token && id) {
         try {
-          const res = await fetchTasks(id, token);
+          const res = await fetchTasksByProject(id, token);
           setTasks(res.data);
         } catch (error) {
           console.error(error);

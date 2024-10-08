@@ -51,16 +51,18 @@ export const fetchProjectsByUser = (userId, token) => {
   });
 };
 
-export const createProject = async (userId, projectName, projectDescription, tasks, token) => {//CORREGIR ESTO PARA QUE TODA LA CREACION DE LAS TAREAS Y EL PROJECTO SEA REALIZADO EN LA VISTA
+export const createProject = async (projectName, projectDescription, tasks, token) => {
+
+  console.log(tasks);
   const data = {
     project_name: projectName,
     description: projectDescription,
-    user: userId
+    tasks: tasks.map(task => ({ task_name: task }))//convertimos la cadena a nun diccionario
   };
 
   let response;
   try {
-    response = await axios.post("http://localhost:8000/todolist/api/v1/projects/", data, {
+    response = await axios.post("http://localhost:8000/todolist/api/v1/projects/create_project/", data, {
       headers: {
         Authorization: `Token ${token}`,
         'Content-Type': 'application/json'
@@ -69,27 +71,6 @@ export const createProject = async (userId, projectName, projectDescription, tas
   } catch (error) {
     console.error("Creating project error:", error);
     return { error: "Failed to create project" };
-  }
-
-  if (!response || !response.data || !response.data.id) {
-    console.error("Invalid project creation response:", response);
-    return { error: "Invalid project creation response" };
-  }
-
-  const id_project = response.data.id;
-
-  if (!tasks || tasks.length === 0) {
-    return response;
-  }
-
-  try {
-    // Usamos Promise.all() para enviar todas las peticiones de creación de tareas al mismo tiempo.
-    await Promise.all(//CAMBIAR A UN FOR PORQUE ESTÁ RARO COMO SE VAN GUARDADON EJ(1,2,3) O (2,1,3) EN ESE ORDEN
-      tasks.map((task) => createTask(id_project, task))
-    );
-  } catch (error) {
-    console.error("Creating tasks error:", error);
-    return { error: "Failed to create tasks" };
   }
 
   return response;
@@ -115,24 +96,6 @@ export const updateProject = async (id_project, updatedData, token) => {
 };
 
 export const deleteProject = async (idProject, token) => {
-  // Primero, obtenemos las tareas del proyecto
-  let responseFP = await fetchTasks(idProject, token);
-
-  if (responseFP.data.length > 0) {
-    const tasks = responseFP.data;
-
-    // Intentamos eliminar todas las tareas asociadas al proyecto
-    try {
-      await Promise.all(
-        tasks.map((task) => deleteTask(task.id, token)) // Eliminamos cada tarea
-      );
-    } catch (error) {
-      console.error("Deleting task error:", error);
-      return { error: "Failed to delete tasks" };
-    }
-  }
-
-  // Ahora, intentamos eliminar el proyecto después de eliminar todas sus tareas
   try {
     const response = await axios.delete(`http://localhost:8000/todolist/api/v1/projects/delete_project/`, {
       params: {
@@ -141,8 +104,7 @@ export const deleteProject = async (idProject, token) => {
       headers: {
         Authorization: `Token ${token}`
       }
-    }
-    );
+    });
     return response;
   } catch (error) {
     console.error("Error deleting project:", error);
@@ -163,7 +125,7 @@ export const fetchTasks = async (id_project, token) => {
   });
 }
 
-export const fetchTasksByUser = async (id_project, token) => {
+export const fetchTasksByProject = async (id_project, token) => {
   return await axios.get(`http://localhost:8000/todolist/api/v1/tasks/by_project/`, {
     params: {
       id_project: id_project
