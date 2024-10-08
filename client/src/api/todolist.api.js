@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Autenticación
+// Autentication
 export const loginUser = (username, password) => {
   const data = {
     username: username,
@@ -34,8 +34,24 @@ export const getUserProfile = (token) => {
   });
 };
 
-//Projects
-export const createProject = async (userId, projectName, projectDescription, tasks) => {
+// Projects
+export const fetchProjects = () => {
+  return axios.get(`http://localhost:8000/todolist/api/v1/projects/`, {
+  });
+}
+
+export const fetchProjectsByUser = (userId, token) => {
+  return axios.get(`http://localhost:8000/todolist/api/v1/projects/by_user/`, {
+    params: {
+      user_id: userId
+    },
+    headers: {
+      'Authorization': `Token ${token}`
+    }
+  });
+};
+
+export const createProject = async (userId, projectName, projectDescription, tasks, token) => {//CORREGIR ESTO PARA QUE TODA LA CREACION DE LAS TAREAS Y EL PROJECTO SEA REALIZADO EN LA VISTA
   const data = {
     project_name: projectName,
     description: projectDescription,
@@ -46,7 +62,8 @@ export const createProject = async (userId, projectName, projectDescription, tas
   try {
     response = await axios.post("http://localhost:8000/todolist/api/v1/projects/", data, {
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: `Token ${token}`,
+        'Content-Type': 'application/json'
       }
     });
   } catch (error) {
@@ -78,31 +95,18 @@ export const createProject = async (userId, projectName, projectDescription, tas
   return response;
 };
 
-export const fetchAllProjects = (userId, token) => {
-  return axios.get(`http://localhost:8000/todolist/api/v1/projects/by_user/`, {
-    params: {
-      user_id: userId
-    },
-    headers: {
-      'Authorization': `Token ${token}`
-    }
-  });
-};
-
-export const fetchInProcessProjects = () => {
-  return axios.get('');
-};
-
-export const fetchCompletedProjects = () => {
-  return axios.get('');
-};
-
-export const updateProject = async (id_project, updatedData) => {
+export const updateProject = async (id_project, updatedData, token) => {
   try {
     const response = await axios.put("http://localhost:8000/todolist/api/v1/projects/update_project/", {
-      id_project,  // Pasamos el ID del proyecto
-      ...updatedData  // Pasamos los datos actualizados
-    });
+      id_project,
+      ...updatedData,
+    },
+      {
+        headers: {
+          Authorization: `Token ${token}`
+        }
+      }
+    );
     return response.data;
   } catch (error) {
     console.error('Error updating project:', error);
@@ -111,42 +115,65 @@ export const updateProject = async (id_project, updatedData) => {
 };
 
 export const deleteProject = async (idProject, token) => {
-
+  // Primero, obtenemos las tareas del proyecto
   let responseFP = await fetchTasks(idProject, token);
 
   if (responseFP.data.length > 0) {
-    // console.log("Si tiene tareas");
-    const task = responseFP.data;
-    // console.log(task);
+    const tasks = responseFP.data;
 
+    // Intentamos eliminar todas las tareas asociadas al proyecto
     try {
       await Promise.all(
-        task.map((subtask) => deleteTask(subtask.id, token))
+        tasks.map((task) => deleteTask(task.id, token)) // Eliminamos cada tarea
       );
     } catch (error) {
       console.error("Deleting task error:", error);
-      return { error: "Failed to deleting task" };
+      return { error: "Failed to delete tasks" };
     }
   }
-  // return responseFP.data;
 
-  let response;
+  // Ahora, intentamos eliminar el proyecto después de eliminar todas sus tareas
   try {
-    response = axios.delete(`http://localhost:8000/todolist/api/v1/projects/delete_project/`, {
+    const response = await axios.delete(`http://localhost:8000/todolist/api/v1/projects/delete_project/`, {
       params: {
         id_project: idProject
+      },
+      headers: {
+        Authorization: `Token ${token}`
       }
-    });
+    }
+    );
+    return response;
   } catch (error) {
-    console.error("Error deleting projects:", error);
+    console.error("Error deleting project:", error);
     throw error;
   }
-  return response;
+};
 
-  // console.log("Borrar project");
+
+// Tasks
+export const fetchTasks = async (id_project, token) => {
+  return await axios.get(`http://localhost:8000/todolist/api/v1/tasks/`, {
+    params: {
+      id_project: id_project
+    },
+    headers: {
+      'Authorization': `Token ${token}`
+    }
+  });
 }
 
-//Tasks
+export const fetchTasksByUser = async (id_project, token) => {
+  return await axios.get(`http://localhost:8000/todolist/api/v1/tasks/by_project/`, {
+    params: {
+      id_project: id_project
+    },
+    headers: {
+      'Authorization': `Token ${token}`
+    }
+  });
+}
+
 export const createTask = async (id_project, task_name, subtasks) => {
   const data = {
     task_name: task_name,
@@ -193,15 +220,19 @@ export const createTask = async (id_project, task_name, subtasks) => {
   return response;
 }
 
-export const fetchTasks = async (id_project, token) => {
-  return await axios.get(`http://localhost:8000/todolist/api/v1/tasks/by_project/`, {
-    params: {
-      id_project: id_project
-    },
-    headers: {
-      'Authorization': `Token ${token}`
-    }
-  });
+export const updateTask = async (id_task, updatedData) => {
+  try {
+    const response = await axios.put("http://localhost:8000/todolist/api/v1/tasks/update_task/", {
+      id_task,
+      ...updatedData
+    });
+    console.log("API");
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating task:', error);
+    throw error;
+  }
 }
 
 export const deleteTask = async (id_task, token) => {
@@ -241,22 +272,8 @@ export const deleteTask = async (id_task, token) => {
   }
   return response;
 }
-export const updateTask = async (id_task, updatedData) => {
-  try {
-    const response = await axios.put("http://localhost:8000/todolist/api/v1/tasks/update_task/", {
-      id_task,
-      ...updatedData
-    });
-    console.log("API");
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.error('Error updating task:', error);
-    throw error;
-  }
-}
 
-//SubTasks
+// SubTasks
 export const createSubTask = async (id_task, titleSubTask, descriptionSubTask) => {
   const data = {
     task: id_task,

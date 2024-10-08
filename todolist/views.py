@@ -90,6 +90,8 @@ def profile(request):
         }
     )
 
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -106,19 +108,21 @@ class ProjectViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['delete'])
     def delete_project(self, request):
-        _idProject = request.query_params.get('id_project')
-        if _idProject is None:
-            return Response({"error": "idProject is required"}, status=status.HTTP_400_BAD_REQUEST)
+        id_project = request.query_params.get('id_project')
+        if not id_project:
+            return Response({"error": "id_project is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        project = Project.objects.filter(id =_idProject)
-        project.delete()
-        
-        return Response({"success": f"Deleted project"}, status=status.HTTP_204_NO_CONTENT)
+        try:
+            project = Project.objects.get(id=id_project)
+            project.delete()
+        except Project.DoesNotExist:
+            return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({"success": "Deleted project"}, status=status.HTTP_200_OK)
     
     @action(detail=False, methods=['put'])
     def update_project(self, request):
         id_project = request.data.get('id_project')
-        # print(request.data)
         if id_project is None:
             return Response({"error": "id_project is required"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -150,6 +154,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
@@ -238,6 +244,8 @@ class TaskViewSet(viewsets.ModelViewSet):
         return (completed_subtasks / total_subtasks) * 100
 
 
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 class SubTaskViewSet(viewsets.ModelViewSet):
     queryset = SubTask.objects.all()
     serializer_class = SubTaskSerializer

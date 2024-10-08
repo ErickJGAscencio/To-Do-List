@@ -2,8 +2,8 @@ import './ProjectCard.css';
 import { useNavigate } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
 import { EditProject } from './modal/EditProject';
-import { deleteProject, fetchTasks } from '../Api/todolist.api';
 import { useEffect, useState } from 'react';
+import { deleteProject, fetchTasks } from '../api/todolist.api';
 
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
 
           if (response.data && response.data.length > 0) {
             setTasks(response.data);
-            console.log(response.data);
+            // console.log(response.data);
           }
         } catch (error) {
           console.error('Error getting task:', error);

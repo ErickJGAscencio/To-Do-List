@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import './CreateProject.css';
 import { FaPalette, FaPlus } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
-import { createProject } from '../../Api/todolist.api';
-import { getUserProfile } from '../../Api/todolist.api';
+import { createProject, getUserProfile } from '../../api/todolist.api';
 
 export function CreateProject({ addNewProject }) {
   const [titleProject, setTitleProject] = useState("");
@@ -45,7 +44,7 @@ export function CreateProject({ addNewProject }) {
       const resUser = await getUserProfile(token);
       const id = resUser.data.id;
       
-      const newProject = await createProject(id, titleProject, descripcionProject, tasks);
+      const newProject = await createProject(id, titleProject, descripcionProject, tasks, token);
 
       addNewProject(newProject.data);
 

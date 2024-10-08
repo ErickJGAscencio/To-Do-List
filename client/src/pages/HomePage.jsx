@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
-import { fetchAllProjects, getUserProfile } from "../api/todolist.api";
+import { fetchProjectsByUser, getUserProfile } from "../Api/todolist.api";
 
 
 export function HomePage() {
@@ -41,7 +41,7 @@ export function HomePage() {
         try {
           const resUser = await getUserProfile(token);
           const id = resUser.data.id;
-          const res = await fetchAllProjects(id, token);
+          const res = await fetchProjectsByUser(id, token);
           setProjects(res.data);
         } catch (error) {
           setError(error.message);
