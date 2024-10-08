@@ -14,7 +14,7 @@ export function Delete() {
       {isOpen && (
         <div className="modal">
           <div className="modal-content">
-            
+            <h2>DELETE MODAL</h2>
           </div>
         </div>
       )}

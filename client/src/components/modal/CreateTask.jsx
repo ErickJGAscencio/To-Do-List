@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './CreateProject.css';
 import { FaPalette, FaPlus } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
-import { createTask } from '../../Api/todolist.api';
+import { createTask } from '../../api/todolist.api';
 
 export function CreateTask({ id_project, addNewTask }) {
   const [titleTask, setTitleTask] = useState("");
@@ -41,7 +41,8 @@ export function CreateTask({ id_project, addNewTask }) {
     }
 
     try {
-      const newTask = await createTask(id_project, titleTask, subTasks);
+      const token = localStorage.getItem("token");
+      const newTask = await createTask(id_project, titleTask, subTasks, token);
       
       addNewTask(newTask.data);
 

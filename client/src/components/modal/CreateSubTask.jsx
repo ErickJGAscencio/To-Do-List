@@ -1,5 +1,5 @@
 import { FaPalette, FaPlus } from 'react-icons/fa';
-import { createSubTask } from '../../Api/todolist.api';
+import { createSubTask } from '../../api/todolist.api';
 import { useState } from 'react';
 
 export function CreateSubTask({ task, addNewSubTask}) {
@@ -24,7 +24,8 @@ export function CreateSubTask({ task, addNewSubTask}) {
     }
     const id_task = task.id;
     try {
-      const newSubTask = await createSubTask(id_task, subtask_name, descripcionSubTask);
+      const token = localStorage.getItem("token");
+      const newSubTask = await createSubTask(id_task, subtask_name, descripcionSubTask, token);
       addNewSubTask(newSubTask);//Mandamos la nueva subtarea para agregarla a la lista y mostrarla
 
       closeModal();

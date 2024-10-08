@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
 import { EditProject } from './modal/EditProject';
 import { useEffect, useState } from 'react';
-import { deleteProject, fetchTasks } from '../api/todolist.api';
+import { deleteProject, fetchTasksByProject } from '../api/todolist.api';
 
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
@@ -33,11 +33,10 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetchTasks(project.id, token);
+          const response = await fetchTasksByProject(project.id, token);
 
           if (response.data && response.data.length > 0) {
             setTasks(response.data);
-            // console.log(response.data);
           }
         } catch (error) {
           console.error('Error getting task:', error);

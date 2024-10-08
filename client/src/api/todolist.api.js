@@ -52,8 +52,6 @@ export const fetchProjectsByUser = (userId, token) => {
 };
 
 export const createProject = async (projectName, projectDescription, tasks, token) => {
-
-  console.log(tasks);
   const data = {
     project_name: projectName,
     description: projectDescription,
@@ -64,7 +62,7 @@ export const createProject = async (projectName, projectDescription, tasks, toke
   try {
     response = await axios.post("http://localhost:8000/todolist/api/v1/projects/create_project/", data, {
       headers: {
-        Authorization: `Token ${token}`,
+        'Authorization': `Token ${token}`,
         'Content-Type': 'application/json'
       }
     });
@@ -114,13 +112,10 @@ export const deleteProject = async (idProject, token) => {
 
 
 // Tasks
-export const fetchTasks = async (id_project, token) => {
+export const fetchTasks = async (id_project) => {
   return await axios.get(`http://localhost:8000/todolist/api/v1/tasks/`, {
     params: {
       id_project: id_project
-    },
-    headers: {
-      'Authorization': `Token ${token}`
     }
   });
 }
@@ -136,60 +131,41 @@ export const fetchTasksByProject = async (id_project, token) => {
   });
 }
 
-export const createTask = async (id_project, task_name, subtasks) => {
+export const createTask = async (id_project, task_name, subtasks, token) => { 
   const data = {
     task_name: task_name,
-    project: id_project,
-    description: "provicional"
+    description: " ",
+    id_project: id_project,
+    subtasks: subtasks.map(subtask => ({ subtask_name: subtask }))
   };
 
   let response;
   try {
-    response = await axios.post("http://localhost:8000/todolist/api/v1/tasks/", data, {
+    response = await axios.post("http://localhost:8000/todolist/api/v1/tasks/create_task/", data, {
       headers: {
-        'Content-Type': 'application/json',
-      }
+        'Authorization': `Token ${token}`,
+        'Content-Type': 'application/json'
+      },
     });
-
-    console.log("Response from API:", response.data);
-
   } catch (error) {
     console.error(`Error creating task '${task_name}':`, error);
-    throw error;
+    return { error: "Failed to create task" };
   }
-
-  if (!response || !response.data || !response.data.id) {
-    console.error("Invalid task creation response:", response);
-    return { error: "Invalid task creation response" };
-  }
-
-  const id_task = response.data.id;
-
-  if (!subtasks || subtasks.length === 0) {
-    return response; // Retornae solo el proyecto si no hay subtareas.
-  }
-
-  try {
-    await Promise.all(
-      subtasks.map((subtask) => createSubTask(id_task, subtask, "ASD"))
-    );
-  } catch (error) {
-    console.error("Creating subtasks error:", error);
-    return { error: "Failed to create subtasks" };
-  }
-
 
   return response;
 }
 
-export const updateTask = async (id_task, updatedData) => {
+export const updateTask = async(id_task, updatedData, token) => {
   try {
     const response = await axios.put("http://localhost:8000/todolist/api/v1/tasks/update_task/", {
       id_task,
       ...updatedData
+    },
+      {
+      headers: {
+        'Authorization': `Token ${token}`
+      }
     });
-    console.log("API");
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error updating task:', error);
@@ -198,29 +174,8 @@ export const updateTask = async (id_task, updatedData) => {
 }
 
 export const deleteTask = async (id_task, token) => {
-
-  //Verify if this task has subtasks
-  let responseFP = await fetchSubTask(id_task, token);
-
-  if (responseFP.data.length > 0) {
-    console.log("Si tiene subtareas");
-    const subtasks = responseFP.data;
-    console.log(subtasks);
-
-    try {
-      await Promise.all(
-        subtasks.map((subtask) => deleteSubTask(subtask.id))
-      );
-    } catch (error) {
-      console.error("Deleting subtasks error:", error);
-      return { error: "Failed to deleting subtasks" };
-    }
-  }
-  // return responseFP.data;
-
-  let response;
   try {
-    response = await axios.delete(`http://localhost:8000/todolist/api/v1/tasks/delete_task/`, {
+    const response = await axios.delete(`http://localhost:8000/todolist/api/v1/tasks/delete_task/`, {
       params: {
         id_task: id_task
       },
@@ -228,15 +183,15 @@ export const deleteTask = async (id_task, token) => {
         'Authorization': `Token ${token}`
       }
     });
+    return response;
   } catch (error) {
     console.error("Error deleting task:", error);
     throw error;
   }
-  return response;
 }
 
 // SubTasks
-export const createSubTask = async (id_task, titleSubTask, descriptionSubTask) => {
+export const createSubTask = async (id_task, titleSubTask, descriptionSubTask, token) => {
   const data = {
     task: id_task,
     subtask_name: titleSubTask,
@@ -247,7 +202,8 @@ export const createSubTask = async (id_task, titleSubTask, descriptionSubTask) =
   try {
     response = await axios.post("http://localhost:8000/todolist/api/v1/subtasks/", data, {
       headers: {
-        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`,
+        'Content-Type': 'application/json'
       }
     });
 
@@ -270,12 +226,15 @@ export const fetchSubTask = async (id_task, token) => {
   });
 }
 
-export const deleteSubTask = async (id_subtask) => {
+export const deleteSubTask = async (id_subtask, token) => {
   let response;
   try {
     response = await axios.delete(`http://localhost:8000/todolist/api/v1/subtasks/delete_subtask/`, {
       params: {
         id_subtask: id_subtask
+      },
+      headers: {
+        'Authorization': `Token ${token}`
       }
     });
   } catch (error) {
@@ -285,11 +244,15 @@ export const deleteSubTask = async (id_subtask) => {
   return response;
 }
 
-export const updateSubtask = async (id_subtask, updatedData) => {
+export const updateSubtask = async (id_subtask, updatedData ,token) => {
   try {
     const response = await axios.put("http://localhost:8000/todolist/api/v1/subtasks/update_subtask/", {
       id_subtask,
       ...updatedData
+    }, {
+      headers: {
+        'Authorization': `Token ${token}`
+      }
     });
     return response.data;
   } catch (error) {

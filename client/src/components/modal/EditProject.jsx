@@ -1,7 +1,7 @@
 import './EditProject.css'
 import React, { useState, useEffect } from 'react';
 import { FaPalette, FaPen } from 'react-icons/fa';
-import { fetchTasks, updateProject } from '../../Api/todolist.api';
+import { fetchTasksByProject, updateProject } from '../../api/todolist.api';
 
 export function EditProject({ project, updateDataProject }) {
   const [idProject, setIdProject] = useState("");
@@ -17,7 +17,7 @@ export function EditProject({ project, updateDataProject }) {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const response = await fetchTasks(project.id, token);
+          const response = await fetchTasksByProject(project.id, token);
 
           if (response.data && response.data.length > 0) {
             setTasks(response.data);

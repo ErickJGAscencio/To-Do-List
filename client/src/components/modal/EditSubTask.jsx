@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './EditProject.css'
 import { FaPalette, FaPen } from 'react-icons/fa';
 
-import { updateSubtask } from '../../Api/todolist.api';
+import { updateSubtask } from '../../api/todolist.api';
 
 export function EditSubTask({ subtask }) {
   const [idSubTask, setIdProject] = useState("");
@@ -30,9 +30,8 @@ export function EditSubTask({ subtask }) {
         subtask_name: titleProject,
         description: descripcionProject
       };
-
-      const res = await updateSubtask(idSubTask, updatedData);
-      // console.log('Subtask updated:', res);
+      const token = localStorage.getItem("token");
+      const res = await updateSubtask(idSubTask, updatedData, token);
       ///AHORA QUEDA ACTUALIZAR EL DOM PARA MOSTRAR LOS DATOS ACTUALIZADOS
       closeModal();
     } catch (error) {
@@ -42,7 +41,6 @@ export function EditSubTask({ subtask }) {
 
   return (
     <div>
-      {/* <button className="btn-edit" onClick={openModal}>< FaPen /></button> */}
       <div className="action-btn">
         <FaPen onClick={openModal} />
       </div>

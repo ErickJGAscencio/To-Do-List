@@ -3,7 +3,7 @@ import './EditProject.css'
 import { FaPalette, FaTrash } from 'react-icons/fa';
 import { FaPen } from 'react-icons/fa';
 
-import { fetchSubTask, updateTask } from '../../Api/todolist.api';
+import { fetchSubTask, updateTask } from '../../api/todolist.api';
 
 export function EditTask({ task , setSubTasksFrnt}) {
   const [idTask, setIdTask] = useState("");
@@ -65,7 +65,8 @@ export function EditTask({ task , setSubTasksFrnt}) {
         description: taskDescription,
         subtasks: subtasks
       };
-      const res = await updateTask(idTask, updatedData);
+      const token = localStorage.getItem("token");
+      const res = await updateTask(idTask, updatedData, token);
       setSubTasksFrnt(res);
       closeModal();
     } catch (error) {
@@ -75,7 +76,6 @@ export function EditTask({ task , setSubTasksFrnt}) {
 
   return (
     <div>
-      {/* <button className="btn-edit" onClick={openModal}>< FaPen /></button> */}
       <FaPen onClick={openModal}/>
 
       {isOpen && (
@@ -97,13 +97,13 @@ export function EditTask({ task , setSubTasksFrnt}) {
                     value={newSubTask}
                     onChange={(e) => setNewSubTask(e.target.value)}
                   />
-                  <button onClick={addSubTask}>Add</button>
+                  <button onClick={addSubTask}>Add</button> {/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
                 </div>
                 <div className='task-container'>
                   {subtasks.map((subtask, index) => (
                     <div key={subtask.id || index} className='task-item'>
                       {subtask.subtask_name || subtask}
-                      <button onClick={() => removeSubTask(index)}><FaTrash /></button>
+                      <button onClick={() => removeSubTask(index)}><FaTrash /></button>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
                     </div>
                   ))}
                 </div>
@@ -122,8 +122,8 @@ export function EditTask({ task , setSubTasksFrnt}) {
                 />
               </div>
               <div className='buttons-action'>
-                <button onClick={pdtTask}>Edit</button>
-                <button onClick={closeModal}>Cancel</button>
+                <button onClick={pdtTask}>Edit</button>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
+                <button onClick={closeModal}>Cancel</button>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
               </div>
             </div>
           </div>
