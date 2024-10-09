@@ -3,7 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 
 export function Navigation({ filter }) {
   const { username, isLoggedIn } = useContext(AuthContext);
-  const [useFilter, setUseFilter] = useState([]);
+  const [ useFilter, setUseFilter ] = useState([]);
 
   useEffect(() => {
     if (filter === 'all') {
@@ -18,7 +18,7 @@ export function Navigation({ filter }) {
   return (
     <div className="nav">
       <div className="profile">
-        Hi {isLoggedIn ? username : 'username'}!
+        Hi {isLoggedIn ? username : 'guest'}!
       </div>
       <p className="seccion">{useFilter}</p>
     </div>

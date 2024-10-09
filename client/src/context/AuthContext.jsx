@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
       }
     }
     checkLoginStatus();
-  }, []);
+  });
 
   const login = async (username, password) => {
     const res = await loginUser(username, password);
@@ -36,8 +36,8 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     localStorage.removeItem('token');
-    setIsLoggedIn(false);
     setUsername(null);
+    setIsLoggedIn(false);
   };
 
   return (

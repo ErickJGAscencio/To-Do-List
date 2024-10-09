@@ -17,7 +17,6 @@ export function HomePage() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
   };
 
   const addNewProject = (newProject) => {
@@ -68,11 +67,13 @@ export function HomePage() {
           <p><FaWrench /></p>
         </div>
       </div>
-
-      <div className="main">
-        {projects.map((project) => (
-          <ProjectCard key={project.id} project={project} updateDataProject={updateDataProject} removeProject={removeProject} />
-        ))}
+      <div className="filtter">
+        <div style={{ backgroundColor: 'green' }}>Filtrado</div>
+        <div className="main">
+          {projects.map((project) => (
+            <ProjectCard key={project.id} project={project} updateDataProject={updateDataProject} removeProject={removeProject} />
+          ))}
+        </div>
       </div>
     </div>
   )

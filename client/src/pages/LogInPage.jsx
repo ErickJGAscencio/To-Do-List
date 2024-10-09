@@ -6,7 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 
 export function LogInPage() {
   const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +39,8 @@ export function LogInPage() {
           <h3>Do you haven't an account?
             <span
               style={{ textDecoration: 'underline', cursor: "pointer" }}
-              onClick={() => navigate('/register')}>
+              onClick={() => navigate('/register')}
+              >
               Register
             </span>
           </h3>
