@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { deleteTask, fetchSubTask } from '../Api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
+import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
 import { SubTaskCard } from './SubTaskCard';
 
@@ -34,7 +35,7 @@ export function TaskCard({ task, removeTask }) {
     setSubTasks(updatedSubtasks);
   }
 
-  const dltTask = async () => {
+  const deleteMethod = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
@@ -104,7 +105,7 @@ export function TaskCard({ task, removeTask }) {
         <div className='action-btn'>
           <button><CreateSubTask task={task} addNewSubTask={addNewSubTask} /></button>
           <button><EditTask task={task} setSubTasksFrnt={setSubTasksFrnt} /></button>
-          <button><FaTrash onClick={dltTask} /></button>
+          <Delete name={ "task " + task.task_name } deleteMethod={deleteMethod} />
         </div>
 
         <div className="progress-section">

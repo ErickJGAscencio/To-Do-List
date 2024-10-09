@@ -3,14 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { FaTrash } from 'react-icons/fa';
 import { EditProject } from './modal/EditProject';
 import { useEffect, useState } from 'react';
-import { deleteProject, fetchTasksByProject } from '../api/todolist.api';
+import { deleteProject, fetchTasksByProject } from '../Api/todolist.api';
+import Delete from './modal/Delete';
 
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [progress, setProgress] = useState(0);
 
-  const dltProject = async () => {
+  const deleteMethod = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
@@ -52,8 +53,8 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
       <div className="card">
         <h4>{project.project_name}</h4>
         <div className='action-btn'>
-          <FaTrash onClick={dltProject} />
           <EditProject project={project} updateDataProject={updateDataProject} />
+          <Delete name={"project " + project.project_name} deleteMethod={deleteMethod} />
         </div>
         <div className="click-zone"
           onClick={() => {

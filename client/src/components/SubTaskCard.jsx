@@ -3,6 +3,7 @@ import { FaTrash, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
 import { EditSubTask } from "./modal/EditSubTask";
 import { useEffect, useState } from "react";
 import { deleteSubTask, updateSubtask } from "../api/todolist.api";
+import Delete from "./modal/Delete";
 
 export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
   const [isCompleted, setIsCompleted] = useState();
@@ -11,7 +12,7 @@ export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
     setIsCompleted(subtask.is_completed);
   }, [subtask])
 
-  const dltSubTask = async () => {
+  const deleteMethod = async () => {
     try {
       const token = localStorage.getItem("token");
       const id_subtask = subtask.id;
@@ -55,7 +56,7 @@ export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
             )}
           </button>
           <button><EditSubTask subtask={subtask} /></button>
-          <button><FaTrash onClick={dltSubTask} /></button>
+          <Delete name={ "subtask " + subtask.subtask_name } deleteMethod={deleteMethod} />
         </div>
         <div className="inf-subtask">
           <h4>{subtask.subtask_name}</h4>
