@@ -1,7 +1,7 @@
 import './TaskCard.css';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
-import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
+import { deleteTask, fetchSubTask, updateTask } from '../Api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
@@ -53,21 +53,26 @@ export function TaskCard({ task, removeTask }) {
   }
 
   const setStatusTask = async () => {
-    if (progress == 100) {
-      try {
-        const updatedData = {
+    let updatedData={};
+    try {
+      if (progress == 100) {
+        updatedData = {
           is_completed: true
         };
-        const token = localStorage.getItem("token");
-
-        await updateTask(task.id, updatedData, token);
-      } catch (error) {
-        console.error('Error updating task:', error);
+        //VAMOS BIEN SOLO HAY QUE DETALLAR ALGONOS PUNTOS DEL RENDERIZADO Y MANDAR A ACTUALIZAR EL ESTADO DE LA TAREA
+      } else {
+        updatedData = {
+          is_completed: false
+        };
       }
-      //VAMOS BIEN SOLO HAY QUE DETALLAR ALGONOS PUNTOS DEL RENDERIZADO Y MANDAR A ACTUALIZAR EL ESTADO DE LA TAREA
-    } else {
-      console.log("IsNotCompleted: " + task.task_name);
+
+      const token = localStorage.getItem("token");
+
+      await updateTask(task.id, updatedData, token);
+    } catch (error) {
+      console.error('Error updating task:', error);
     }
+
   }
 
   const calculateProgress = (subtasks) => {

@@ -3,17 +3,6 @@ import { AuthContext } from '../context/AuthContext';
 
 export function Navigation({ filter }) {
   const { username, isLoggedIn, section } = useContext(AuthContext);
-  const [ useFilter, setUseFilter ] = useState([]);
-
-  useEffect(() => {
-    if (filter === 'all') {
-      setUseFilter("All Projects");
-    } else if (filter === 'completed') {
-      setUseFilter("Completed Projects");
-    } else if (filter === 'inprocess') {
-      setUseFilter("In Progress Projects");
-    }
-  }, [filter]);
 
   return (
     <div className="nav">

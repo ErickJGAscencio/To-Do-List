@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthContext";
 
-import { FaArrowRight, FaWrench } from "react-icons/fa";
+import { FaSignOutAlt, FaCogs, FaSearch } from "react-icons/fa";
 
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
-import { fetchProjectsByUser, getUserProfile } from "../Api/todolist.api";
+import { fetchProjectsByUser, getUserProfile } from "../api/todolist.api";
 
 
 export function HomePage() {
@@ -61,14 +61,19 @@ export function HomePage() {
       <div className="aside">
         <div className="main-buttons">
           <CreateProject addNewProject={addNewProject} />
+          <hr />
+          <p>All</p>
+          <p>Completed</p>
+          <p>In Progress</p>
+          <p><FaSearch /> search</p>
         </div>
         <div className="aux-buttons">
-          <p onClick={handleLogout}><FaArrowRight /></p>
-          <p><FaWrench /></p>
+          <p onClick={handleLogout}><FaSignOutAlt size={15} /></p>
+          <p><FaCogs size={15} /></p>
         </div>
       </div>
-      <div className="filtter">
-        <div style={{ backgroundColor: 'green' }}>Filtrado</div>
+      <div className="main-filter-contain">
+
         <div className="main">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} updateDataProject={updateDataProject} removeProject={removeProject} />

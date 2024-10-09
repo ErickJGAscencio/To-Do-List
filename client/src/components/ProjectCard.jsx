@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { deleteProject, fetchTasksByProject } from '../api/todolist.api';
 import { EditProject } from './modal/EditProject';
 import { Delete } from './modal/Delete';
-
+import { FaEllipsisH } from 'react-icons/fa';
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
@@ -69,12 +69,13 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
     <div>
       <div className="card">
         <h4>{project.project_name}</h4>
+        {/* <FaEllipsisH /> AGREGAR UNA OPCION QUE PERMITA VER LOS DETALLES EN RESUMEN DEL PROYECTO SIN TENER QUE ABIRLO*/} 
         <div className='action-btn'>
           <EditProject project={project} updateDataProject={updateDataProject} />
           <Delete name={"project " + project.project_name} deleteMethod={deleteMethod} />
         </div>
         <div className="click-zone" onClick={() => {
-          navigate(`/project/${project.id}`);
+          navigate(`/home/myprojects/project/${project.id}`);
           setSection(project.project_name);
         }} >
           <div className="content-section">

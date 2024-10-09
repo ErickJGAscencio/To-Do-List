@@ -1,5 +1,5 @@
 import "./ProjectPage.css";
-import { FaArrowAltCircleLeft } from 'react-icons/fa';
+import { FaArrowAltCircleLeft, FaSearch } from 'react-icons/fa';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect, useContext } from "react"
@@ -50,21 +50,24 @@ export function ProjectPage() {
     <div>
       <div className="aside">
         <div className="main-buttons">
-          <p className="create-btn" onClick={() => { navigate("/home"); setSection("Home");}}> <FaArrowAltCircleLeft /> Projects</p>
+          <p className="create-btn" onClick={() => { navigate("/home"); setSection("Home"); }}> <FaArrowAltCircleLeft /> Projects</p>
+          <hr />
           <CreateTask id_project={id} addNewTask={addNewTask} />
-          <p className="create-btn">All Task</p>
-          <p className="create-btn">In Process Tasks</p>
-          <p className="create-btn">Completed Tasks</p>
-        </div>
-        <div className="aux-buttons">
-          <p onClick={handleLogout}><FaArrowRight /></p>
-          <p><FaWrench /></p>
+          <hr />
+          <div className="filter">
+            <p>All</p>
+            <p>Completed</p>
+            <p>In Progress</p>
+            <p><FaSearch /> search</p>
+          </div>
         </div>
       </div>
-      <div className="main_content">
-        {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} removeTask={removeTask} />
-        ))}
+      <div className="main-filter-contain">
+        <div className="main_content">
+          {tasks.map((task) => (
+            <TaskCard key={task.id} task={task} removeTask={removeTask} />
+          ))}
+        </div>
       </div>
     </div>
   )

@@ -1,11 +1,11 @@
 .main_content {
-  background-color: #e0dcdc;
+  background-color: #f0f4f4;
   display: flex;
   flex-direction: row;
   padding: 10px;
   margin-left: 140px;
   gap: 15px;
   overflow-y: auto;
-  height: calc(100vh - 73px);
+  height: calc(100vh - 102px);
 }
 

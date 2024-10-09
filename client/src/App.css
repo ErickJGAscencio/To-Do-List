@@ -15,6 +15,10 @@ html, body {
   align-items: center;
 }
 
+.nav p{
+  margin: 10px 15px;
+}
+
 .aside {
   background-color: #0884c4;
   border-right: 2px solid #0884c4;
@@ -28,8 +32,18 @@ html, body {
 .aside .main-buttons{
   color: #ecf0f1;
   flex-direction: column;
-  padding: 10px;
+  margin: 0;
   width: 120px;
+  padding: 1px 8px;
+  font-size: 12px;
+}
+
+.aside .main-buttons p{
+  border-radius: 50px;
+}
+
+.main-buttons p:hover{
+  cursor: pointer;
 }
 
 .aside .aux-buttons{
@@ -39,7 +53,7 @@ html, body {
 }
 
 .aside .aux-buttons p {
-  background-color: #95a5a6;
+  background-color: #066a95;
   border: none;
   border-radius: 50px;
   font-size: 12px;
@@ -59,6 +73,15 @@ html, body {
   padding: 20px;
   margin-left: 130px;
 
-  height: calc(100vh - 93px);
+  height: calc(100vh - 122px);
   overflow-y: auto;
+}
+
+.filter{
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: 25px;
+  padding: 2px;
+  align-items: center;
 }
