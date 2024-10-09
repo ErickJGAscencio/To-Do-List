@@ -15,7 +15,7 @@ export function Sidebar({ setFilter }) {
   const handleAllProjects = () => {
     navigate('/home');
   };
-  
+
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -23,13 +23,15 @@ export function Sidebar({ setFilter }) {
 
   return (
     <div className="aside">
-      <CreateProject />
-      <button onClick={() => handleFilter('all')}>All Projects</button>
-      <button onClick={() => handleFilter('inprocess')}>In Process Projects</button>
-      <button onClick={() => handleFilter('completed')}>Completed Projects</button>
+      <div className="main-buttons">
+        <CreateProject />
+        <button onClick={() => handleFilter('all')}>All Projects</button>
+        <button onClick={() => handleFilter('inprocess')}>In Process Projects</button>
+        <button onClick={() => handleFilter('completed')}>Completed Projects</button>
+      </div>
       <div className="aux-buttons">
         <button onClick={handleLogout}>L</button>
-        <button>S</button>
+        <button>Settings</button>
       </div>
     </div>
   )

@@ -3,16 +3,18 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthContext";
 
+import { FaArrowRight, FaWrench } from "react-icons/fa";
+
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
-import { fetchProjectsByUser, getUserProfile } from "../api/todolist.api";
+import { fetchProjectsByUser, getUserProfile } from "../Api/todolist.api";
 
 
 export function HomePage() {
   const navigate = useNavigate;
   const { logout } = useContext(AuthContext);
   const [projects, setProjects] = useState([]);
-  
+
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -58,10 +60,12 @@ export function HomePage() {
   return (
     <div>
       <div className="aside">
-        <div className="action-btn">
+        <div className="main-buttons">
           <CreateProject addNewProject={addNewProject} />
-          <p onClick={handleLogout}>Log Out</p>
-          <p>Settings</p>
+        </div>
+        <div className="aux-buttons">
+          <p onClick={handleLogout}><FaArrowRight /></p>
+          <p><FaWrench /></p>
         </div>
       </div>
 
