@@ -104,6 +104,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
         projects = Project.objects.filter(user=user_id)
         serializer = self.get_serializer(projects, many=True)
+
+        # project_data = serializer.data
+        # for project in project_data:
+        #     project_instance = Project.objects.get(id=projects['id']) 
+        #     projects['progress'] = project_instance.progress
+
         return Response(serializer.data)
 
     @action(detail=False, methods=['post'])
@@ -186,6 +192,17 @@ class ProjectViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @property
+    def progress(self):
+        total_tasks = self.task_set.count()
+        completed_tasks = self.task_set.filter(is_completed=True).count()
+
+        if total_tasks == 0:
+            # Si no hay subtareas, se verifica si la tarea está marcada como completada
+            return 100 if self.is_completed else 0
+
+        return (completed_tasks / total_tasks) * 100
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
@@ -275,21 +292,22 @@ class TaskViewSet(viewsets.ModelViewSet):
             return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
         
         incoming_subtasks_data = request.data.get('subtasks', [])
-        current_subtasks = list(task.subtask_set.all())
+        if incoming_subtasks_data:
+            current_subtasks = list(task.subtask_set.all())
 
-        incoming_subtask_ids = [subtask['id'] for subtask in incoming_subtasks_data if 'id' in subtask]
+            incoming_subtask_ids = [subtask['id'] for subtask in incoming_subtasks_data if 'id' in subtask]
 
-        for subtask in current_subtasks:
-            if subtask.id not in incoming_subtask_ids:
-                subtask.delete()  # Eliminar la subtarea de la db
+            for subtask in current_subtasks:
+                if subtask.id not in incoming_subtask_ids:
+                    subtask.delete()  # Eliminar la subtarea de la db
 
-        # Agregar nuevas subtareas
-        for subtask_data in incoming_subtasks_data:
-            if 'id' not in subtask_data:
-                SubTask.objects.create(
-                    task=task,
-                    subtask_name=subtask_data
-                )
+            # Agregar nuevas subtareas
+            for subtask_data in incoming_subtasks_data:
+                if 'id' not in subtask_data:
+                    SubTask.objects.create(
+                        task=task,
+                        subtask_name=subtask_data
+                    )
 
         serializer = self.get_serializer(task, data=request.data, partial=True)
         if serializer.is_valid():

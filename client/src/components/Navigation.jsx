@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 export function Navigation({ filter }) {
-  const { username, isLoggedIn } = useContext(AuthContext);
+  const { username, isLoggedIn, section } = useContext(AuthContext);
   const [ useFilter, setUseFilter ] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export function Navigation({ filter }) {
       <div className="profile">
         Hi {isLoggedIn ? username : 'guest'}!
       </div>
-      <p className="seccion">{useFilter}</p>
+      <p className="seccion">{section}</p>
     </div>
   )
 }

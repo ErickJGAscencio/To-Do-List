@@ -1,27 +1,39 @@
 import './ProjectCard.css';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { FaTrash } from 'react-icons/fa';
+import { deleteProject, fetchTasksByProject } from '../api/todolist.api';
 import { EditProject } from './modal/EditProject';
-import { useEffect, useState } from 'react';
-import { deleteProject, fetchTasksByProject } from '../Api/todolist.api';
-import Delete from './modal/Delete';
+import { Delete } from './modal/Delete';
 
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [progress, setProgress] = useState(0);
+  const { setSection } = useContext(AuthContext);
 
   const deleteMethod = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         removeProject(project.id);
-        await deleteProject(project.id, token);        
+        await deleteProject(project.id, token);
       } catch (error) {
         console.error(error);
       }
     }
   }
+
+  const setStatusTask = () => {
+    if (progress == 100) {
+      console.log("IsCompleted: " + project.project_name);
+
+      //VAMOS BIEN SOLO HAY QUE DETALLAR ALGONOS PUNTOS DEL RENDERIZADO Y MANDAR A ACTUALIZAR EL ESTADO DE LA TAREA
+    } else {
+      console.log("IsNotCompleted: " + project.project_name);
+    }
+  }
+
   const calculateProgress = (tasks) => {
     if (tasks.length === 0) return 0;
     const completedtasks = tasks.filter(task => task.is_completed).length;
@@ -38,6 +50,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
 
           if (response.data && response.data.length > 0) {
             setTasks(response.data);
+            setProgress(project.progress);
           }
         } catch (error) {
           console.error('Error getting task:', error);
@@ -45,9 +58,13 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
       }
     }
     getAllTasks();
-    setProgress(calculateProgress(tasks));
   }, [project]);
-  
+
+  useEffect(() => {
+    setProgress(calculateProgress(tasks));
+    setStatusTask();
+  }, [tasks, progress]);
+
   return (
     <div>
       <div className="card">
@@ -56,20 +73,23 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
           <EditProject project={project} updateDataProject={updateDataProject} />
           <Delete name={"project " + project.project_name} deleteMethod={deleteMethod} />
         </div>
-        <div className="click-zone"
-          onClick={() => {
-            navigate(`/project/${project.id}`)
-          }}>
+        <div className="click-zone" onClick={() => {
+          navigate(`/project/${project.id}`);
+          setSection(project.project_name);
+        }} >
           <div className="content-section">
             <p>{project.description}</p>
           </div>
+        </div>
 
-          <div className="progress-section">
-            <div className="progress-bar">
-              <div className="progress-bar-fill"></div>
-            </div>
-            <div>100%</div>
+        <div className="progress-section">
+          <div className="progress-bar">
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${progress}%` }}
+            ></div>
           </div>
+          <div>{progress || 0}%</div>
         </div>
       </div>
     </div>

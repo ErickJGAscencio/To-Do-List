@@ -1,7 +1,7 @@
 import './TaskCard.css';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
-import { deleteTask, fetchSubTask } from '../Api/todolist.api';
+import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
@@ -52,10 +52,18 @@ export function TaskCard({ task, removeTask }) {
     }
   }
 
-  const setStatusTask = () => {
+  const setStatusTask = async () => {
     if (progress == 100) {
-      console.log("IsCompleted: " + task.task_name);
+      try {
+        const updatedData = {
+          is_completed: true
+        };
+        const token = localStorage.getItem("token");
 
+        await updateTask(task.id, updatedData, token);
+      } catch (error) {
+        console.error('Error updating task:', error);
+      }
       //VAMOS BIEN SOLO HAY QUE DETALLAR ALGONOS PUNTOS DEL RENDERIZADO Y MANDAR A ACTUALIZAR EL ESTADO DE LA TAREA
     } else {
       console.log("IsNotCompleted: " + task.task_name);
@@ -74,15 +82,15 @@ export function TaskCard({ task, removeTask }) {
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const id = task.id;
-          const res = await fetchSubTask(id, token);
+          const response = await fetchSubTask(task.id, token);
 
-          if (res.data && res.data.length > 0) {
-            setSubTasks(res.data);
+          if (response.data && response.data.length > 0) {
+            setSubTasks(response.data);
+            console.log(response.data);
             setProgress(task.progress);
           }
         } catch (error) {
-          console.error(error);
+          console.error('Error getting project:', error);
         }
       }
     }

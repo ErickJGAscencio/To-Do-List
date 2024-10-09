@@ -9,11 +9,12 @@ import { FaArrowRight, FaWrench } from "react-icons/fa";
 import { CreateTask } from '../components/modal/CreateTask';
 import { TaskCard } from '../components/TaskCard';
 import { AuthContext } from "../context/AuthContext";
-import { fetchTasksByProject } from "../Api/todolist.api";
+import { fetchTasksByProject } from "../api/todolist.api";
 
 export function ProjectPage() {
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext);
+  const { setSection } = useContext(AuthContext);
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
 
@@ -49,7 +50,7 @@ export function ProjectPage() {
     <div>
       <div className="aside">
         <div className="main-buttons">
-          <p className="create-btn" onClick={() => navigate("/home")}> <FaArrowAltCircleLeft /> Projects</p>
+          <p className="create-btn" onClick={() => { navigate("/home"); setSection("Home");}}> <FaArrowAltCircleLeft /> Projects</p>
           <CreateTask id_project={id} addNewTask={addNewTask} />
           <p className="create-btn">All Task</p>
           <p className="create-btn">In Process Tasks</p>

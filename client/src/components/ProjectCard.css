@@ -33,6 +33,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .progress-section{
   display: flex;
   align-items: center;
