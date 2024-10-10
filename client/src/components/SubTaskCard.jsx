@@ -55,7 +55,7 @@ export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
               <FaRegCircle style={{ color: 'black' }} />
             )}
           </button>
-          <button><EditSubTask subtask={subtask} /></button>
+          <button><EditSubTask subtask={subtask} setSubTaskFront={setSubTaskFront} /></button>
           <Delete name={ "subtask " + subtask.subtask_name } deleteMethod={deleteMethod} />
         </div>
         <div className="inf-subtask">

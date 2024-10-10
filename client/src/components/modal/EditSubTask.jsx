@@ -4,7 +4,7 @@ import { FaPalette, FaPen } from 'react-icons/fa';
 
 import { updateSubtask } from '../../api/todolist.api';
 
-export function EditSubTask({ subtask }) {
+export function EditSubTask({ subtask, setSubTaskFront }) {
   const [idSubTask, setIdProject] = useState("");
   const [titleProject, setTitleProject] = useState("");
   const [descripcionProject, setDescriptionProject] = useState("");
@@ -32,7 +32,8 @@ export function EditSubTask({ subtask }) {
       };
       const token = localStorage.getItem("token");
       const res = await updateSubtask(idSubTask, updatedData, token);
-      ///AHORA QUEDA ACTUALIZAR EL DOM PARA MOSTRAR LOS DATOS ACTUALIZADOS
+      // console.log(res);
+      setSubTaskFront(res);
       closeModal();
     } catch (error) {
       console.error('Error updating subtask:', error);
