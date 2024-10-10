@@ -1,7 +1,7 @@
 import './TaskCard.css';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
-import { deleteTask, fetchSubTask, updateTask } from '../Api/todolist.api';
+import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
@@ -72,7 +72,6 @@ export function TaskCard({ task, removeTask }) {
     } catch (error) {
       console.error('Error updating task:', error);
     }
-
   }
 
   const calculateProgress = (subtasks) => {
@@ -91,7 +90,7 @@ export function TaskCard({ task, removeTask }) {
 
           if (response.data && response.data.length > 0) {
             setSubTasks(response.data);
-            console.log(response.data);
+            // console.log(response.data);
             setProgress(task.progress);
           }
         } catch (error) {

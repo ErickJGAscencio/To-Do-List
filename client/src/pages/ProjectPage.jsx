@@ -54,11 +54,15 @@ export function ProjectPage() {
           <hr />
           <CreateTask id_project={id} addNewTask={addNewTask} />
           <hr />
-          <div className="filter">
-            <p>All</p>
-            <p>Completed</p>
-            <p>In Progress</p>
-            <p><FaSearch /> search</p>
+          {/* Búsqueda de taeas/subtareas */}
+          <div className="search-bar">
+            <FaSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search projects..."
+              className="search-input"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
         </div>
       </div>
