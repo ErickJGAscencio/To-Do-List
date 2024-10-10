@@ -2,10 +2,10 @@ import './ProjectCard.css';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { deleteProject, fetchTasksByProject } from '../api/todolist.api';
+import { deleteProject, fetchTasksByProject, updateProject } from '../api/todolist.api';
 import { EditProject } from './modal/EditProject';
 import { Delete } from './modal/Delete';
-import { FaEllipsisH } from 'react-icons/fa';
+
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
@@ -24,13 +24,22 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
     }
   }
 
-  const setStatusTask = () => {
-    if (progress == 100) {
-      console.log("IsCompleted: " + project.project_name);
-
-      //VAMOS BIEN SOLO HAY QUE DETALLAR ALGONOS PUNTOS DEL RENDERIZADO Y MANDAR A ACTUALIZAR EL ESTADO DE LA TAREA
-    } else {
-      console.log("IsNotCompleted: " + project.project_name);
+  const setStatusProject = async () => {
+    let updatedData={};
+    try {
+      if (progress == 100) {
+        updatedData = {
+          is_completed: true
+        };
+      } else {
+        updatedData = {
+          is_completed: false
+        };
+      }
+      const token = localStorage.getItem("token");
+      await updateProject(project.id, updatedData, token);
+    } catch (error) {
+      console.error('Error updating project:', error);
     }
   }
 
@@ -62,7 +71,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
 
   useEffect(() => {
     setProgress(calculateProgress(tasks));
-    setStatusTask();
+    setStatusProject();
   }, [tasks, progress]);
 
   return (

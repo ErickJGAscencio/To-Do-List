@@ -171,21 +171,22 @@ class ProjectViewSet(viewsets.ModelViewSet):
             return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
         
         incoming_tasks_data = request.data.get('tasks', [])
-        current_tasks = list(project.task_set.all())
+        if incoming_tasks_data:
+            current_tasks = list(project.task_set.all())
 
-        incoming_task_ids = [task['id'] for task in incoming_tasks_data if 'id' in task]
+            incoming_task_ids = [task['id'] for task in incoming_tasks_data if 'id' in task]
 
-        for task in current_tasks:
-            if task.id not in incoming_task_ids:
-                task.delete() 
+            for task in current_tasks:
+                if task.id not in incoming_task_ids:
+                    task.delete() 
 
-        for task_data in incoming_tasks_data:
-            if 'id' not in task_data:
-                Task.objects.create(
-                    project=project,
-                    task_name=task_data,
-                    description="..."
-                )
+            for task_data in incoming_tasks_data:
+                if 'id' not in task_data:
+                    Task.objects.create(
+                        project=project,
+                        task_name=task_data,
+                        description="..."
+                    )
                 
         serializer = self.get_serializer(project, data=request.data, partial=True)
         if serializer.is_valid():

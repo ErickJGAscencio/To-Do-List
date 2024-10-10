@@ -37,11 +37,12 @@ export function HomePage() {
   };
 
   const setFilter = (filter) => {
-    console.log(filter);
+    // console.log(filter);
     if (filter == "all") {
       setProjectsFiltered(projects);
     } else if (filter == "completed") {
       const completedProjects = projects.filter(project => project.is_completed === true);
+      // console.log(completedProjects);
       setProjectsFiltered(completedProjects);
     } else {
       const inProgressProjects = projects.filter(project => project.is_completed === false);
