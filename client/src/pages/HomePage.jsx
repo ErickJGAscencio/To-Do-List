@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../context/AuthContext";
 
-import { FaSignOutAlt, FaCogs, FaSearch } from "react-icons/fa";
+import { FaSignOutAlt, FaCogs, FaSearch, FaThList, FaClipboardCheck, FaHourglassHalf } from "react-icons/fa";
 
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
@@ -13,7 +13,8 @@ import { fetchProjectsByUser, getUserProfile } from "../api/todolist.api";
 export function HomePage() {
   const navigate = useNavigate;
   const { logout } = useContext(AuthContext);
-  const [projects, setProjects] = useState([]);
+  const [ projects, setProjects ] = useState([]);
+  const [ projectsFiltered, setProjectsFiltered ] = useState([]);
 
   const handleLogout = () => {
     logout();
@@ -21,6 +22,7 @@ export function HomePage() {
 
   const addNewProject = (newProject) => {
     setProjects([...projects, newProject]);
+    setProjectsFiltered([...projects, newProject]);
   };
 
   const removeProject = (idToRemove) => {
@@ -28,12 +30,24 @@ export function HomePage() {
   }
 
   const updateDataProject = (updatedProject) => {
-    console.log(updatedProject);
     const updatedProjects = projects.map((project) =>
       project.id === updatedProject.id ? updatedProject : project
     );
     setProjects(updatedProjects);
   };
+
+  const setFilter = (filter) => {
+    console.log(filter);
+    if (filter == "all") {
+      setProjectsFiltered(projects);
+    } else if (filter == "completed") {
+      const completedProjects = projects.filter(project => project.is_completed === true);
+      setProjectsFiltered(completedProjects);
+    } else {
+      const inProgressProjects = projects.filter(project => project.is_completed === false);
+      setProjectsFiltered(inProgressProjects);
+    }
+  }
 
   useEffect(() => {
     async function getAllPjcts() {
@@ -44,6 +58,7 @@ export function HomePage() {
           const id = resUser.data.id;
           const res = await fetchProjectsByUser(id, token);
           setProjects(res.data);
+          setProjectsFiltered(res.data); 
         } catch (error) {
           setError(error.message);
         }
@@ -62,21 +77,34 @@ export function HomePage() {
         <div className="main-buttons">
           <CreateProject addNewProject={addNewProject} />
           <hr />
-          <p className="create-btn">All</p>
-          <p className="create-btn">Completed</p>
-          <p className="create-btn">In Progress</p>
-          <p><FaSearch /> search</p>
+          <p className="create-btn" onClick={() => setFilter('all')}> <FaThList /> All</p>
+          <p className="create-btn" onClick={() => setFilter('completed')}> <FaClipboardCheck /> Completed</p>
+          <p className="create-btn" onClick={() => setFilter('inProgress')}> <FaHourglassHalf /> In Progress</p>
+  
+          {/* Búsqueda de proyectos */}
+          <div className="search-bar">
+            <FaSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search projects..."
+              className="search-input"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
+  
         <div className="aux-buttons">
           <p onClick={handleLogout}><FaSignOutAlt size={15} /></p>
           <p><FaCogs size={15} /></p>
         </div>
       </div>
+  
       <div className="main-filter-contain">
-
         <div className="main">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} updateDataProject={updateDataProject} removeProject={removeProject} />
+          {projectsFiltered
+            // .filter(project => project.name.toLowerCase().includes(searchTerm.toLowerCase())) // Filtra los proyectos según la búsqueda
+            .map((project) => (
+              <ProjectCard key={project.id} project={project} updateDataProject={updateDataProject} removeProject={removeProject} />
           ))}
         </div>
       </div>

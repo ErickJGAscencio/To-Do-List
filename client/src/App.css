@@ -27,6 +27,7 @@ html, body {
   flex-direction: column;
   justify-content: space-between;
   height: calc(100% - 40px);
+  width: 150px;
 }
 
 .aside .main-buttons{
@@ -40,30 +41,44 @@ html, body {
 
 .aside .main-buttons p{
   border-radius: 50px;
+  padding: 5px;
+  color: white;
+  cursor: pointer;
+  text-align: left;
 }
 
 .aside .main-buttons p:hover{
-  cursor: pointer;
+  background-color: #c7c7c7;
+  color: #34495e;
+}
+
+.search-bar {
+  display: flex;
+  background-color: white;
+  border-radius: 50px;
+  align-items: center;
+  width: 135px;
+}
+
+.search-icon {
+  color: #34495e;
+  margin-left: 5px;
+  width: 10%;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  font-size: 12px;
+  border-radius: 20px;
+  padding: 5px;
+  width: 90%;
 }
 
 .aside .aux-buttons{
   display: flex;
   flex-direction: row;
   padding: 10px;
-}
-
-.create-btn{
-  text-align: left;
-  border-radius: 50px;
-  font-size: 12px;
-  padding: 5px;
-  color: white;
-  cursor: pointer;
-}
-
-.create-btn:hover{
-  background-color: #c7c7c7;
-  color: #34495e;
 }
 
 .aside .aux-buttons p {
@@ -83,19 +98,9 @@ html, body {
 .main {
   display: grid; 
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-  grid-gap: 10px; 
+  grid-gap: 20px; 
   padding: 20px;
-  margin-left: 130px;
-
+  margin-left: 150px;
   height: calc(100vh - 122px);
   overflow-y: auto;
-}
-
-.filter{
-  display: flex;
-  flex-direction: column;
-  width: auto;
-  height: 25px;
-  padding: 2px;
-  align-items: center;
 }

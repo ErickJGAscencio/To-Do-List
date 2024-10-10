@@ -1,7 +1,7 @@
 import './TaskCard.css';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
-import { deleteTask, fetchSubTask, updateTask } from '../Api/todolist.api';
+import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
