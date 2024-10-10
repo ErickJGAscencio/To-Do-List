@@ -1,7 +1,7 @@
 import './TaskCard.css';
 import { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
-import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
+import { deleteTask, fetchSubTask, updateSubtask, updateTask } from '../api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
@@ -59,7 +59,6 @@ export function TaskCard({ task, removeTask }) {
         updatedData = {
           is_completed: true
         };
-        //VAMOS BIEN SOLO HAY QUE DETALLAR ALGONOS PUNTOS DEL RENDERIZADO Y MANDAR A ACTUALIZAR EL ESTADO DE LA TAREA
       } else {
         updatedData = {
           is_completed: false

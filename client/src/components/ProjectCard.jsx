@@ -37,7 +37,8 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
         };
       }
       const token = localStorage.getItem("token");
-      await updateProject(project.id, updatedData, token);
+      const res = await updateProject(project.id, updatedData, token);
+      // console.log(res);
     } catch (error) {
       console.error('Error updating project:', error);
     }
