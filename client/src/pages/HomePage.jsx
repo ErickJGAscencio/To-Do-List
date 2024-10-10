@@ -62,9 +62,9 @@ export function HomePage() {
         <div className="main-buttons">
           <CreateProject addNewProject={addNewProject} />
           <hr />
-          <p>All</p>
-          <p>Completed</p>
-          <p>In Progress</p>
+          <p className="create-btn">All</p>
+          <p className="create-btn">Completed</p>
+          <p className="create-btn">In Progress</p>
           <p><FaSearch /> search</p>
         </div>
         <div className="aux-buttons">
