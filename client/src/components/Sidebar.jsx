@@ -1,20 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
+import { FaSignOutAlt, FaCogs, FaSearch } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
 import CreateProject from './modal/CreateProject';
 
-export function Sidebar({ setFilter }) {
+export function Sidebar({ buttons, children }) {
   const navigate = useNavigate();
   const { logout } = useContext(AuthContext);
-
-  const handleFilter = (filterType) => {
-    setFilter(filterType);
-    handleAllProjects();
-  };
-
-  const handleAllProjects = () => {
-    navigate('/home');
-  };
 
   const handleLogout = () => {
     logout();
@@ -23,15 +15,34 @@ export function Sidebar({ setFilter }) {
 
   return (
     <div className="aside">
-      <div className="main-buttons">
-        <CreateProject />
-        <button onClick={() => handleFilter('all')}>All Projects</button>
-        <button onClick={() => handleFilter('inprocess')}>In Process Projects</button>
-        <button onClick={() => handleFilter('completed')}>Completed Projects</button>
+      <div>
+        <div className="main-buttons">
+          {buttons.map(({ label, onClick, icon: Icon }, index) => (
+            <p key={index} className="create-btn" onClick={onClick}>
+              <Icon /> {label}
+            </p>
+          ))}
+        </div>
+        <hr />
+        {children}
+        <hr />
+        <div className="search-bar">
+          <FaSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search projects..."
+            className="search-input"
+          //value={searchTerm}
+          //onChange={(e) => setSearchTerm(e.target.value)} // Método para actualizar el término de búsqueda
+          />
+        </div>
+
+
       </div>
+
       <div className="aux-buttons">
-        <button onClick={handleLogout}>L</button>
-        <button>Settings</button>
+        <p onClick={handleLogout}><FaSignOutAlt size={15} /></p>
+        <p><FaCogs size={15} /></p>
       </div>
     </div>
   )

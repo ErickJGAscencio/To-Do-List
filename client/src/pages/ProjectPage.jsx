@@ -1,15 +1,14 @@
 import "./ProjectPage.css";
-import { FaArrowAltCircleLeft, FaSearch } from 'react-icons/fa';
 
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect, useContext } from "react"
-
-import { FaArrowRight, FaWrench } from "react-icons/fa";
 
 import { CreateTask } from '../components/modal/CreateTask';
 import { TaskCard } from '../components/TaskCard';
 import { AuthContext } from "../context/AuthContext";
 import { fetchTasksByProject } from "../api/todolist.api";
+import { FaClipboardCheck, FaHourglassHalf, FaThList } from "react-icons/fa";
+import { Sidebar } from "../components/Sidebar";
 
 export function ProjectPage() {
   const navigate = useNavigate();
@@ -46,15 +45,20 @@ export function ProjectPage() {
     getAllPjcts();
   }, [id]);
 
+  const sidebarButtons = [
+    { label: 'All', onClick: () => setFilter('all'), icon: FaThList },
+    { label: 'Completed', onClick: () => setFilter('completed'), icon: FaClipboardCheck },
+    { label: 'In Progress', onClick: () => setFilter('inProgress'), icon: FaHourglassHalf }
+  ];
+
   return (
     <div>
-      <div className="aside">
+      {/* <div className="aside">
         <div className="main-buttons">
           <p className="create-btn" onClick={() => { navigate("/home"); setSection("Home"); }}> <FaArrowAltCircleLeft /> Projects</p>
           <hr />
           <CreateTask id_project={id} addNewTask={addNewTask} />
           <hr />
-          {/* Búsqueda de taeas/subtareas */}
           <div className="search-bar">
             <FaSearch className="search-icon" />
             <input
@@ -65,7 +69,10 @@ export function ProjectPage() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
+      <Sidebar buttons={sidebarButtons}>
+        <CreateTask id_project={id} addNewTask={addNewTask} />
+      </Sidebar>
       <div className="main-filter-contain">
         <div className="main_content">
           {tasks.map((task) => (

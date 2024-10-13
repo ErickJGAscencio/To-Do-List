@@ -8,6 +8,7 @@ import { FaSignOutAlt, FaCogs, FaSearch, FaThList, FaClipboardCheck, FaHourglass
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
 import { fetchProjectsByUser, getUserProfile } from "../api/todolist.api";
+import { Sidebar } from "../components/Sidebar";
 
 
 export function HomePage() {
@@ -87,34 +88,22 @@ export function HomePage() {
     // console.log(projects);
   }, [projects])
 
+
+  const sidebarButtons = [
+    { label: 'All', onClick: () => setFilter('all'), icon: FaThList },
+    { label: 'Completed', onClick: () => setFilter('completed'), icon: FaClipboardCheck },
+    { label: 'In Progress', onClick: () => setFilter('inProgress'), icon: FaHourglassHalf }
+  ];
+
+  const createButton = [
+    
+  ]
+
   return (
     <div>
-      <div className="aside">
-        <div className="main-buttons">
-          <CreateProject addNewProject={addNewProject} />
-          <hr />
-          <p className="create-btn" onClick={() => setFilter('all')}> <FaThList /> All</p>
-          <p className="create-btn" onClick={() => setFilter('completed')}> <FaClipboardCheck /> Completed</p>
-          <p className="create-btn" onClick={() => setFilter('inProgress')}> <FaHourglassHalf /> In Progress</p>
-
-          {/* Búsqueda de proyectos */}
-          <div className="search-bar">
-            <FaSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search projects..."
-              className="search-input"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)} // Método para actualizar el término de búsqueda
-            />
-          </div>
-        </div>
-
-        <div className="aux-buttons">
-          <p onClick={handleLogout}><FaSignOutAlt size={15} /></p>
-          <p><FaCogs size={15} /></p>
-        </div>
-      </div>
+      <Sidebar buttons={sidebarButtons}>
+        <CreateProject addNewProject={addNewProject} />
+      </Sidebar>
 
       <div className="main-filter-contain">
         <div className="main">

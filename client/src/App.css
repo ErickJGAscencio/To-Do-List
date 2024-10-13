@@ -31,15 +31,14 @@ html, body {
 }
 
 .aside .main-buttons{
-  color: #ecf0f1;
   flex-direction: column;
   margin: 0;
   width: 120px;
   padding: 1px 8px;
-  font-size: 12px;
 }
 
-.aside .main-buttons p{
+.aside .main-buttons p, .create-btn{
+  font-size: 12px;
   border-radius: 50px;
   padding: 5px;
   color: white;
@@ -47,9 +46,9 @@ html, body {
   text-align: left;
 }
 
-.aside .main-buttons p:hover{
-  background-color: #c7c7c7;
-  color: #34495e;
+.aside .main-buttons p:hover, .create-btn:hover{
+  background-color: white;
+  color: #0884c4;
 }
 
 .search-bar {
@@ -58,10 +57,11 @@ html, body {
   border-radius: 50px;
   align-items: center;
   width: 135px;
+  margin-left: 5px;
 }
 
 .search-icon {
-  color: #34495e;
+  color: #0884c4;
   margin-left: 5px;
   width: 10%;
 }
@@ -73,6 +73,7 @@ html, body {
   border-radius: 20px;
   padding: 5px;
   width: 90%;
+  color: #0884c4;
 }
 
 .aside .aux-buttons{

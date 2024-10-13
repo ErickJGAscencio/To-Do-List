@@ -19,7 +19,7 @@ function App() {
       {isLoggedIn && (
         <>
           <Navigation filter={filter}/>
-          {/* <Sidebar setFilter={setFilter} />           */}
+          {/* <Sidebar buttons={sidebarButtons} auxButtons={auxButtons} />     */}
         </>
       )}
       <Routes>
