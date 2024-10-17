@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './CreateProject.css';
 import { FaPalette, FaPlus } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { createProject, getUserProfile } from '../../api/todolist.api';
@@ -7,7 +6,7 @@ import { createProject, getUserProfile } from '../../api/todolist.api';
 export function CreateProject({ addNewProject }) {
   const [titleProject, setTitleProject] = useState("");
   const [descripcionProject, setDescriptionProject] = useState("");
-  const [tasks, setTasks] = useState([]); 
+  const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,7 +40,7 @@ export function CreateProject({ addNewProject }) {
 
     try {
       const token = localStorage.getItem('token');
-      
+
       const newProject = await createProject(titleProject, descripcionProject, tasks, token);
 
       addNewProject(newProject.data);
@@ -58,53 +57,57 @@ export function CreateProject({ addNewProject }) {
       {isOpen && (
         <div className="modal">
           <div className="modal-content">
-            <div className='left-section'>
-              <input
-                className='pname-input'
-                type="text"
-                placeholder="Project Name"
-                value={titleProject}
-                onChange={(e) => setTitleProject(e.target.value)}
-              />
-              <div className='tasks'>
-                <div className='add-controller'>
-                  <input
-                    type="text"
-                    placeholder="Task Name"
-                    value={newTask}
-                    onChange={(e) => setNewTask(e.target.value)}
-                  />
-                  <button onClick={addTask}>Add</button>
+            <div className="modal-header">
+              <h2>Create New Project</h2>
+              <p className='button'><FaPalette /></p>
+            </div>
+            <div className="modal-body">
+              <div className='left-section'>
+                <h1 className='title-input'>Project name</h1>
+                <input
+                  className='modal-name-input'
+                  type="text"
+                  placeholder="eg. BioApp"
+                  value={titleProject}
+                  onChange={(e) => setTitleProject(e.target.value)}
+                />
+                <div className='modal-tasks'>
+                  <div className='add-controller'>
+                    <p className="button" onClick={addTask}>Add</p>
+                    <input
+                      type="text"
+                      placeholder="Task Name"
+                      value={newTask}
+                      onChange={(e) => setNewTask(e.target.value)}
+                    />
+                  </div>
+                  <div className='task-container'>
+                    {tasks.map((task, index) => (
+                      <div key={index} className='task-item'>
+                        {task}
+                        <p className="button" onClick={() => removeTask(index)}>
+                          <FaTrash
+                            size={10} />
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className='task-container'>
-                  {tasks.map((task, index) => (
-                    <div key={index} className='task-item'>
-                      {task}
-                      <button onClick={() => removeTask(index)}>
-                        <FaTrash
-                          size={10} />
-                      </button>
-                    </div>
-                  ))}
+              </div>
+              <div className='right-section'>
+                <div className='description'>
+                  <h1 className='title-input'>Description</h1>
+                  <textarea
+                    placeholder="Project Description"
+                    value={descripcionProject}
+                    onChange={(e) => setDescriptionProject(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
-            <div className='right-section'>
-            <button className='btn-color'>
-              <FaPalette />
-            </button>
-              <div className='description'>
-                <h1>Description</h1>
-                <textarea
-                  placeholder="Project Description"
-                  value={descripcionProject}
-                  onChange={(e) => setDescriptionProject(e.target.value)}
-                />
-              </div>
-              <div className='buttons-action'>
-                <button onClick={sendRequest}>Create</button>
-                <button onClick={closeModal}>Cancel</button>
-              </div>
+            <div className="modal-footer">
+              <p className="button" onClick={sendRequest}>Create</p>
+              <p className="button" onClick={closeModal}>Cancel</p>
             </div>
           </div>
         </div>

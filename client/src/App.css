@@ -105,3 +105,156 @@ html, body {
   height: calc(100vh - 122px);
   overflow-y: auto;
 }
+
+
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #65b4db;
+  padding: 30px;
+  border-radius: 10px;
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modal-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #034f74;
+  height: 0;
+  padding: 20px 0;
+}
+
+.modal-body{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.title-input {
+  color: #0884c4;
+  font-size: 15px;
+  margin: 0;
+}
+
+
+.left-section {
+  margin-right: 20px;
+  /* background-color: green; */
+}
+
+.modal-name-input {
+  background-color: white;
+  width: 100%;
+  color: #0884c4;
+  border: none;
+  border-radius: 50px;
+  border-bottom: 1px solid #0884c4;
+  margin-bottom: 20px;
+  padding: 5px 10px ;
+  font-size: 15px;
+  outline: none;
+}
+
+.modal-tasks {
+  width: 100%;
+  height: 80%;
+  /* background-color: yellow; */
+}
+
+.add-controller {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 10px;
+  /* background-color: violet; */
+}
+
+.button {
+  background-color: #0884c4;
+  color: white;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  font-size: 15px;
+  width: auto;
+  padding: 5px 15px;
+  margin: 0;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; 
+}
+
+.button:hover {
+  background-color: #034f74;
+  cursor: pointer;
+}
+
+.add-controller input {
+  background-color: white;
+  color: #0884c4;
+  outline: none;
+  border: none;
+  width: 100%;
+  border-radius: 50px;
+  padding: 5px 10px;
+  font-size: 15px;
+  border-bottom: 1px solid #0884c4;
+  /* margin-bottom: 10px; */
+}
+
+.task-container {
+  padding: 0 10px;
+  background-color: white;
+  border-radius: 10px;
+  min-height: 200px;
+  max-height: 335px;
+  overflow-y: auto;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #0884c4;
+  font-size: 12px;
+  padding: 0;
+  height: 40px;
+  width: 100%;
+}
+
+.right-section .description textarea {
+  height: 120px;
+  border-radius: 5px;
+  padding: 5px;
+  resize: none;
+  border: none;
+  background-color: white;
+  color: #0884c4;
+  outline: none;
+}
