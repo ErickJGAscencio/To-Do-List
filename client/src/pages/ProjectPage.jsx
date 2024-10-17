@@ -53,25 +53,18 @@ export function ProjectPage() {
 
   return (
     <div>
-      {/* <div className="aside">
-        <div className="main-buttons">
-          <p className="create-btn" onClick={() => { navigate("/home"); setSection("Home"); }}> <FaArrowAltCircleLeft /> Projects</p>
-          <hr />
-          <CreateTask id_project={id} addNewTask={addNewTask} />
-          <hr />
-          <div className="search-bar">
-            <FaSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search projects..."
-              className="search-input"
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
-      </div> */}
       <Sidebar buttons={sidebarButtons}>
         <CreateTask id_project={id} addNewTask={addNewTask} />
+        {/* <div className="search-bar">
+          <FaSearch className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search projects..."
+            className="search-input"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)} // Método para actualizar el término de búsqueda
+          />
+        </div> */}
       </Sidebar>
       <div className="main-filter-contain">
         <div className="main_content">

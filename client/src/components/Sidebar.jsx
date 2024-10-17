@@ -16,6 +16,8 @@ export function Sidebar({ buttons, children }) {
   return (
     <div className="aside">
       <div>
+        {children}
+        <hr />    
         <div className="main-buttons">
           {buttons.map(({ label, onClick, icon: Icon }, index) => (
             <p key={index} className="create-btn" onClick={onClick}>
@@ -23,21 +25,7 @@ export function Sidebar({ buttons, children }) {
             </p>
           ))}
         </div>
-        <hr />
-        {children}
-        <hr />
-        <div className="search-bar">
-          <FaSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search projects..."
-            className="search-input"
-          //value={searchTerm}
-          //onChange={(e) => setSearchTerm(e.target.value)} // Método para actualizar el término de búsqueda
-          />
-        </div>
-
-
+        <hr />    
       </div>
 
       <div className="aux-buttons">
