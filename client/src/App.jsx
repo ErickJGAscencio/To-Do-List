@@ -6,7 +6,7 @@ import { AuthContext } from './context/AuthContext';
 import { Navigation } from './components/Navigation';
 
 import { LogInPage } from './pages/LogInPage';
-import { RegisterPage } from './Pages/RegisterPage';
+import { RegisterPage } from './pages/RegisterPage';
 import { HomePage } from './pages/HomePage';
 import { ProjectPage } from './pages/ProjectPage';
 
