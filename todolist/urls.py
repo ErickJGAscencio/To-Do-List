@@ -11,7 +11,7 @@ router.register(r'subtasks', views.SubTaskViewSet)
 urlpatterns = [
   path('api/v1/', include(router.urls)),
   
-  path('', views.login, name='login'),
+  path('', RedirectView.as_view(url='/todolist/docs/')),  # Redirigir a la documentación
   path("login/", views.login, name='login'),
   path("register/", views.register, name='register'),
   path("profile/", views.profile, name='profile'),
