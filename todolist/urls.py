@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 from todolist import views
+from django.views.generic import RedirectView
 
 router = DefaultRouter()
 router.register(r'projects', views.ProjectViewSet)
@@ -17,5 +18,5 @@ urlpatterns = [
   path("profile/", views.profile, name='profile'),
   path('me/', views.profile, name='user-profile'),
 
-  path('docs/', include_docs_urls(title='TituloX')),
+  path('docs/', include_docs_urls(title='WorkCloud Documentation')),
 ]
