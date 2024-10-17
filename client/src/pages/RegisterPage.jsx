@@ -2,7 +2,7 @@ import { useState } from "react";
 import { registerUser } from "../api/todolist.api";
 import { useNavigate } from "react-router-dom";
 
-function RegisterPage() {
+export function RegisterPage() {
 
   const navigate = useNavigate();
 
@@ -65,5 +65,3 @@ function RegisterPage() {
     </div>
   );
 }
-
-export default RegisterPage;
