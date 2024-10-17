@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerUser } from "../Api/todolist.api";
+import { registerUser } from "../api/todolist.api";
 import { useNavigate } from "react-router-dom";
 
 export function RegisterPage() {
