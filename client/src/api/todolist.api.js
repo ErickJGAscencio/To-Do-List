@@ -1,12 +1,18 @@
 import axios from 'axios';
 
-// Autentication
+// Define the BASE_URL
+const isDevelopment = import.meta.env.MODE === 'development';
+// const myBaseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY
+// const BASE_URL = "http://localhost:8000/todolist";
+const BASE_URL = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY;
+
+// Authentication
 export const loginUser = (username, password) => {
   const data = {
     username: username,
     password: password,
   };
-  return axios.post("http://localhost:8000/todolist/login/", data, {
+  return axios.post(`${BASE_URL}/login/`, data, {
     headers: {
       'Content-Type': 'application/json',
     }
@@ -19,7 +25,7 @@ export const registerUser = (username, password, email) => {
     password: password,
     email: email
   };
-  return axios.post("http://127.0.0.1:8000/todolist/register/", data, {
+  return axios.post(`${BASE_URL}/register/`, data, {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -27,7 +33,7 @@ export const registerUser = (username, password, email) => {
 };
 
 export const getUserProfile = (token) => {
-  return axios.get("http://localhost:8000/todolist/me/", {
+  return axios.get(`${BASE_URL}/me/`, {
     headers: {
       'Authorization': `Token ${token}`
     }
@@ -36,12 +42,11 @@ export const getUserProfile = (token) => {
 
 // Projects
 export const fetchProjects = () => {
-  return axios.get(`http://localhost:8000/todolist/api/v1/projects/`, {
-  });
-}
+  return axios.get(`${BASE_URL}/api/v1/projects/`, {});
+};
 
 export const fetchProjectsByUser = (userId, token) => {
-  return axios.get(`http://localhost:8000/todolist/api/v1/projects/by_user/`, {
+  return axios.get(`${BASE_URL}/api/v1/projects/by_user/`, {
     params: {
       user_id: userId
     },
@@ -55,12 +60,12 @@ export const createProject = async (projectName, projectDescription, tasks, toke
   const data = {
     project_name: projectName,
     description: projectDescription,
-    tasks: tasks.map(task => ({ task_name: task }))//convertimos la cadena a nun diccionario
+    tasks: tasks.map(task => ({ task_name: task }))
   };
 
   let response;
   try {
-    response = await axios.post("http://localhost:8000/todolist/api/v1/projects/create_project/", data, {
+    response = await axios.post(`${BASE_URL}/api/v1/projects/create_project/`, data, {
       headers: {
         'Authorization': `Token ${token}`,
         'Content-Type': 'application/json'
@@ -76,7 +81,7 @@ export const createProject = async (projectName, projectDescription, tasks, toke
 
 export const updateProject = async (id_project, updatedData, token) => {
   try {
-    const response = await axios.put("http://localhost:8000/todolist/api/v1/projects/update_project/", {
+    const response = await axios.put(`${BASE_URL}/api/v1/projects/update_project/`, {
       id_project,
       ...updatedData,
     },
@@ -95,7 +100,7 @@ export const updateProject = async (id_project, updatedData, token) => {
 
 export const deleteProject = async (idProject, token) => {
   try {
-    const response = await axios.delete(`http://localhost:8000/todolist/api/v1/projects/delete_project/`, {
+    const response = await axios.delete(`${BASE_URL}/api/v1/projects/delete_project/`, {
       params: {
         id_project: idProject
       },
@@ -110,18 +115,17 @@ export const deleteProject = async (idProject, token) => {
   }
 };
 
-
 // Tasks
 export const fetchTasks = async (id_project) => {
-  return await axios.get(`http://localhost:8000/todolist/api/v1/tasks/`, {
+  return await axios.get(`${BASE_URL}/api/v1/tasks/`, {
     params: {
       id_project: id_project
     }
   });
-}
+};
 
 export const fetchTasksByProject = async (id_project, token) => {
-  return await axios.get(`http://localhost:8000/todolist/api/v1/tasks/by_project/`, {
+  return await axios.get(`${BASE_URL}/api/v1/tasks/by_project/`, {
     params: {
       id_project: id_project
     },
@@ -129,9 +133,9 @@ export const fetchTasksByProject = async (id_project, token) => {
       'Authorization': `Token ${token}`
     }
   });
-}
+};
 
-export const createTask = async (id_project, task_name, subtasks, token) => { 
+export const createTask = async (id_project, task_name, subtasks, token) => {
   const data = {
     task_name: task_name,
     description: " ",
@@ -141,7 +145,7 @@ export const createTask = async (id_project, task_name, subtasks, token) => {
 
   let response;
   try {
-    response = await axios.post("http://localhost:8000/todolist/api/v1/tasks/create_task/", data, {
+    response = await axios.post(`${BASE_URL}/api/v1/tasks/create_task/`, data, {
       headers: {
         'Authorization': `Token ${token}`,
         'Content-Type': 'application/json'
@@ -153,29 +157,29 @@ export const createTask = async (id_project, task_name, subtasks, token) => {
   }
 
   return response;
-}
+};
 
-export const updateTask = async(id_task, updatedData, token) => {
+export const updateTask = async (id_task, updatedData, token) => {
   try {
-    const response = await axios.put("http://localhost:8000/todolist/api/v1/tasks/update_task/", {
+    const response = await axios.put(`${BASE_URL}/api/v1/tasks/update_task/`, {
       id_task,
       ...updatedData
     },
       {
-      headers: {
-        'Authorization': `Token ${token}`
-      }
-    });
+        headers: {
+          'Authorization': `Token ${token}`
+        }
+      });
     return response.data;
   } catch (error) {
     console.error('Error updating task:', error);
     throw error;
   }
-}
+};
 
 export const deleteTask = async (id_task, token) => {
   try {
-    const response = await axios.delete(`http://localhost:8000/todolist/api/v1/tasks/delete_task/`, {
+    const response = await axios.delete(`${BASE_URL}/api/v1/tasks/delete_task/`, {
       params: {
         id_task: id_task
       },
@@ -188,7 +192,7 @@ export const deleteTask = async (id_task, token) => {
     console.error("Error deleting task:", error);
     throw error;
   }
-}
+};
 
 // SubTasks
 export const createSubTask = async (id_task, titleSubTask, descriptionSubTask, token) => {
@@ -200,7 +204,7 @@ export const createSubTask = async (id_task, titleSubTask, descriptionSubTask, t
 
   let response;
   try {
-    response = await axios.post("http://localhost:8000/todolist/api/v1/subtasks/", data, {
+    response = await axios.post(`${BASE_URL}/api/v1/subtasks/`, data, {
       headers: {
         'Authorization': `Token ${token}`,
         'Content-Type': 'application/json'
@@ -212,11 +216,10 @@ export const createSubTask = async (id_task, titleSubTask, descriptionSubTask, t
     console.error(`Error creating subtask '${titleSubTask}':`, error);
     throw error;
   }
-}
+};
 
 export const fetchSubTask = async (id_task, token) => {
-  // console.log(id_task);
-  return axios.get(`http://localhost:8000/todolist/api/v1/subtasks/by_task/`, {
+  return axios.get(`${BASE_URL}/api/v1/subtasks/by_task/`, {
     params: {
       id_task: id_task
     },
@@ -224,12 +227,12 @@ export const fetchSubTask = async (id_task, token) => {
       'Authorization': `Token ${token}`,
     },
   });
-}
+};
 
 export const deleteSubTask = async (id_subtask, token) => {
   let response;
   try {
-    response = await axios.delete(`http://localhost:8000/todolist/api/v1/subtasks/delete_subtask/`, {
+    response = await axios.delete(`${BASE_URL}/api/v1/subtasks/delete_subtask/`, {
       params: {
         id_subtask: id_subtask
       },
@@ -242,11 +245,11 @@ export const deleteSubTask = async (id_subtask, token) => {
     throw error;
   }
   return response;
-}
+};
 
-export const updateSubtask = async (id_subtask, updatedData ,token) => {
+export const updateSubtask = async (id_subtask, updatedData, token) => {
   try {
-    const response = await axios.put("http://localhost:8000/todolist/api/v1/subtasks/update_subtask/", {
+    const response = await axios.put(`${BASE_URL}/api/v1/subtasks/update_subtask/`, {
       id_subtask,
       ...updatedData
     }, {

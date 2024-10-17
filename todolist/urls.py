@@ -2,7 +2,6 @@ from django.urls import path, include
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 from todolist import views
-from django.views.generic import RedirectView
 
 router = DefaultRouter()
 router.register(r'projects', views.ProjectViewSet)
@@ -12,7 +11,6 @@ router.register(r'subtasks', views.SubTaskViewSet)
 urlpatterns = [
   path('api/v1/', include(router.urls)),
   
-  path('', RedirectView.as_view(url='/todolist/api/v1/')), 
   path("login/", views.login, name='login'),
   path("register/", views.register, name='register'),
   path("profile/", views.profile, name='profile'),
