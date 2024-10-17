@@ -24,8 +24,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-  'https://workcloud.onrender.com',
-  # 'https://to-do-list-frk5.onrender.com'
+  'https://workcloud.onrender.com'
 ]
 
 STORAGES ={
