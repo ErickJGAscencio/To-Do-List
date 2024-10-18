@@ -63,7 +63,8 @@ def register(request):
 
     if User.objects.filter(username=username).exists():
         return Response(
-            {"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": "Username already exists"}, 
+            status=status.HTTP_400_BAD_REQUEST
         )
 
     user = User(username=username)
