@@ -23,7 +23,7 @@ export function RegisterPage() {
         const token = response.data.token;
         localStorage.setItem('token', token);  // Guardar el token en localStoreage
         // console.log('Registration successful');
-        // navigate('/home');  // Redirigir después del registro
+        navigate('/home');  // Redirigir después del registro
       }
     } catch (error) {
       console.error("Signin error:", error.response);
