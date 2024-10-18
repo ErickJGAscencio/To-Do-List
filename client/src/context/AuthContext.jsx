@@ -29,8 +29,14 @@ export function AuthProvider({ children }) {
 
   const login = async (username, password) => {
     const res = await loginUser(username, password);
-    console.log(res);
+    // console.log(res);
+    console.log("Token send");
+    console.log(res.data.token);
+
     localStorage.setItem('token', res.data.token);
+    
+    console.log("Token in Local Storage");
+    console.log(localStorage.getItem('token'));
     setUsername(res.data.username);
     setIsLoggedIn(true);
   };
