@@ -12,6 +12,7 @@ export function RegisterPage() {
   const [error, setError] = useState("");
 
   const handleSingIn = async () => {
+    console.log("ASD");
     try {
       const response = await registerUser(username, password, email);
       if (response.status === 201) {
