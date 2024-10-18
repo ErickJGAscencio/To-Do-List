@@ -23,6 +23,7 @@ export function AuthProvider({ children }) {
         }
       } else {
         setIsLoggedIn(false);
+        //redirigir al login
       }
     }
     checkLoginStatus();
