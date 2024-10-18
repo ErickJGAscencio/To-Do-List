@@ -19,13 +19,13 @@ export const loginUser = (username, password) => {
   });
 };
 
-export const registerUser = (username, password, email) => {
+export const registerUser = async (username, password, email) => {
   const data = {
     username: username,
     password: password,
     email: email
   };
-  const response = axios.post(`${BASE_URL}/register/`, data, {
+  const response = await axios.post(`${BASE_URL}/register/`, data, {
     headers: {
       'Content-Type': 'application/json'
     }
