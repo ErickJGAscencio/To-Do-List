@@ -30,8 +30,8 @@ function App() {
           </>
         ) : (
           <>
-            <Route path='*' element={<Navigate to="/logins" />} />
-            <Route path='/logins' element={<LogInPage />} />
+            <Route path='*' element={<Navigate to="/login" />} />
+            <Route path='/login' element={<LogInPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/home/project/:id' element={<ProjectPage />} />
           </>
