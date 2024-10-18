@@ -15,6 +15,7 @@ export function RegisterPage() {
     console.log("ASD");
     try {
       const response = await registerUser(username, password, email);
+      console.log(response);
       if (response.status === 201) {
         const token = response.data.token;
         localStorage.setItem('token', token);  // Guardar el token en localStoreage
