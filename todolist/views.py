@@ -70,7 +70,7 @@ def register(request):
     user.set_password(password)
     user.save()
 
-    token, created = Token.objects.create(user=user)
+    token = Token.objects.create(user=user)
 
     return Response(
         {"token": token.key, "user": {"username": user.username}},
