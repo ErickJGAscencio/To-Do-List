@@ -31,8 +31,6 @@ export const registerUser = async (username, password, email) => {
     }
   });
 
-  console.log(response);
-
   return response
 };
 

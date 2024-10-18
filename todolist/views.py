@@ -73,10 +73,7 @@ def register(request):
 
     token = Token.objects.create(user=user)
 
-    return Response(
-        {"token": token.key, "user": {"username": user.username}},
-        status=status.HTTP_200_OK,
-    )
+    return Response({"token": token.key, "user": {"username": user.username}}, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])
