@@ -12,6 +12,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function checkLoginStatus() {
       const token = localStorage.getItem('token');
+      console.log("Si hay token: " + token);
       if (token) {
         try {
           const res = await getUserProfile(token);
