@@ -13,8 +13,11 @@ export function RegisterPage() {
 
   const handleSingIn = async () => {
     try {
+
+      console.log(username + " - " + password + " - " + email);
+
       const response = await registerUser(username, password, email);
-      console.log(response.status);
+      
       console.log(response);
       if (response.status === 200) {
         const token = response.data.token;
