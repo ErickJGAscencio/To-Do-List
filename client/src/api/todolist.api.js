@@ -25,11 +25,15 @@ export const registerUser = (username, password, email) => {
     password: password,
     email: email
   };
-  return axios.post(`${BASE_URL}/register/`, data, {
+  const response = axios.post(`${BASE_URL}/register/`, data, {
     headers: {
       'Content-Type': 'application/json'
     }
   });
+
+  console.log(response);
+
+  return response
 };
 
 export const getUserProfile = (token) => {
