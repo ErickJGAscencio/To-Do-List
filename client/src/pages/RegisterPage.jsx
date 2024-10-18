@@ -14,15 +14,15 @@ export function RegisterPage() {
   const handleSingIn = async () => {
     try {
 
-      console.log(username + " - " + password + " - " + email);
+      // console.log(username + " - " + password + " - " + email);
 
       const response = await registerUser(username, password, email);
       
-      console.log(response);
+      // console.log(response);
       if (response.status === 200) {
         const token = response.data.token;
         localStorage.setItem('token', token);  // Guardar el token en localStoreage
-        console.log('Registration successful');
+        // console.log('Registration successful');
         // navigate('/home');  // Redirigir después del registro
       }
     } catch (error) {
