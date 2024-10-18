@@ -16,7 +16,7 @@ export function RegisterPage() {
       const response = await registerUser(username, password, email);
       console.log(response.status);
       console.log(response);
-      if (response.status === 201) {
+      if (response.status === 200) {
         const token = response.data.token;
         localStorage.setItem('token', token);  // Guardar el token en localStoreage
         console.log('Registration successful');

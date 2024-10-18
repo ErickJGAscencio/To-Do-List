@@ -75,7 +75,7 @@ def register(request):
 
     return Response(
         {"token": token.key, "user": {"username": user.username}},
-        status=status.HTTP_201_CREATED,
+        status=status.HTTP_200_OK,
     )
 
 @api_view(["GET"])
