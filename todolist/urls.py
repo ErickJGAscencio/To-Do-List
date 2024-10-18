@@ -9,6 +9,7 @@ router.register(r'tasks', views.TaskViewSet)
 router.register(r'subtasks', views.SubTaskViewSet)
 
 urlpatterns = [
+  path('', include(router.urls)),
   path('api/v1/', include(router.urls)),
   
   path("login/", views.login, name='login'),
