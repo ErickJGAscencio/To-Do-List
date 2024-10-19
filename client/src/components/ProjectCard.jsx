@@ -85,7 +85,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
           <Delete name={"project " + project.project_name} deleteMethod={deleteMethod} />
         </div>
         <div className="click-zone" onClick={() => {
-          navigate(`/home/myprojects/project/${project.id}`);
+          navigate(`/home/project/${project.id}`);
           setSection(project.project_name);
         }} >
           <div className="content-section">

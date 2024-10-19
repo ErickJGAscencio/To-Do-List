@@ -63,7 +63,8 @@ def register(request):
 
     if User.objects.filter(username=username).exists():
         return Response(
-            {"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": "Username already exists"}, 
+            status=status.HTTP_400_BAD_REQUEST
         )
 
     user = User(username=username)
@@ -72,10 +73,7 @@ def register(request):
 
     token = Token.objects.create(user=user)
 
-    return Response(
-        {"token": token.key, "user": {"username": user.username}},
-        status=status.HTTP_201_CREATED,
-    )
+    return Response({"token": token.key, "user": {"username": user.username}}, status=status.HTTP_200_OK)
 
 @api_view(["GET"])
 @authentication_classes([TokenAuthentication])

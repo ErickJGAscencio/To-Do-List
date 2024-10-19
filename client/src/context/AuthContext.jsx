@@ -14,6 +14,7 @@ export function AuthProvider({ children }) {
       const token = localStorage.getItem('token');
       if (token) {
         try {
+          console.log("Si hay token: " + token);
           const res = await getUserProfile(token);
           setUsername(res.data.username);
           setIsLoggedIn(true);
@@ -22,6 +23,7 @@ export function AuthProvider({ children }) {
         }
       } else {
         setIsLoggedIn(false);
+        //redirigir al login
       }
     }
     checkLoginStatus();
@@ -30,7 +32,13 @@ export function AuthProvider({ children }) {
   const login = async (username, password) => {
     const res = await loginUser(username, password);
     console.log(res);
+    console.log("Token send");
+    console.log(res.data.token);
+
     localStorage.setItem('token', res.data.token);
+
+    console.log("Token in Local Storage");
+    console.log(localStorage.getItem('token'));
     setUsername(res.data.username);
     setIsLoggedIn(true);
   };

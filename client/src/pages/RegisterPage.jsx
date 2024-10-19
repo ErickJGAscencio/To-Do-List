@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { registerUser } from "../Api/todolist.api";
+import { registerUser } from "../api/todolist.api";
 import { useNavigate } from "react-router-dom";
 
 export function RegisterPage() {
@@ -13,12 +13,17 @@ export function RegisterPage() {
 
   const handleSingIn = async () => {
     try {
+
+      // console.log(username + " - " + password + " - " + email);
+
       const response = await registerUser(username, password, email);
-      if (response.status === 201) {
+      
+      // console.log(response);
+      if (response.status === 200) {
         const token = response.data.token;
         localStorage.setItem('token', token);  // Guardar el token en localStoreage
-        console.log('Registration successful');
-        // navigate('/home');  // Redirigir después del registro
+        // console.log('Registration successful');
+        navigate('/home');  // Redirigir después del registro
       }
     } catch (error) {
       console.error("Signin error:", error.response);

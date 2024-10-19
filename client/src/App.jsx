@@ -6,7 +6,7 @@ import { AuthContext } from './context/AuthContext';
 import { Navigation } from './components/Navigation';
 
 import { LogInPage } from './pages/LogInPage';
-import { RegisterPage } from './Pages/RegisterPage';
+import { RegisterPage } from './pages/RegisterPage';
 import { HomePage } from './pages/HomePage';
 import { ProjectPage } from './pages/ProjectPage';
 
@@ -19,22 +19,21 @@ function App() {
       {isLoggedIn && (
         <>
           <Navigation filter={filter}/>
-          {/* <Sidebar buttons={sidebarButtons} auxButtons={auxButtons} />     */}
         </>
       )}
       <Routes>
         {isLoggedIn ? (
           <>
-            <Route path='*' element={<Navigate to="/home/myprojects" />} />
-            <Route path='/home/myprojects' element={<HomePage filter={filter} />} />
-            <Route path='/home/myprojects/project/:id' element={<ProjectPage />} />
+            <Route path='*' element={<Navigate to="/home" />} />
+            <Route path='/home' element={<HomePage filter={filter} />} />
+            <Route path='/home/project/:id' element={<ProjectPage />} />
           </>
         ) : (
           <>
             <Route path='*' element={<Navigate to="/login" />} />
             <Route path='/login' element={<LogInPage />} />
             <Route path='/register' element={<RegisterPage />} />
-            <Route path='/home/myprojects/project/:id' element={<ProjectPage />} />
+            <Route path='/home/project/:id' element={<ProjectPage />} />
           </>
         )}
       </Routes>
