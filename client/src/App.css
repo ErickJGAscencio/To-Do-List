@@ -1,14 +1,16 @@
 html, body {
-  height: 100%;
+  height: 100vh;
   margin: 0;
-  font-family: 'Roboto', sans-serif; 
-  background-color: #f0f4f4;
+  font-family: "Kanit", sans-serif;
+  background-color: #2D2D2D;
+  overflow:hidden;
 }
 
 .nav {
   background-color: #066a95;
   border-bottom: 2px solid #066a95;
   padding: 0px 30px;
+  height: 30px;
   display: flex;
   justify-content: space-between;
   color: #ecf0f1;
@@ -19,16 +21,41 @@ html, body {
   margin: 10px 15px;
 }
 
+.main-conteiner{
+  display: flex;
+  height: 100vh;
+}
+
 .aside {
   background-color: #0884c4;
   border-right: 2px solid #0884c4;
-  position: fixed;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100% - 40px);
-  width: 150px;
+  height: calc(100vh - 50px);
+  width: 9%;
+  padding: 10px;
 }
+
+.aside .profile{
+  background-color: #63A5C6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  padding: 10px;
+  margin-top: 10px;
+  color: white;
+}
+
+.aside .profile img {
+  border-radius: 50%;
+  width: 50px; 
+  height: 50px;
+  margin: 10px;
+  object-fit: cover;
+}
+
 
 .aside .main-buttons{
   flex-direction: column;
@@ -56,8 +83,7 @@ html, body {
   background-color: white;
   border-radius: 50px;
   align-items: center;
-  width: 135px;
-  margin-left: 5px;
+  width: 100%;
 }
 
 .search-icon {
@@ -72,42 +98,47 @@ html, body {
   font-size: 12px;
   border-radius: 20px;
   padding: 5px;
-  width: 90%;
+  width: 100%;
   color: #0884c4;
 }
 
 .aside .aux-buttons{
   display: flex;
-  flex-direction: row;
-  padding: 10px;
+  flex-direction: column;
+  margin: 10px;
 }
 
 .aside .aux-buttons p {
   background-color: #066a95;
-  border: none;
   border-radius: 50px;
   font-size: 12px;
-  color: #ecf0f1;
+  color: white;
   padding: 10px;
-  margin: 10px 5px;
+  width: 20px;
+  text-align: center;
 }
 
 .aside .aux-buttons p:hover{
-  background-color: rgb(175, 175, 175);
+  background-color: white;
+  color: #066a95;
+}
+
+.main-filter-contain{
+  width: 100%;
 }
 
 .main {
-  display: grid; 
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-  grid-gap: 20px; 
   padding: 20px;
-  margin-left: 150px;
-  height: calc(100vh - 122px);
+  background-color: #2D2D2D;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: min-content; 
+  grid-gap: 20px; 
+  height: 100%;
   overflow-y: auto;
 }
 
-
-/* MODAL */
+/* ---MODAL--- */
 .modal {
   position: fixed;
   top: 0;
@@ -122,12 +153,14 @@ html, body {
 }
 
 .modal-content {
-  background-color: #65b4db;
-  padding: 30px;
-  border-radius: 10px;
-  width: auto;
-  height: auto;
   display: flex;
+  background-color: #2D2D2D;
+  padding: 20px;
+  border-style: solid;
+  border-top: none;
+  border-radius: 5px 5px 5px 50px;
+  border-color: #0884c4;
+  width: auto;
   flex-direction: column;
   justify-content: space-between;
 }
@@ -137,46 +170,53 @@ html, body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  color: #034f74;
+  color: white;
   height: 0;
-  padding: 20px 0;
+  margin-bottom: 20px;
+  padding-top: 10px;
 }
 
 .modal-body{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 10px;
+  height: 80%;  gap: 10px;
 }
 
 .modal-footer {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  /* background-color: blue; */
 }
 
-.title-input {
-  color: #0884c4;
+.left-section {
+  width: 100%;
+  /* background-color: green; */
+}
+
+.label-input{
+  color: white;
   font-size: 15px;
   margin: 0;
 }
 
-
-.left-section {
-  margin-right: 20px;
-  /* background-color: green; */
+.title-input {
+  color: white;
+  font-size: 15px;
+  margin: 0;
+  width: 100%;
 }
 
 .modal-name-input {
   background-color: white;
   width: 100%;
-  color: #0884c4;
+  color: #2D2D2D;
   border: none;
-  border-radius: 50px;
-  border-bottom: 1px solid #0884c4;
-  margin-bottom: 20px;
-  padding: 5px 10px ;
+  border-radius: 5px 5px 20px 5px;
+  padding: 5px;
   font-size: 15px;
+  margin-bottom: 20px;
   outline: none;
 }
 
@@ -190,7 +230,6 @@ html, body {
   display: flex;
   gap: 10px;
   justify-content: center;
-  margin-bottom: 10px;
   /* background-color: violet; */
 }
 
@@ -202,6 +241,7 @@ html, body {
   border: none;
   font-size: 15px;
   width: auto;
+  height: 20px;
   padding: 5px 15px;
   margin: 0;
   display: inline-flex;
@@ -217,7 +257,7 @@ html, body {
 
 .add-controller input {
   background-color: white;
-  color: #0884c4;
+  color: #2D2D2D;
   outline: none;
   border: none;
   width: 100%;
@@ -232,8 +272,7 @@ html, body {
   padding: 0 10px;
   background-color: white;
   border-radius: 10px;
-  min-height: 200px;
-  max-height: 335px;
+  height: 290px;
   overflow-y: auto;
 }
 

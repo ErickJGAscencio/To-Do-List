@@ -1,5 +1,5 @@
-import "../components/SubTaskCard.css"
-import { FaCheckCircle, FaRegCircle } from 'react-icons/fa';
+// import "../components/SubTaskCard.css"
+import { FaCheckCircle, FaEllipsisH, FaRegCircle } from 'react-icons/fa';
 import { EditSubTask } from "./modal/EditSubTask";
 import { useEffect, useState } from "react";
 import { deleteSubTask, updateSubtask } from "../api/todolist.api";
@@ -35,33 +35,39 @@ export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
       const updatedData = {
         is_completed: newCompletedStatus
       };
-  
+
       const res = await updateSubtask(idSubTask, updatedData, token);
       setSubTaskFront(res);
     } catch (error) {
       console.error('Error updating subtasks status:', error);
     }
   };
-  
+
 
   return (
     <div>
-      <div className="subtask-card">
-        <div className="action-btn">
-          <button onClick={checkBtn}>
+      <div className="card">
+        <div className="header-card">
+          <div className='title-card'>{subtask.subtask_name}</div>
+          <div className="button-menu" onClick={checkBtn}>
             {isCompleted ? (
-              <FaCheckCircle style={{ color: 'yellow' }} />
+              <FaCheckCircle style={{ color: '#0884c4' }} />
             ) : (
-              <FaRegCircle style={{ color: 'black' }} />
+              <FaRegCircle style={{ color: '#0884c4' }} />
             )}
-          </button>
-          <button><EditSubTask subtask={subtask} setSubTaskFront={setSubTaskFront} /></button>
-          <Delete name={ "subtask " + subtask.subtask_name } deleteMethod={deleteMethod} />
+          </div>
         </div>
-        <div className="inf-subtask">
-          <h4>{subtask.subtask_name}</h4>
-          <div className="content-section">
-            <p>{subtask.description}</p>
+        <div className='content-section'>
+          <div className="card-description">
+            {subtask.description}
+          </div>
+          <div className="action-botones">
+            <div className="button-menu">
+            <EditSubTask subtask={subtask} setSubTaskFront={setSubTaskFront} />
+            </div>
+            <div className="button-menu">
+            <Delete name={"subtask " + subtask.subtask_name} deleteMethod={deleteMethod} />
+            </div>
           </div>
         </div>
       </div>

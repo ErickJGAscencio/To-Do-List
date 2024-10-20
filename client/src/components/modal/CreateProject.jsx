@@ -63,7 +63,7 @@ export function CreateProject({ addNewProject }) {
             </div>
             <div className="modal-body">
               <div className='left-section'>
-                <h1 className='title-input'>Project name</h1>
+                <h3 className='title-input'>Project name</h3>
                 <input
                   className='modal-name-input'
                   type="text"
@@ -72,15 +72,24 @@ export function CreateProject({ addNewProject }) {
                   onChange={(e) => setTitleProject(e.target.value)}
                 />
                 <div className='modal-tasks'>
+                <h3 className='label-input'>
+                    {titleProject}
+                    {titleProject != "" && (
+                      "'s "
+                    )}
+                    Tasks
+                  </h3>
                   <div className='add-controller'>
                     <p className="button" onClick={addTask}>Add</p>
                     <input
+                      className='modal-name-input'
                       type="text"
                       placeholder="Task Name"
                       value={newTask}
                       onChange={(e) => setNewTask(e.target.value)}
                     />
                   </div>
+                  <h3 className="label-input">Task List</h3>
                   <div className='task-container'>
                     {tasks.map((task, index) => (
                       <div key={index} className='task-item'>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './EditProject.css'
+// import './EditProject.css'
 import { FaPalette, FaPen } from 'react-icons/fa';
 
 import { updateSubtask } from '../../api/todolist.api';
@@ -42,37 +42,39 @@ export function EditSubTask({ subtask, setSubTaskFront }) {
 
   return (
     <div>
-      <div className="action-btn">
-        <FaPen onClick={openModal} />
-      </div>
+      <FaPen onClick={openModal} />
       {isOpen && (
         <div className="modal">
           <div className="modal-content">
-            <div className='left-section'>
-              <input
-                className='pname-input'
-                type="text"
-                placeholder="Subtask Name"
-                value={titleProject || ""}
-                onChange={(e) => setTitleProject(e.target.value)}
-              />
+            <div className="modal-header">
+              <h1>Edit subtask</h1>
+              {/* <p className='button'><FaPalette /></p> */}
             </div>
-            <div className='right-section'>
-              <button className='btn-color'>
-                <FaPalette />
-              </button>
-              <div className='description'>
-                <h1>Description</h1>
-                <textarea
-                  placeholder="Project Description"
-                  value={descripcionProject || ""}
-                  onChange={(e) => setDescriptionProject(e.target.value)}
+            <div className="modal-body">
+              <div className='left-section'>
+                <h1 className='title-input'>Subtask name</h1>
+                <input
+                  className='modal-name-input'
+                  type="text"
+                  placeholder="Subtask Name"
+                  value={titleProject || ""}
+                  onChange={(e) => setTitleProject(e.target.value)}
                 />
               </div>
-              <div className='buttons-action'>
-                <button onClick={pdtSubTask}>Edit</button>
-                <button onClick={closeModal}>Cancel</button>
+              <div className='right-section'>
+                <div className='description'>
+                  <h1 className='title-input'>Description</h1>
+                  <textarea
+                    placeholder="Project Description"
+                    value={descripcionProject || ""}
+                    onChange={(e) => setDescriptionProject(e.target.value)}
+                  />
+                </div>
               </div>
+            </div>
+            <div className='modal-footer'>
+              <p className='button'onClick={pdtSubTask}>Save</p>
+              <p className='button'onClick={closeModal}>Cancel</p>
             </div>
           </div>
         </div>

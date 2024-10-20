@@ -7,6 +7,7 @@ class Project(models.Model):
   color = models.TextField(blank=True, null=True)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   is_completed = models.BooleanField(default=False)
+  color = models.CharField(max_length=7, default='#9b9b9b')
     
   def __str__(self):
     return self.project_name
@@ -27,6 +28,7 @@ class Task(models.Model):
   color = models.TextField(blank=True, null=True)
   project = models.ForeignKey(Project, on_delete=models.CASCADE)
   is_completed = models.BooleanField(default=False)
+  color = models.CharField(max_length=7, default='#9b9b9b')
 
   def __str__(self):
     return self.task_name

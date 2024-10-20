@@ -1,16 +1,32 @@
 import './ProjectCard.css';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { deleteProject, fetchTasksByProject, updateProject } from '../api/todolist.api';
+import { FaEllipsisH } from 'react-icons/fa';
 import { EditProject } from './modal/EditProject';
 import { Delete } from './modal/Delete';
+import MenuContextual from './MenuContextual';
 
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [progress, setProgress] = useState(0);
   const { setSection } = useContext(AuthContext);
+
+  // Estado para controlar la visibilidad del menú contextual
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const menuRef = useRef(null);
+
+  const toggleMenu = () => {
+    setIsMenuVisible(!isMenuVisible);
+  };
+
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setIsMenuVisible(false);  // Cerrar el menú si se hace clic fuera de él
+    }
+  };
 
   const deleteMethod = async () => {
     const token = localStorage.getItem("token");
@@ -25,9 +41,9 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
   }
 
   const setStatusProject = async () => {
-    let updatedData={};
+    let updatedData = {};
     try {
-      if (progress == 100) {
+      if (progress === 100) {
         updatedData = {
           is_completed: true
         };
@@ -37,8 +53,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
         };
       }
       const token = localStorage.getItem("token");
-      const res = await updateProject(project.id, updatedData, token);
-      // console.log(res);
+      await updateProject(project.id, updatedData, token);
     } catch (error) {
       console.error('Error updating project:', error);
     }
@@ -57,7 +72,6 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
       if (token) {
         try {
           const response = await fetchTasksByProject(project.id, token);
-
           if (response.data && response.data.length > 0) {
             setTasks(response.data);
             setProgress(project.progress);
@@ -75,33 +89,59 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
     setStatusProject();
   }, [tasks, progress]);
 
+  // Hook para manejar clics fuera del menú
+  useEffect(() => {
+    if (isMenuVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuVisible]);
+
   return (
     <div>
-      <div className="card">
-        <h4>{project.project_name}</h4>
-        {/* <FaEllipsisH /> AGREGAR UNA OPCION QUE PERMITA VER LOS DETALLES EN RESUMEN DEL PROYECTO SIN TENER QUE ABIRLO*/} 
-        <div className='action-btn'>
-          <EditProject project={project} updateDataProject={updateDataProject} />
-          <Delete name={"project " + project.project_name} deleteMethod={deleteMethod} />
+      <div className="card" style={{ backgroundColor: project.color }}>
+        <div className="header-card">
+          <div className='title-card'>{project.project_name}</div>
+          <div className="button-menu" onClick={toggleMenu}>
+            <FaEllipsisH />
+          </div>
+          {/* <div className="button-menu">
+            <MenuContextual onClick={ } />
+          </div> */}
+          {/* Menú contextual */}
+          {isMenuVisible && (
+            <div className="context-menu" ref={menuRef}>
+              <div className="context-menu-item">                
+                <EditProject project={project} updateDataProject={updateDataProject} />
+              </div>
+              <div className="context-menu-item">
+                <Delete name={"project " + project.project_name} deleteMethod={deleteMethod} /> 
+              </div>
+            </div>
+          )}
         </div>
+
         <div className="click-zone" onClick={() => {
           navigate(`/home/project/${project.id}`);
           setSection(project.project_name);
-        }} >
+        }}>
           <div className="content-section">
-            <p>{project.description}</p>
+            <div className="card-description">
+              {project.description}
+            </div>
           </div>
         </div>
-
-        <div className="progress-section">
-          <div className="progress-bar">
-            <div
-              className="progress-bar-fill"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-          <div>{progress || 0}%</div>
+      </div>
+      <div className="progress-section">
+        <div className="progress-bar">
+          <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
         </div>
+        <div>{progress || 0}%</div>
       </div>
     </div>
   )

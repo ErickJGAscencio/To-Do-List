@@ -1,6 +1,6 @@
-import './TaskCard.css';
-import { useEffect, useState } from 'react';
-import { FaTrash } from 'react-icons/fa';
+// import './TaskCard.css';
+import { useEffect, useRef, useState } from 'react';
+import { FaCheckCircle, FaEllipsisH, FaPlus, FaTrash } from 'react-icons/fa';
 import { deleteTask, fetchSubTask, updateSubtask, updateTask } from '../api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
@@ -11,6 +11,19 @@ export function TaskCard({ task, removeTask }) {
   const [subtasks, setSubTasks] = useState([]);
   const [progress, setProgress] = useState(0);
 
+  // Estado para controlar la visibilidad del menú contextual
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const menuRef = useRef(null);
+
+  const toggleMenu = () => {
+    setIsMenuVisible(!isMenuVisible);
+  };
+
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setIsMenuVisible(false);  // Cerrar el menú si se hace clic fuera de él
+    }
+  };
 
   const addNewSubTask = (newSubTask) => {
     setSubTasks([...subtasks, newSubTask]);
@@ -53,7 +66,7 @@ export function TaskCard({ task, removeTask }) {
   }
 
   const setStatusTask = async () => {
-    let updatedData={};
+    let updatedData = {};
     try {
       if (progress == 100) {
         updatedData = {
@@ -106,32 +119,65 @@ export function TaskCard({ task, removeTask }) {
     setStatusTask();
   }, [subtasks, progress]);
 
-  return (
-    <div className="task-card-content">
-      <div className="task-card">
-        <div className='task-info'>
-          <div className='task-name'>{task.task_name}</div>
-          <p>{task.description}</p>
-        </div>
-        <div className='action-btn'>
-          <button><CreateSubTask task={task} addNewSubTask={addNewSubTask} /></button>
-          <button><EditTask task={task} setSubTasksFrnt={setSubTasksFrnt} /></button>
-          <Delete name={ "task " + task.task_name } deleteMethod={deleteMethod} />
-        </div>
+  // Hook para manejar clics fuera del menú
+  useEffect(() => {
+    if (isMenuVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
 
-        <div className="progress-section">
-          <div className="progress-bar">
-            <div
-              className="progress-bar-fill"
-              style={{ width: `${progress}%` }}
-            ></div>
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuVisible]);
+
+  return (
+    <div className="card-task">
+      <div className="card">
+        <div className="header-card">
+          <div className='title-card'>{task.task_name}</div>
+          <div className="button-menu" onClick={toggleMenu}> <FaEllipsisH /></div>
+        </div>
+        {isMenuVisible && (
+          <div className="context-menu" ref={menuRef}>
+            <div className="context-menu-item">
+              <CreateSubTask task={task} addNewSubTask={addNewSubTask} />
+            </div>
+            <div className="context-menu-item">
+              <EditTask task={task} setSubTasksFrnt={setSubTasksFrnt} />
+            </div>
+            <div className="context-menu-item">
+              <Delete name={"task " + task.task_name} deleteMethod={deleteMethod} />
+            </div>
           </div>
-          <div>{progress || 0}%</div>  {/* Mostrar el porcentaje de progreso */}
+        )}
+        <div className='content-section'>
+          <div className="card-description">
+            {task.description}
+          </div>
+
+          {subtasks.length == 0 && (
+            <FaCheckCircle />
+          )}
+
+
         </div>
       </div>
 
-      {subtasks.length > 0 && ( // Mostrar la sección de subtareas solo si existen
-        <div className="content-section">
+      <div className="progress-section">
+        <div className="progress-bar">
+          <div
+            className="progress-bar-fill"
+            style={{ width: `${progress}%` }}
+          ></div>
+        </div>
+        <div>{progress || 0}%</div>
+      </div>
+
+      {/* Mostrar Subtareas */}
+      {subtasks.length > 0 && (
+        <div className="content-subtask">
           {subtasks.map((subtask) => (
             <SubTaskCard key={subtask.id} subtask={subtask} removeSubTask={removeSubTask} setSubTaskFront={setSubTaskFront} />
           ))}

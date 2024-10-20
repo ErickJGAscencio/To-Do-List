@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import './EditProject.css'
+// import './EditProject.css'
 import { FaPalette, FaTrash } from 'react-icons/fa';
 import { FaPen } from 'react-icons/fa';
 
 import { fetchSubTask, updateTask } from '../../api/todolist.api';
 
-export function EditTask({ task , setSubTasksFrnt}) {
+export function EditTask({ task, setSubTasksFrnt }) {
   const [idTask, setIdTask] = useState("");
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
@@ -76,55 +76,69 @@ export function EditTask({ task , setSubTasksFrnt}) {
 
   return (
     <div>
-      <FaPen onClick={openModal}/>
+      <FaPen onClick={openModal} />
 
       {isOpen && (
         <div className="modal">
           <div className="modal-content">
-            <div className='left-section'>
-              <input
-                className='pname-input'
-                type="text"
-                placeholder="Task Name"
-                value={taskName}
-                onChange={(e) => setTaskName(e.target.value)}
-              />
-              <div className='tasks'>
-                <div className='add-controller'>
-                  <input
-                    type="text"
-                    placeholder="Subtask Name"
-                    value={newSubTask}
-                    onChange={(e) => setNewSubTask(e.target.value)}
-                  />
-                  <button onClick={addSubTask}>Add</button> {/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
+            <div className="modal-header">
+              <h1>Edit task</h1>
+              <p className='button'><FaPalette /></p>
+            </div>
+            <div className="modal-body">
+              <div className='left-section'>
+                <h3 className='title-input'>Task name</h3>
+                <input
+                  className='modal-name-input'
+                  type="text"
+                  placeholder="e.g Do something"
+                  value={taskName}
+                  onChange={(e) => setTaskName(e.target.value)}
+                />
+                <div className='modal-tasks'>
+                  <h3 className='label-input'>
+                    {taskName}
+                    {taskName != "" && (
+                      "'s "
+                    )}
+                    Subtasks
+                  </h3>
+                  <div className='add-controller'>
+                    <p className="button" onClick={addSubTask}>Add</p> {/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
+                    <input
+                      className='modal-name-input'
+                      type="text"
+                      placeholder="Subtask Name"
+                      value={newSubTask}
+                      onChange={(e) => setNewSubTask(e.target.value)}
+                    />
+
+                  </div>
+                  <h3 className='label-input'>Subtask list</h3>
+                  <div className='task-container'>
+                    {subtasks.map((subtask, index) => (
+                      <div key={subtask.id || index} className='task-item'>
+                        {subtask.subtask_name || subtask}
+                        <p className='button' onClick={() => removeSubTask(index)}><FaTrash /></p>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className='task-container'>
-                  {subtasks.map((subtask, index) => (
-                    <div key={subtask.id || index} className='task-item'>
-                      {subtask.subtask_name || subtask}
-                      <button onClick={() => removeSubTask(index)}><FaTrash /></button>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
-                    </div>
-                  ))}
+              </div>
+              <div className='right-section'>
+                <div className='description'>
+                  <h1 className='title-input'>Description</h1>
+                  <textarea
+                    placeholder="Task Description"
+                    value={taskDescription || ""}
+                    onChange={(e) => setTaskDescription(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
-            <div className='right-section'>
-              <button className='btn-color'>
-                <FaPalette />
-              </button>
-              <div className='description'>
-                <h1>Description</h1>
-                <textarea
-                  placeholder="Task Description"
-                  value={taskDescription || ""}
-                  onChange={(e) => setTaskDescription(e.target.value)}
-                />
-              </div>
-              <div className='buttons-action'>
-                <button onClick={pdtTask}>Edit</button>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
-                <button onClick={closeModal}>Cancel</button>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
-              </div>
+            <div className="modal-footer">
+              <p className='button' onClick={pdtTask}>Edit</p>{/*CAMBIAR <p> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
+              <p className='button' onClick={closeModal}>Cancel</p>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
             </div>
           </div>
         </div>

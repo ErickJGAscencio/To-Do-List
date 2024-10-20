@@ -96,34 +96,36 @@ export function HomePage() {
   ];
 
   const createButton = [
-    
+
   ]
 
   return (
     <div>
-      <Sidebar buttons={sidebarButtons}>
-        <CreateProject addNewProject={addNewProject} />
-        <div className="search-bar">
-          <FaSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="Search projects..."
-            className="search-input"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)} // Método para actualizar el término de búsqueda
-          />
-        </div>
-      </Sidebar>
-      <div className="main-filter-contain">
-        <div className="main">
-          {getFilteredProjects().map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              updateDataProject={updateDataProject}
-              removeProject={removeProject}
+      <div className="main-conteiner">
+        <Sidebar buttons={sidebarButtons}>
+          <CreateProject addNewProject={addNewProject} />
+          <div className="search-bar">
+            <FaSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search projects..."
+              className="search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)} // Método para actualizar el término de búsqueda
             />
-          ))}
+          </div>
+        </Sidebar>
+        <div className="main-filter-contain">
+          <div className="main">
+            {getFilteredProjects().map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                updateDataProject={updateDataProject}
+                removeProject={removeProject}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
