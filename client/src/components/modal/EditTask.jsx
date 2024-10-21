@@ -5,7 +5,7 @@ import { FaPen } from 'react-icons/fa';
 
 import { fetchSubTask, updateTask } from '../../api/todolist.api';
 
-export function EditTask({ task, setSubTasksFrnt }) {
+export function EditTask({ task, modifySubtaskList }) {
   const [idTask, setIdTask] = useState("");
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
@@ -67,7 +67,7 @@ export function EditTask({ task, setSubTasksFrnt }) {
       };
       const token = localStorage.getItem("token");
       const res = await updateTask(idTask, updatedData, token);
-      setSubTasksFrnt(res);
+      modifySubtaskList(res);
       closeModal();
     } catch (error) {
       console.error('Error updating task:', error);

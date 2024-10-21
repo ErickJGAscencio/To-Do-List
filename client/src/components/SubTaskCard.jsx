@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { deleteSubTask, updateSubtask } from "../api/todolist.api";
 import Delete from "./modal/Delete";
 
-export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
+export function SubTaskCard({ subtask, removeSubTask, modifySubtask }) {
   const [isCompleted, setIsCompleted] = useState();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
     }
   }
 
-  const checkBtn = async () => {
+  const handleSubtaskCompleting = async () => {
     try {
       const newCompletedStatus = !isCompleted;
       setIsCompleted(newCompletedStatus);
@@ -37,19 +37,19 @@ export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
       };
 
       const res = await updateSubtask(idSubTask, updatedData, token);
-      setSubTaskFront(res);
+      modifySubtask(res);
+      // console.log(res);
     } catch (error) {
       console.error('Error updating subtasks status:', error);
     }
   };
-
 
   return (
     <div>
       <div className="card">
         <div className="header-card">
           <div className='title-card'>{subtask.subtask_name}</div>
-          <div className="button-menu" onClick={checkBtn}>
+          <div className="button-menu" onClick={handleSubtaskCompleting}>
             {isCompleted ? (
               <FaCheckCircle style={{ color: '#0884c4' }} />
             ) : (
@@ -63,7 +63,7 @@ export function SubTaskCard({ subtask, removeSubTask, setSubTaskFront }) {
           </div>
           <div className="action-botones">
             <div className="button-menu">
-            <EditSubTask subtask={subtask} setSubTaskFront={setSubTaskFront} />
+            <EditSubTask subtask={subtask} modifySubtask={modifySubtask} />
             </div>
             <div className="button-menu">
             <Delete name={"subtask " + subtask.subtask_name} deleteMethod={deleteMethod} />

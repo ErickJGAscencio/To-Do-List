@@ -103,11 +103,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
         projects = Project.objects.filter(user=user_id)
         serializer = self.get_serializer(projects, many=True)
 
-        # project_data = serializer.data
-        # for project in project_data:
-        #     project_instance = Project.objects.get(id=projects['id']) 
-        #     projects['progress'] = project_instance.progress
-
         return Response(serializer.data)
 
     @action(detail=False, methods=['post'])
@@ -217,14 +212,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         tasks = Task.objects.filter(project=id_project)
         serializer = self.get_serializer(tasks, many=True)
-
-        # Añadiendo el progreso a cada tarea
-        task_data = serializer.data
-        for task in task_data:
-            task_instance = Task.objects.get(id=task['id'])  # Obtén la instancia de la tarea
-            task['progress'] = task_instance.progress  # Usa la propiedad calculada `progress`
-
-        return Response(task_data)
+        return Response(serializer.data)
 
     @action(detail=False , methods=['post'])
     def create_task(self, request):

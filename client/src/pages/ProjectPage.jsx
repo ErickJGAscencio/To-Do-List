@@ -46,7 +46,6 @@ export function ProjectPage() {
   useEffect(() => {
     setTasks(tasks);
     setFilter("all");
-    // console.log(projects);
   }, [tasks])
 
   const sidebarButtons = [
@@ -83,8 +82,8 @@ export function ProjectPage() {
 
   return (
     <div>
-      <div className="main-conteiner">
-        <Sidebar buttons={sidebarButtons}>
+      <div className="main-container">
+        <Sidebar setFilter={setFilter}>
           <CreateTask id_project={id} addNewTask={addNewTask} />
           <div className="search-bar">
             <FaSearch className="search-icon" />

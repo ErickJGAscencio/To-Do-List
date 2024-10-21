@@ -1,13 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { FaSignOutAlt, FaCogs, FaSearch } from "react-icons/fa";
+import { FaSignOutAlt, FaCogs, FaThList, FaClipboardCheck, FaHourglassHalf } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
-// import CreateProject from './modal/CreateProject';
 
-export function Sidebar({ buttons, children }) {
-  const { username } = useContext(AuthContext);
+export function Sidebar({ setFilter, children }) {
+  const { username, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { logout } = useContext(AuthContext);
 
   const handleLogout = () => {
     logout();
@@ -17,20 +15,20 @@ export function Sidebar({ buttons, children }) {
   return (
     <div className="aside">
       <div>
-        {/* <div className="profile">
-          <img
-            src="https://th.bing.com/th/id/OIP._ezwdDr0iyZSMAn-BTFHUwHaFj?rs=1&pid=ImgDetMain"
-            alt="" />
-          <div>{username}</div>
-        </div> */}
-        {children}
+        {/* Profile section */}
+        <div>{children}</div>
         <hr />
         <div className="main-buttons">
-          {buttons.map(({ label, onClick, icon: Icon }, index) => (
-            <p key={index} className="create-btn" onClick={onClick}>
-              <Icon /> {label}
-            </p>
-          ))}
+          {/* Aquí están los botones estáticos */}
+          <p className="create-btn" onClick={() => setFilter('all')}>
+            <FaThList /> All
+          </p>
+          <p className="create-btn" onClick={() => setFilter('completed')}>
+            <FaClipboardCheck /> Completed
+          </p>
+          <p className="create-btn" onClick={() => setFilter('inProgress')}>
+            <FaHourglassHalf /> In Progress
+          </p>
         </div>
       </div>
 
@@ -39,6 +37,5 @@ export function Sidebar({ buttons, children }) {
         <p><FaCogs size={15} /></p>
       </div>
     </div>
-  )
-
+  );
 }

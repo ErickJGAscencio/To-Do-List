@@ -2,8 +2,6 @@ import axios from 'axios';
 
 // Define the BASE_URL
 const isDevelopment = import.meta.env.MODE === 'development';
-// const myBaseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY
-// const BASE_URL = "http://localhost:8000/todolist";
 const BASE_URL = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY;
 
 // Authentication
@@ -36,7 +34,7 @@ export const registerUser = async (username, password, email) => {
 };
 
 export const getUserProfile = (token) => {
-  return axios.get(`${BASE_URL}/me/`, {
+  return axios.get(`${BASE_URL}/profile/`, {
     headers: {
       'Authorization': `Token ${token}`
     }

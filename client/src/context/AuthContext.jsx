@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          console.log("Si hay token: " + token);
+          // console.log("Si hay token: " + token);
           const res = await getUserProfile(token);
           setUsername(res.data.username);
           setIsLoggedIn(true);

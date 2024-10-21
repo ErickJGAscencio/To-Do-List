@@ -17,7 +17,5 @@ urlpatterns = [
     path("login/", views.login, name='login'),
     path("register/", views.register, name='register'),
     path("profile/", views.profile, name='profile'),
-    path('me/', views.profile, name='user-profile'),
-
-    path('docs/', include_docs_urls(title='WorkCloud Documentation')),
+    # path('docs/', include_docs_urls(title='WorkCloud Documentation')),
 ]
