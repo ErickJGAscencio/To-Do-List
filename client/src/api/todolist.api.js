@@ -57,10 +57,11 @@ export const fetchProjectsByUser = (userId, token) => {
   });
 };
 
-export const createProject = async (projectName, projectDescription, tasks, token) => {
+export const createProject = async (projectName, projectDescription, color, tasks, token) => {
   const data = {
     project_name: projectName,
     description: projectDescription,
+    color: color,
     tasks: tasks.map(task => ({ task_name: task }))
   };
 

@@ -4,7 +4,7 @@ import { FaSignOutAlt, FaCogs, FaThList, FaClipboardCheck, FaHourglassHalf, FaPl
 import { AuthContext } from "../context/AuthContext";
 import { ContextMenu } from './ContextMenu';
 
-export function Sidebar({ setFilter, children }) {
+export function Sidebar({ id, setFilter, children }) {
   const { username, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -18,8 +18,6 @@ export function Sidebar({ setFilter, children }) {
   return (
     <div className="aside">
       <div>
-        {/* Profile section */}
-        <div style={{ color: "white" }}>{username}</div>
         <div>{children}</div>
         <hr />
         <div className="main-buttons">
@@ -34,12 +32,19 @@ export function Sidebar({ setFilter, children }) {
           </p>
         </div>
       </div>
-
+      {id && (
+        <div> asd</div>
+      )}
+      
       <div className="aux-buttons" >
+        {/* Profile section */}
+        <div style={{ color: "white" }}>{username}
+        </div>
+
         <ContextMenu items={["Config account"]} isVisible={true} menuRef={menuRef}>
           <FaEye size={15} />
         </ContextMenu>
-        <p onClick={handleLogout}><FaSignOutAlt size={15} /></p>
+        <FaSignOutAlt className='button-menu' size={15} onClick={handleLogout}/>
       </div>
     </div>
   );

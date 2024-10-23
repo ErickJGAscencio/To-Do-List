@@ -10,8 +10,6 @@ import { Sidebar } from "../components/Sidebar";
 import { useProjectFilter } from "../hook/useProjectFilter";
 
 export function HomePage() {
-  const navigate = useNavigate;
-  const { logout } = useContext(AuthContext);
   const [projects, setProjects] = useState([]);
   const { filteredProjects, searchTerm, setFilter, handleSearch } = useProjectFilter(projects);
 

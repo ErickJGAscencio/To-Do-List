@@ -1,13 +1,12 @@
 import "./ProjectPage.css";
 
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect } from "react"
 
 import { CreateTask } from '../components/modal/CreateTask';
 import { TaskCard } from '../components/TaskCard';
-import { AuthContext } from "../context/AuthContext";
 import { fetchTasksByProject } from "../api/todolist.api";
-import { FaArrowLeft, FaClipboardCheck, FaHourglassHalf, FaSearch, FaThList } from "react-icons/fa";
+import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import { Sidebar } from "../components/Sidebar";
 
 export function ProjectPage() {
@@ -80,7 +79,7 @@ export function ProjectPage() {
     <div>
       <div className="main-container">
         <Sidebar setFilter={setFilter}>
-          <button className="button" onClick={backToHome}> <FaArrowLeft/></button>
+          <p className="create-btn" onClick={backToHome}> <FaArrowLeft/> Projects</p>
           <CreateTask id_project={id} addNewTask={addNewTask} />
           <div className="search-bar">
             <FaSearch className="search-icon" />

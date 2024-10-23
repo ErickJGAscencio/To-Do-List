@@ -108,6 +108,7 @@ html, body {
   display: flex;
   flex-direction: column;
   margin: 10px;
+  gap: 5px;
 }
 
 .aside .aux-buttons p {
@@ -159,10 +160,8 @@ html, body {
   display: flex;
   background-color: #2D2D2D;
   padding: 20px;
-  border-style: solid;
   border-top: none;
   border-radius: 5px 5px 5px 50px;
-  border-color: #0884c4;
   width: auto;
   flex-direction: column;
   justify-content: space-between;
@@ -190,12 +189,10 @@ html, body {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  /* background-color: blue; */
 }
 
 .left-section {
   width: 100%;
-  /* background-color: green; */
 }
 
 .label-input{
@@ -226,14 +223,12 @@ html, body {
 .modal-tasks {
   width: 100%;
   height: 80%;
-  /* background-color: yellow; */
 }
 
 .add-controller {
   display: flex;
   gap: 10px;
   justify-content: center;
-  /* background-color: violet; */
 }
 
 .button {
@@ -268,7 +263,6 @@ html, body {
   padding: 5px 10px;
   font-size: 15px;
   border-bottom: 1px solid #0884c4;
-  /* margin-bottom: 10px; */
 }
 
 .task-container {

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FaPalette, FaPlus } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { createProject, getUserProfile } from '../../api/todolist.api';
+import { ContextMenuColors } from '../ContextMenuColors';
 
 export function CreateProject({ addNewProject }) {
   const [titleProject, setTitleProject] = useState("");
@@ -9,6 +10,9 @@ export function CreateProject({ addNewProject }) {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+
+  const menuRef = useRef(null);
+  const [color, setColor] = useState();
 
   const openModal = () => {
     setIsOpen(true);
@@ -41,7 +45,7 @@ export function CreateProject({ addNewProject }) {
     try {
       const token = localStorage.getItem('token');
 
-      const newProject = await createProject(titleProject, descripcionProject, tasks, token);
+      const newProject = await createProject(titleProject, descripcionProject, color, tasks, token);
 
       addNewProject(newProject.data);
 
@@ -51,15 +55,23 @@ export function CreateProject({ addNewProject }) {
     }
   };
 
+  const setSelectedColor = (color) => {
+    setColor(color);
+  }
+
   return (
     <div>
       <p className="create-btn" onClick={openModal}> <FaPlus /> New project</p>
       {isOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content"
+            style={{
+              backgroundImage: `linear-gradient(to bottom, #2D2D2D, ${color})`
+            }}
+          >
             <div className="modal-header">
               <h2>Create New Project</h2>
-              <p className='button'><FaPalette /></p>
+              <ContextMenuColors menuRef={menuRef} setSelectedColor={setSelectedColor} />
             </div>
             <div className="modal-body">
               <div className='left-section'>

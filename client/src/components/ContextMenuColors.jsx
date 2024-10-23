@@ -27,9 +27,10 @@ export function ContextMenuColors({ menuRef, setSelectedColor }) {
     };
   }, [isVisible]);
 
-  const colors1 = ['#787878', '#C19F1A', '#3357FF', '#1E930E', '#177CB7', '#7514B5'];
-  const colors2 = ['#B51495', '#D9D9D9', '#E1BB23', '#4ADC37', '#DD40BE', '#8F0CE7'];
-  const colors3 = ['#D6C376', '#81D676', '#76B3D6', '#D676C3', '#AF58EA'];
+  const colors1 = ['#FF6B6B', '#FFD93D', '#4A90E2', '#5DD39E', '#F24C00', '#A97C97'];
+  const colors2 = ['#D9534F', '#F7F7F7', '#FFC107', '#28A745', '#E83E8C', '#6F42C1'];
+  const colors3 = ['#F5D76E', '#A8D8B9', '#6CB2EB', '#F1A7B2', '#C78DDA'];
+
 
   return (
     <div>
