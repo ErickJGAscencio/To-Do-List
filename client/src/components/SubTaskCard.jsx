@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { deleteSubTask, updateSubtask } from "../api/todolist.api";
 import Delete from "./modal/Delete";
 
-export function SubTaskCard({ subtask, removeSubTask, modifySubtask }) {
+export function SubTaskCard({ color, subtask, removeSubTask, modifySubtask }) {
   const [isCompleted, setIsCompleted] = useState();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export function SubTaskCard({ subtask, removeSubTask, modifySubtask }) {
 
   return (
     <div>
-      <div className="card">
+      <div className="card" style={{ backgroundColor: color }}>
         <div className="header-card">
           <div className='title-card'>{subtask.subtask_name}</div>
           <div className="button-menu" onClick={handleSubtaskCompleting}>

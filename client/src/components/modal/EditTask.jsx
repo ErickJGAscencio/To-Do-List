@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // import './EditProject.css'
-import { FaPalette, FaTrash } from 'react-icons/fa';
+import { FaCircle, FaPalette, FaTrash } from 'react-icons/fa';
 import { FaPen } from 'react-icons/fa';
 
 import { fetchSubTask, updateTask } from '../../api/todolist.api';
@@ -12,6 +12,39 @@ export function EditTask({ task, modifySubtaskList }) {
   const [subtasks, setSubTasks] = useState([]);
   const [newSubTask, setNewSubTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+
+
+  const [color, setColor] = useState();
+
+
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const menuRef = useRef(null);
+
+  const toggleMenu = () => {
+    console.log(color);
+    setIsMenuVisible(!isMenuVisible);
+  };
+
+  const handleClickOutside = (event) => {
+    if (menuRef.current && !menuRef.current.contains(event.target)) {
+      setIsMenuVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isMenuVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuVisible]);
+
+
+
 
   useEffect(() => {
     async function getAllSubTasks() {
@@ -41,6 +74,7 @@ export function EditTask({ task, modifySubtaskList }) {
   const openModal = async () => {
     setIsOpen(true);
 
+    setColor(task.color);
     setIdTask(task.id);
     setTaskName(task.task_name);
     setTaskDescription(task.description);
@@ -63,6 +97,7 @@ export function EditTask({ task, modifySubtaskList }) {
       const updatedData = {
         task_name: taskName,
         description: taskDescription,
+        color: color,
         subtasks: subtasks
       };
       const token = localStorage.getItem("token");
@@ -74,16 +109,77 @@ export function EditTask({ task, modifySubtaskList }) {
     }
   };
 
+
+
+  const colors1 = ['#787878', '#C19F1A', '#3357FF', '#1E930E', '#177CB7'];
+
+  const colors2 = ['#B51495', '#D9D9D9', '#E1BB23', '#4ADC37', '#DD40BE'];
+
+  const colors3 = ['#D6C376', '#81D676', '#76B3D6', '#D676C3'];
+
+  const setSelectedColor = (color) => {
+    setColor(color);
+  }
+
+
+
   return (
     <div>
       <FaPen onClick={openModal} />
 
       {isOpen && (
         <div className="modal">
-          <div className="modal-content">
+
+          <div className="modal-content"
+            style={{
+              backgroundImage: `linear-gradient(to bottom, #2D2D2D, ${color})`
+            }}
+          >
             <div className="modal-header">
               <h1>Edit task</h1>
-              <p className='button'><FaPalette /></p>
+              <p className='button' onClick={toggleMenu}><FaPalette /></p>
+
+
+              
+
+{isMenuVisible && (
+                <div className="context-menu" ref={menuRef}>
+                  <p>Select color</p>
+                  {colors1.map((color, index) => (
+                    <div className="context-menu-item" onClick={toggleMenu}>
+                      <FaCircle
+                        key={index}
+                        style={{ color: color }}
+                        onClick={() => setSelectedColor(color)}
+                      />
+                    </div>
+                  ))}
+                  {colors2.map((color, index) => (
+                    <div className="context-menu-item" onClick={toggleMenu}>
+                      <FaCircle
+                        key={index}
+                        style={{ color: color }}
+                      onClick={() => setSelectedColor(color)}
+                      />
+                    </div>
+                  ))}
+                  {colors3.map((color, index) => (
+                    <div className="context-menu-item" onClick={toggleMenu}>
+                      <FaCircle
+                        key={index}
+                        style={{ color: color }}
+                      onClick={() => setSelectedColor(color)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+
+
+
+
+
             </div>
             <div className="modal-body">
               <div className='left-section'>
@@ -137,7 +233,7 @@ export function EditTask({ task, modifySubtaskList }) {
               </div>
             </div>
             <div className="modal-footer">
-              <p className='button' onClick={pdtTask}>Edit</p>{/*CAMBIAR <p> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
+              <p className='button' onClick={pdtTask}>Save</p>{/*CAMBIAR <p> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
               <p className='button' onClick={closeModal}>Cancel</p>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
             </div>
           </div>

@@ -1,11 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { FaSignOutAlt, FaCogs, FaThList, FaClipboardCheck, FaHourglassHalf } from "react-icons/fa";
+import { useContext, useRef } from 'react';
+import { FaSignOutAlt, FaCogs, FaThList, FaClipboardCheck, FaHourglassHalf, FaPlus, FaEye } from "react-icons/fa";
 import { AuthContext } from "../context/AuthContext";
+import { ContextMenu } from './ContextMenu';
 
 export function Sidebar({ setFilter, children }) {
   const { username, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const menuRef = useRef(null);
 
   const handleLogout = () => {
     logout();
@@ -16,10 +19,10 @@ export function Sidebar({ setFilter, children }) {
     <div className="aside">
       <div>
         {/* Profile section */}
+        <div>{username}</div>
         <div>{children}</div>
         <hr />
         <div className="main-buttons">
-          {/* Aquí están los botones estáticos */}
           <p className="create-btn" onClick={() => setFilter('all')}>
             <FaThList /> All
           </p>
@@ -33,7 +36,11 @@ export function Sidebar({ setFilter, children }) {
       </div>
 
       <div className="aux-buttons">
-        <p onClick={handleLogout}><FaSignOutAlt size={15} /></p>
+
+        <ContextMenu items={["Config account"]} isVisible={true} menuRef={menuRef}>
+          <FaEye/>
+        </ContextMenu>
+
         <p><FaCogs size={15} /></p>
       </div>
     </div>

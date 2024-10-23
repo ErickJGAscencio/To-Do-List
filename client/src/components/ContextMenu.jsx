@@ -1,7 +1,15 @@
-import { useEffect, useRef } from 'react';
+import { Children, useEffect, useRef, useState } from 'react';
 import { FaEllipsisH } from 'react-icons/fa';
 
-export function ContextMenu({ isVisible, toggleMenu, menuRef, children }) {
+export function ContextMenu({ items, menuRef, children }) {
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleMenu = () => {
+    setIsVisible(!isVisible);
+  };
+
+
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       toggleMenu(false);
@@ -21,13 +29,18 @@ export function ContextMenu({ isVisible, toggleMenu, menuRef, children }) {
   }, [isVisible]);
 
   return (
-    <div className="button-menu" onClick={() => toggleMenu(isVisible)}>
-      <FaEllipsisH />
-      {isVisible && (
-        <div className="context-menu" ref={menuRef}>
-          {children}
-        </div>
-      )}
-    </div>
+    <div>
+    <FaEllipsisH className="button-menu" onClick={toggleMenu} />
+    {isVisible && (
+      <div className="context-menu" ref={menuRef}>
+        {Children.map(children, (child, index) => (
+          <div key={index} className="context-menu-item">
+            <span>{child}</span>
+            <span>{items[index]}</span>
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
   );
 }

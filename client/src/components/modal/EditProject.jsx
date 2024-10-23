@@ -70,6 +70,7 @@ export function EditProject({ project, updateDataProject }) {
   };
 
   const openModal = async () => {
+    console.log("Open modal");
     setColor(project.color);
     setIsOpen(true);
     setIdProject(project.id);
@@ -124,8 +125,10 @@ export function EditProject({ project, updateDataProject }) {
   }
 
   return (
-    <div>
-      <div onClick={openModal}><FaPen /></div>
+    <div >
+      <div onClick={openModal}>
+        <FaPen />
+      </div>
       {isOpen && (
         <div className="modal">
           <div className="modal-content"

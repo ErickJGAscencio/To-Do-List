@@ -6,6 +6,7 @@ import { deleteProject, fetchTasksByProject, updateProject } from '../api/todoli
 import { FaEllipsisH } from 'react-icons/fa';
 import { EditProject } from './modal/EditProject';
 import { Delete } from './modal/Delete';
+import { ContextMenu } from './ContextMenu';
 
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
@@ -39,25 +40,31 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
   };
 
   const setStatusProject = async () => {
-    const updatedData = {
-      is_completed: progress === 100
+    let updatedData = {
+      progress: progress,
+      is_completed: false
     };
 
-    const token = localStorage.getItem("token");
-    try {
-      await updateProject(project.id, updatedData, token);
-    } catch (error) {
-      console.error('Error updating project:', error);
+    if (progress === 100) {
+      updatedData = {
+        progress: progress,
+        is_completed: true
+      };
     }
+
+    const token = localStorage.getItem("token");
+    await updateProject(project.id, updatedData, token);
   };
 
   const calculateProgress = (tasks) => {
     if (tasks.length === 0) return 0;
     const completedTasks = tasks.filter(task => task.is_completed).length;
-    return (completedTasks / tasks.length) * 100;
+    const newProgress = (completedTasks / tasks.length) * 100;
+
+    setProgress(newProgress);
   };
 
-  
+
   useEffect(() => {
     const getAllTasks = async () => {
       const token = localStorage.getItem("token");
@@ -66,11 +73,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
           const response = await fetchTasksByProject(project.id, token);
           if (response.data) {
             setTasks(response.data);
-            const newProgress = calculateProgress(response.data);
-            setProgress(newProgress);
-            if (newProgress !== progress) {
-              setStatusProject(); // Llamar solo si el progreso ha cambiado
-            }
+            calculateProgress(response.data);
           }
         } catch (error) {
           console.error('Error getting tasks:', error);
@@ -81,42 +84,18 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
   }, [project]);
 
   useEffect(() => {
-    setProgress(calculateProgress(tasks));
-    if (progress !== calculateProgress(tasks)) {
-      setStatusProject();
-    }
-  }, [tasks]);
-
-  useEffect(() => {
-    if (isMenuVisible) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuVisible]);
+    setStatusProject();
+  }, [progress])
 
   return (
     <div>
       <div className="card" style={{ backgroundColor: project.color }}>
         <div className="header-card">
           <div className='title-card'>{project.project_name}</div>
-          <div className="button-menu" onClick={toggleMenu}>
-            <FaEllipsisH />
-          </div>
-          {isMenuVisible && (
-            <div className="context-menu" ref={menuRef}>
-              <div className="context-menu-item">
-                <EditProject project={project} updateDataProject={updateDataProject} />
-              </div>
-              <div className="context-menu-item">
-                <Delete name={"project " + project.project_name} deleteMethod={deleteMethod} />
-              </div>
-            </div>
-          )}
+          <ContextMenu items={["Edit", "Delete"]} menuRef={menuRef}>
+            <EditProject project={project} updateDataProject={updateDataProject} />
+            <Delete name={"project " + project.project_name} deleteMethod={deleteMethod} />
+          </ContextMenu>
         </div>
         <div className="click-zone" onClick={() => {
           navigate(`/home/project/${project.id}`);

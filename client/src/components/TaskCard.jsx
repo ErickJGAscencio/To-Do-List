@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaCheckCircle, FaEllipsisH, FaPlus, FaTrash } from 'react-icons/fa';
-import { deleteTask, fetchSubTask, updateSubtask, updateTask } from '../api/todolist.api';
+import { FaCheckCircle } from 'react-icons/fa';
+import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
@@ -10,18 +10,8 @@ import { ContextMenu } from './ContextMenu';
 export function TaskCard({ task, removeTask }) {
   const [subtasks, setSubTasks] = useState([]);
   const [progress, setProgress] = useState(0);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuRef = useRef(null);
 
-  const toggleMenu = () => {
-    setIsMenuVisible(!isMenuVisible);
-  };
-
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setIsMenuVisible(false);
-    }
-  };
 
   const addNewSubTask = (newSubTask) => {
     setSubTasks([...subtasks, newSubTask]);
@@ -39,6 +29,7 @@ export function TaskCard({ task, removeTask }) {
       console.log(data);
       task.task_name = data.task_name;
       task.description = data.description;
+      task.color = data.color;
       setSubTasks(data.subtasks);
       calculateProgress(data.subtasks);
     } else {
@@ -72,10 +63,12 @@ export function TaskCard({ task, removeTask }) {
     const token = localStorage.getItem("token");
     const updatedData = { is_completed: isCompleted };
 
+    console.log("Is Task " + task.task_name + " completed? " + isCompleted);
     try {
       await updateTask(task.id, updatedData, token);
       console.log({
-        "Status task: ": isCompleted,
+        "task-name": task.task_name,
+        "Status task": isCompleted,
         "progress": progress,
       });
     } catch (error) {
@@ -89,12 +82,16 @@ export function TaskCard({ task, removeTask }) {
       setStatusTask(false); // Si no hay subtareas, no está completada
       return;
     }
-    
+
+    console.log("calculateProgress");
+    console.log(subtasks);
     const completedSubtasks = subtasks.filter(subtask => subtask.is_completed).length;
+    console.log(completedSubtasks);
     const newProgress = (completedSubtasks / subtasks.length) * 100;
-    
+
+    console.log("Old progress " + progress);
     setProgress(newProgress);
-    // console.log("1-"+newProgress);
+    console.log("New progress " + newProgress);
 
     // Solo actualiza el estado de la tarea SI ha cambiado
     if (newProgress === 100) {
@@ -122,55 +119,17 @@ export function TaskCard({ task, removeTask }) {
     getAllSubTasks();
   }, [task]);
 
-  // Hook para manejar clics fuera del menú
-  useEffect(() => {
-    if (isMenuVisible) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuVisible]);
-
   return (
     <div className="card-task">
-      <div className="card">
+      <div className="card" style={{ backgroundColor: task.color }}>
         <div className="header-card">
           <div className='title-card'>{task.task_name}</div>
-          <div className="button-menu" onClick={toggleMenu}> <FaEllipsisH /></div>
-          {/* <ContextMenu
-            isVisible={isMenuVisible}
-            toggleMenu={toggleMenu}
-            menuRef={menuRef}
-          >
-            <div className="context-menu-item">
-              <CreateSubTask task={task} addNewSubTask={addNewSubTask} />
-            </div>
-            <div className="context-menu-item">
-              <EditTask task={task} modifySubtaskList={modifySubtaskData} />
-            </div>
-            <div className="context-menu-item">
-              <Delete name={"task " + task.task_name} deleteMethod={deleteMethod} />
-            </div>
-          </ContextMenu> */}
-      
+          <ContextMenu items={["Create", "Edit", "Delete"]} menuRef={menuRef} >
+            <CreateSubTask task={task} addNewSubTask={addNewSubTask} />
+            <EditTask task={task} modifySubtaskList={modifySubtaskData} />
+            <Delete name={"task " + task.task_name} deleteMethod={deleteMethod} />
+          </ContextMenu>
         </div>
-        {isMenuVisible && (
-          <div className="context-menu" ref={menuRef}>
-            <div className="context-menu-item">
-              <CreateSubTask task={task} addNewSubTask={addNewSubTask} />
-            </div>
-            <div className="context-menu-item">
-              <EditTask task={task} modifySubtaskList={modifySubtaskData} />
-            </div>
-            <div className="context-menu-item">
-              <Delete name={"task " + task.task_name} deleteMethod={deleteMethod} />
-            </div>
-          </div>
-        )}
         <div className='content-section'>
           <div className="card-description">
             {task.description}
@@ -193,7 +152,7 @@ export function TaskCard({ task, removeTask }) {
       {subtasks.length > 0 && (
         <div className="content-subtask">
           {subtasks.map((subtask) => (
-            <SubTaskCard key={subtask.id} subtask={subtask} removeSubTask={removeSubTask} modifySubtask={modifySubtaskData} />
+            <SubTaskCard color={task.color} key={subtask.id} subtask={subtask} removeSubTask={removeSubTask} modifySubtask={modifySubtaskData} />
           ))}
         </div>
       )}
