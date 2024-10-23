@@ -109,7 +109,7 @@
 
 /* Menú contextual */
 .context-menu {
-  position: absolute;
+  position: fixed;
   top: 0;
   background-color: #4e4e4e;
   padding: 5px;

@@ -7,13 +7,11 @@ import { CreateTask } from '../components/modal/CreateTask';
 import { TaskCard } from '../components/TaskCard';
 import { AuthContext } from "../context/AuthContext";
 import { fetchTasksByProject } from "../api/todolist.api";
-import { FaClipboardCheck, FaHourglassHalf, FaSearch, FaThList } from "react-icons/fa";
+import { FaArrowLeft, FaClipboardCheck, FaHourglassHalf, FaSearch, FaThList } from "react-icons/fa";
 import { Sidebar } from "../components/Sidebar";
 
 export function ProjectPage() {
   const navigate = useNavigate();
-  const { logout } = useContext(AuthContext);
-  const { setSection } = useContext(AuthContext);
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
   const [projectsFiltered, setProjectsFiltered] = useState([]);
@@ -48,13 +46,11 @@ export function ProjectPage() {
     setFilter("all");
   }, [tasks])
 
-  const sidebarButtons = [
-    { label: 'All', onClick: () => setFilter('all'), icon: FaThList },
-    { label: 'Completed', onClick: () => setFilter('completed'), icon: FaClipboardCheck },
-    { label: 'In Progress', onClick: () => setFilter('inProgress'), icon: FaHourglassHalf }
-  ];
+  const backToHome = () => {
+    navigate('/home');
+  }
 
-  // Filtrar proyectos con base al estado
+  // Filtro proyectos con base al estado
   const setFilter = (filter) => {
     if (filter === "all") {
       setProjectsFiltered(tasks);
@@ -69,7 +65,7 @@ export function ProjectPage() {
     }
   }
 
-  // Filtrar proyectos con base en el término de búsqueda
+  // Filtro proyectos con base en el término de búsqueda
   const getFilteredProjects = () => {
     if (searchTerm.trim() === '') {
       return projectsFiltered;
@@ -84,6 +80,7 @@ export function ProjectPage() {
     <div>
       <div className="main-container">
         <Sidebar setFilter={setFilter}>
+          <button className="button" onClick={backToHome}> <FaArrowLeft/></button>
           <CreateTask id_project={id} addNewTask={addNewTask} />
           <div className="search-bar">
             <FaSearch className="search-icon" />

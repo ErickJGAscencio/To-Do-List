@@ -19,7 +19,7 @@ export function Sidebar({ setFilter, children }) {
     <div className="aside">
       <div>
         {/* Profile section */}
-        <div>{username}</div>
+        <div style={{ color: "white" }}>{username}</div>
         <div>{children}</div>
         <hr />
         <div className="main-buttons">
