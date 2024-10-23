@@ -1,7 +1,8 @@
 // import './EditProject.css'
 import React, { useState, useEffect, useRef } from 'react';
-import { FaCircle, FaPalette, FaPen } from 'react-icons/fa';
+import { FaCircle, FaPalette, FaPen, FaPlus, FaTrash } from 'react-icons/fa';
 import { fetchTasksByProject, updateProject } from '../../api/todolist.api';
+import { ContextMenuColors } from '../ContextMenuColors';
 
 export function EditProject({ project, updateDataProject }) {
   const [idProject, setIdProject] = useState("");
@@ -15,34 +16,7 @@ export function EditProject({ project, updateDataProject }) {
   const [color, setColor] = useState();
 
 
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuRef = useRef(null);
-
-  const toggleMenu = () => {
-    console.log(color);
-    setIsMenuVisible(!isMenuVisible);
-  };
-
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setIsMenuVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isMenuVisible) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuVisible]);
-
-
-
 
   useEffect(() => {
     async function getAllTasks() {
@@ -114,12 +88,6 @@ export function EditProject({ project, updateDataProject }) {
     }
   };
 
-  const colors1 = ['#787878', '#C19F1A', '#3357FF', '#1E930E', '#177CB7'];
-
-  const colors2 = ['#B51495', '#D9D9D9', '#E1BB23', '#4ADC37', '#DD40BE'];
-
-  const colors3 = ['#D6C376', '#81D676', '#76B3D6', '#D676C3'];
-
   const setSelectedColor = (color) => {
     setColor(color);
   }
@@ -138,42 +106,7 @@ export function EditProject({ project, updateDataProject }) {
           >
             <div className="modal-header">
               <h2>Edit project</h2>
-              <p className='button' onClick={toggleMenu}><FaPalette /></p>
-
-
-              {isMenuVisible && (
-                <div className="context-menu" ref={menuRef}>
-                  <p>Select color</p>
-                  {colors1.map((color, index) => (
-                    <div className="context-menu-item" onClick={toggleMenu}>
-                      <FaCircle
-                        key={index}
-                        style={{ color: color }}
-                        onClick={() => setSelectedColor(color)}
-                      />
-                    </div>
-                  ))}
-                  {colors2.map((color, index) => (
-                    <div className="context-menu-item" onClick={toggleMenu}>
-                      <FaCircle
-                        key={index}
-                        style={{ color: color }}
-                      onClick={() => setSelectedColor(color)}
-                      />
-                    </div>
-                  ))}
-                  {colors3.map((color, index) => (
-                    <div className="context-menu-item" onClick={toggleMenu}>
-                      <FaCircle
-                        key={index}
-                        style={{ color: color }}
-                      onClick={() => setSelectedColor(color)}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
+              <ContextMenuColors menuRef={menuRef} setSelectedColor={setSelectedColor} />
             </div>
             <div className="modal-body">
               <div className='left-section'>
@@ -188,7 +121,7 @@ export function EditProject({ project, updateDataProject }) {
                 <div className='modal-tasks'>
                   <h3 className="label-input">Task's project</h3>
                   <div className='add-controller'>
-                    <p className="button" onClick={addTask}>Add</p>
+                    <p className="button" onClick={addTask}><FaPlus/></p>
                     <input
                       className='modal-name-input'
                       type="text"
@@ -202,7 +135,7 @@ export function EditProject({ project, updateDataProject }) {
                     {tasks.map((task, index) => (
                       <div key={task.id || index} className='task-item'>
                         {task.task_name || task}
-                        <p className="button" onClick={() => removeTask(index)}>X</p>
+                        <p className="button" onClick={() => removeTask(index)}><FaTrash/></p>
                       </div>
                     ))}
                   </div>

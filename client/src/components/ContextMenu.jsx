@@ -1,7 +1,7 @@
 import { Children, useEffect, useRef, useState } from 'react';
 import { FaEllipsisH } from 'react-icons/fa';
 
-export function ContextMenu({ items, menuRef, children }) {
+export function ContextMenu({ mode, items, menuRef, children }) {
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -30,17 +30,17 @@ export function ContextMenu({ items, menuRef, children }) {
 
   return (
     <div>
-    <FaEllipsisH className="button-menu" onClick={toggleMenu} />
-    {isVisible && (
-      <div className="context-menu" ref={menuRef}>
+      <FaEllipsisH className="button-menu" onClick={toggleMenu} />
+      {isVisible && (
+        <div className="context-menu" ref={menuRef}>
         {Children.map(children, (child, index) => (
           <div key={index} className="context-menu-item">
             <span>{child}</span>
-            <span>{items[index]}</span>
+            <span>{items[index] || null}</span>
           </div>
         ))}
       </div>
-    )}
-  </div>
+      )}
+    </div>
   );
 }

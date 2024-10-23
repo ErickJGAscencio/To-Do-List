@@ -4,6 +4,8 @@ import { FaCircle, FaPalette, FaTrash } from 'react-icons/fa';
 import { FaPen } from 'react-icons/fa';
 
 import { fetchSubTask, updateTask } from '../../api/todolist.api';
+import { ContextMenu } from '../ContextMenu';
+import { ContextMenuColors } from '../ContextMenuColors';
 
 export function EditTask({ task, modifySubtaskList }) {
   const [idTask, setIdTask] = useState("");
@@ -19,29 +21,6 @@ export function EditTask({ task, modifySubtaskList }) {
 
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuRef = useRef(null);
-
-  const toggleMenu = () => {
-    console.log(color);
-    setIsMenuVisible(!isMenuVisible);
-  };
-
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setIsMenuVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isMenuVisible) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuVisible]);
 
 
 
@@ -108,15 +87,6 @@ export function EditTask({ task, modifySubtaskList }) {
       console.error('Error updating task:', error);
     }
   };
-
-
-
-  const colors1 = ['#787878', '#C19F1A', '#3357FF', '#1E930E', '#177CB7'];
-
-  const colors2 = ['#B51495', '#D9D9D9', '#E1BB23', '#4ADC37', '#DD40BE'];
-
-  const colors3 = ['#D6C376', '#81D676', '#76B3D6', '#D676C3'];
-
   const setSelectedColor = (color) => {
     setColor(color);
   }
@@ -129,7 +99,6 @@ export function EditTask({ task, modifySubtaskList }) {
 
       {isOpen && (
         <div className="modal">
-
           <div className="modal-content"
             style={{
               backgroundImage: `linear-gradient(to bottom, #2D2D2D, ${color})`
@@ -137,49 +106,9 @@ export function EditTask({ task, modifySubtaskList }) {
           >
             <div className="modal-header">
               <h1>Edit task</h1>
-              <p className='button' onClick={toggleMenu}><FaPalette /></p>
-
-
               
-
-{isMenuVisible && (
-                <div className="context-menu" ref={menuRef}>
-                  <p>Select color</p>
-                  {colors1.map((color, index) => (
-                    <div className="context-menu-item" onClick={toggleMenu}>
-                      <FaCircle
-                        key={index}
-                        style={{ color: color }}
-                        onClick={() => setSelectedColor(color)}
-                      />
-                    </div>
-                  ))}
-                  {colors2.map((color, index) => (
-                    <div className="context-menu-item" onClick={toggleMenu}>
-                      <FaCircle
-                        key={index}
-                        style={{ color: color }}
-                      onClick={() => setSelectedColor(color)}
-                      />
-                    </div>
-                  ))}
-                  {colors3.map((color, index) => (
-                    <div className="context-menu-item" onClick={toggleMenu}>
-                      <FaCircle
-                        key={index}
-                        style={{ color: color }}
-                      onClick={() => setSelectedColor(color)}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-
-
-
-
-
-
+              <ContextMenuColors menuRef={menuRef} setSelectedColor={setSelectedColor} />
+                
             </div>
             <div className="modal-body">
               <div className='left-section'>

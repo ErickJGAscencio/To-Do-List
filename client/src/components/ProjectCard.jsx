@@ -14,18 +14,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
   const [progress, setProgress] = useState(0);
   const { setSection } = useContext(AuthContext);
 
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuRef = useRef(null);
-
-  const toggleMenu = () => {
-    setIsMenuVisible(!isMenuVisible);
-  };
-
-  const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setIsMenuVisible(false);
-    }
-  };
 
   const deleteMethod = async () => {
     const token = localStorage.getItem("token");
@@ -99,7 +88,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
         </div>
         <div className="click-zone" onClick={() => {
           navigate(`/home/project/${project.id}`);
-          setSection(project.project_name);
+          // setSection(project.project_name);
         }}>
           <div className="content-section">
             <div className="card-description">
