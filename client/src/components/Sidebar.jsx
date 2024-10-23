@@ -35,13 +35,11 @@ export function Sidebar({ setFilter, children }) {
         </div>
       </div>
 
-      <div className="aux-buttons">
-
+      <div className="aux-buttons" >
         <ContextMenu items={["Config account"]} isVisible={true} menuRef={menuRef}>
-        <p><FaCogs size={15} /></p>
+          <FaEye size={15} />
         </ContextMenu>
         <p onClick={handleLogout}><FaSignOutAlt size={15} /></p>
-  
       </div>
     </div>
   );

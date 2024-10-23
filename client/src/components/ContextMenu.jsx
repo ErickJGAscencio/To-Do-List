@@ -1,7 +1,7 @@
 import { Children, useEffect, useRef, useState } from 'react';
 import { FaEllipsisH } from 'react-icons/fa';
 
-export function ContextMenu({ mode, items, menuRef, children }) {
+export function ContextMenu({ items, menuRef, children }) {
 
   const [isVisible, setIsVisible] = useState(false);
 

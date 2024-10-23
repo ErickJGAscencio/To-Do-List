@@ -110,27 +110,19 @@
 /* Menú contextual */
 .context-menu {
   position: absolute;
-  top: 10px;  
-  left: 184px;
+  top: 0;
   background-color: #4e4e4e;
   padding: 5px;
   width: auto;
   
-  border: solid;
-  border-width: 2px;
-  border-radius: 8px;
-  border-top: none;
-  border-radius: 5px 5px 5px 5px;
-  border-color: #1c1c1c;
-  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); */
+  border-radius: 5px;
   z-index: 10;
 }
 
 .context-menu-item {
   display: flex;
-  padding: 8px 10px;
+  padding: 5px 10px;
   align-items: center;
-  height: 25px;
   gap: 10px;
   color: white;
   cursor: pointer;
@@ -139,5 +131,5 @@
 
 .context-menu-item:hover {
   background-color: #6e6e6e;
-  border-radius: 50px;
+  border-radius: 5px;
 }

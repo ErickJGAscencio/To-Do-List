@@ -1,3 +1,4 @@
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -46,6 +47,21 @@ export function HomePage() {
     getAllProjects();
   }, []);
 
+
+
+  // Función que se llama cuando se termina el drag-and-drop
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return; // Si el elemento no se suelta en un lugar válido
+
+    const reorderedProjects = Array.from(projects);
+    const [movedProject] = reorderedProjects.splice(result.source.index, 1); // Quita el proyecto movido
+    reorderedProjects.splice(result.destination.index, 0, movedProject); // Inserta el proyecto en la nueva posición
+
+    setProjects(reorderedProjects); // Actualiza el estado con el nuevo orden
+  };
+
+
+
   return (
     <div>
       <div className="main-container">
@@ -75,4 +91,54 @@ export function HomePage() {
       </div>
     </div>
   );
+
+  // return (
+  //   <div>
+  //     <DragDropContext onDragEnd={handleOnDragEnd}>
+  //       <div className="main-container">
+
+  //         <Sidebar setFilter={setFilter}>
+  //           <CreateProject addNewProject={addNewProject} />
+  //           <div className="search-bar">
+  //             <FaSearch className="search-icon" />
+  //             <input
+  //               type="text"
+  //               placeholder="Search projects..."
+  //               className="search-input"
+  //               value={searchTerm}
+  //               onChange={(e) => handleSearch(e.target.value)}
+  //             />
+  //           </div>
+  //         </Sidebar>
+
+  //         <Droppable droppableId="projects">
+  //           {(provided) => (
+  //             <div {...provided.droppableProps} ref={provided.innerRef}>
+  //               {filteredProjects.map((project, index) => (
+  //                 <Draggable key={project.id} draggableId={String(project.id)} index={index}>
+  //                   {(provided) => (
+  //                     <div
+  //                       ref={provided.innerRef}
+  //                       {...provided.draggableProps}
+  //                       {...provided.dragHandleProps}
+  //                     >
+  //                       <ProjectCard
+  //                         project={project}
+  //                         updateDataProject={updateDataProject}
+  //                         removeProject={removeProject}
+  //                       />
+  //                     </div>
+  //                   )}
+  //                 </Draggable>
+  //               ))}
+  //               {provided.placeholder}
+  //             </div>
+  //           )}
+  //         </Droppable>
+
+  //       </div>
+  //     </DragDropContext>
+
+  //   </div>
+  // );
 }
