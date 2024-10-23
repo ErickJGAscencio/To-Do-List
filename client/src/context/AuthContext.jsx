@@ -7,14 +7,13 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [username, setUsername] = useState(null);
-  const [section, setSection] = useState("Home");
 
   useEffect(() => {
     async function checkLoginStatus() {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          console.log("Si hay token: " + token);
+          // console.log("Si hay token: " + token);
           const res = await getUserProfile(token);
           setUsername(res.data.username);
           setIsLoggedIn(true);
@@ -50,7 +49,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, username, section, setSection, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, username, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

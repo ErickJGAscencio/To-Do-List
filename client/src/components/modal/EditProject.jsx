@@ -1,7 +1,8 @@
-import './EditProject.css'
-import React, { useState, useEffect } from 'react';
-import { FaPalette, FaPen } from 'react-icons/fa';
+// import './EditProject.css'
+import React, { useState, useEffect, useRef } from 'react';
+import { FaCircle, FaPalette, FaPen, FaPlus, FaTrash } from 'react-icons/fa';
 import { fetchTasksByProject, updateProject } from '../../api/todolist.api';
+import { ContextMenuColors } from '../ContextMenuColors';
 
 export function EditProject({ project, updateDataProject }) {
   const [idProject, setIdProject] = useState("");
@@ -11,6 +12,11 @@ export function EditProject({ project, updateDataProject }) {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+
+  const [color, setColor] = useState();
+
+
+  const menuRef = useRef(null);
 
   useEffect(() => {
     async function getAllTasks() {
@@ -34,10 +40,12 @@ export function EditProject({ project, updateDataProject }) {
     setIsOpen(false);
     setTitleProject("");
     setDescriptionProject("");
-    setTasks([]);
+    // setTasks([]);
   };
 
   const openModal = async () => {
+    console.log("Open modal");
+    setColor(project.color);
     setIsOpen(true);
     setIdProject(project.id);
     setTitleProject(project.project_name);
@@ -62,6 +70,7 @@ export function EditProject({ project, updateDataProject }) {
       const newData = {
         project_name: titleProject,
         description: descripcionProject,
+        color: color,
         tasks: tasks
       };
 
@@ -79,57 +88,73 @@ export function EditProject({ project, updateDataProject }) {
     }
   };
 
-  return (
-    <div>
-      <FaPen onClick={openModal} />
+  const setSelectedColor = (color) => {
+    setColor(color);
+  }
 
+  return (
+    <div >
+      <div onClick={openModal}>
+        <FaPen />
+      </div>
       {isOpen && (
         <div className="modal">
-          <div className="modal-content">
-            <div className='left-section'>
-              <input
-                className='pname-input'
-                type="text"
-                placeholder="Project Name"
-                value={titleProject}
-                onChange={(e) => setTitleProject(e.target.value)}
-              />
-              <div className='tasks'>
-                <div className='add-controller'>
-                  <input
-                    type="text"
-                    placeholder="Task Name"
-                    value={newTask}
-                    onChange={(e) => setNewTask(e.target.value)}
-                  />
-                  <button onClick={addTask}>Add</button>
+          <div className="modal-content"
+            style={{
+              backgroundImage: `linear-gradient(to bottom, #2D2D2D, ${color})`
+            }}
+          >
+            <div className="modal-header">
+              <h2>Edit project</h2>
+              <ContextMenuColors menuRef={menuRef} setSelectedColor={setSelectedColor} />
+            </div>
+            <div className="modal-body">
+              <div className='left-section'>
+                <h1 className='title-input'>Project name</h1>
+                <input
+                  className='modal-name-input'
+                  type="text"
+                  placeholder="eg. BioApp"
+                  value={titleProject}
+                  onChange={(e) => setTitleProject(e.target.value)}
+                />
+                <div className='modal-tasks'>
+                  <h3 className="label-input">Task's project</h3>
+                  <div className='add-controller'>
+                    <p className="button" onClick={addTask}><FaPlus/></p>
+                    <input
+                      className='modal-name-input'
+                      type="text"
+                      placeholder="Task Name"
+                      value={newTask}
+                      onChange={(e) => setNewTask(e.target.value)}
+                    />
+                  </div>
+                  <h3 className="label-input">Task List</h3>
+                  <div className='task-container'>
+                    {tasks.map((task, index) => (
+                      <div key={task.id || index} className='task-item'>
+                        {task.task_name || task}
+                        <p className="button" onClick={() => removeTask(index)}><FaTrash/></p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className='task-container'>
-                  {tasks.map((task, index) => (
-                    <div key={task.id || index} className='task-item'>
-                      {task.task_name || task}
-                      <button onClick={() => removeTask(index)}>X</button>
-                    </div>
-                  ))}
+              </div>
+              <div className='right-section'>
+                <div className='description'>
+                  <h1 className='title-input'>Description</h1>
+                  <textarea
+                    placeholder="Project Description"
+                    value={descripcionProject}
+                    onChange={(e) => setDescriptionProject(e.target.value)}
+                  />
                 </div>
               </div>
             </div>
-            <div className='right-section'>
-              <button className='btn-color'>
-                <FaPalette />
-              </button>
-              <div className='description'>
-                <h1>Description</h1>
-                <textarea
-                  placeholder="Project Description"
-                  value={descripcionProject}
-                  onChange={(e) => setDescriptionProject(e.target.value)}
-                />
-              </div>
-              <div className='buttons-action'>
-                <button onClick={pdtProject}>Edit</button>
-                <button onClick={closeModal}>Cancel</button>
-              </div>
+            <div className="modal-footer">
+              <p className="button" onClick={pdtProject}>Save</p>
+              <p className="button" onClick={closeModal}>Cancel</p>
             </div>
           </div>
         </div>

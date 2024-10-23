@@ -2,7 +2,7 @@ import { FaPalette, FaPlus } from 'react-icons/fa';
 import { createSubTask } from '../../api/todolist.api';
 import { useState } from 'react';
 
-export function CreateSubTask({ task, addNewSubTask}) {
+export function CreateSubTask({ task, addNewSubTask }) {
   const [subtask_name, setsubtask_name] = useState("");
   const [descripcionSubTask, setDescriptionSubTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +16,7 @@ export function CreateSubTask({ task, addNewSubTask}) {
     setsubtask_name("");
     setDescriptionSubTask("");
   };
-  
+
   const sendRequest = async () => {
     if (!subtask_name) {
       alert("Subtask name is required.");
@@ -36,41 +36,45 @@ export function CreateSubTask({ task, addNewSubTask}) {
 
   return (
     <div>
-      {/* <button onClick={openModal}><FaPlus /></button> */}
-      <FaPlus onClick={openModal}/>
+      <FaPlus onClick={openModal} />
       {isOpen && (
         <div className="modal">
           <div className="modal-content">
-            <div className='left-section'>
-              {/* <p>{task.task_name}</p> */}
-              <p>ADD NEW SUBTASK</p>
-              <div className='tasks'>
-                <div className='add-controller'>
-                  <input
-                    type="text"
-                    placeholder="Task Name"
-                    value={subtask_name}
-                    onChange={(e) => setsubtask_name(e.target.value)}
+            <div className="modal-header">
+              <h1>Create new subtask</h1>
+              {/* <p className='button'><FaPalette /></p> */}
+            </div>
+            <div className="modal-body">
+              <div className='left-section'>
+                <h3 className='title-input'>Subtask name</h3>
+                <div className='tasks'>
+                  <div className='add-controller'>
+                    {/* <p className="button" onClick={addNewSubTask}>Add</p> */}
+                    <input
+                      className='modal-name-input'
+                      type="text"
+                      placeholder="e.g Do something"
+                      value={subtask_name}
+                      onChange={(e) => setsubtask_name(e.target.value)}
+                    />
+                  </div>
+                  {/* <h3 className="label-input">Subtask List</h3> */}
+                </div>
+              </div>
+              <div className='right-section'>
+                <div className='description'>
+                  <h3 className='title-input'>Description</h3>
+                  <textarea
+                    placeholder="Project Description"
+                    value={descripcionSubTask}
+                    onChange={(e) => setDescriptionSubTask(e.target.value)}
                   />
                 </div>
               </div>
             </div>
-            <div className='right-section'>
-            <button className='btn-color'>
-              <FaPalette />
-            </button>
-              <div className='description'>
-                <h1>Description</h1>
-                <textarea
-                  placeholder="Project Description"
-                   value={descripcionSubTask}
-                   onChange={(e) => setDescriptionSubTask(e.target.value)}
-                />
-              </div>
-              <div className='buttons-action'>
-                <button onClick={sendRequest}>Create</button>
-                <button onClick={closeModal}>Cancel</button>
-              </div>
+            <div className='modal-footer'>
+              <p className='button' onClick={sendRequest}>Create</p>
+              <p className='button' onClick={closeModal}>Cancel</p>
             </div>
           </div>
         </div>
