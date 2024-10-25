@@ -5,6 +5,19 @@
   padding: 20px;
   gap: 15px;
   overflow-x: auto;
-  width: 86.5%; /*DEJARLO ASÍ????*/
-  height: calc(100vh - 72px);
+  width: 86.5%;
+  height: calc(100vh - 70px);
+}
+
+/*MediaQuerys*/
+@media (max-width: 768px) {
+  .main-tasks {
+    display: flex;
+    flex-wrap: 20px;
+    padding: 20px;
+    gap: 15px;
+    overflow-x: auto;
+    width: 55%;
+    height: calc(100vh - 70px);
+  }
 }

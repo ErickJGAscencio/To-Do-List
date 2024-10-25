@@ -1,19 +1,22 @@
 import './LoginPage.css';
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { LoadingSpinner } from '../components/LoadingSpinner'; // Importa el componente LoadingSpinner
 
 export function LogInPage() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    if (username|| password) {
-      login(username, password);
+    setLoading(true);
+    if (username && password) { // Cambié '||' a '&&' para asegurar que ambos campos están llenos
+      login(username, password).finally(() => {
+        setLoading(false);
+      });
     }
   };
 
@@ -33,14 +36,16 @@ export function LogInPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleLogin}>Log In</button>
-
+        <button onClick={handleLogin} disabled={loading}>Log In</button>
+        
+        {loading && <LoadingSpinner />}
+        
         <div>
           <h3>Do you haven't an account?
             <span
               style={{ textDecoration: 'underline', cursor: "pointer" }}
               onClick={() => navigate('/register')}
-              >
+            >
               Register
             </span>
           </h3>

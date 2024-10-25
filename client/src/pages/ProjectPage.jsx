@@ -79,7 +79,7 @@ export function ProjectPage() {
     <div>
       <div className="main-container">
         <Sidebar setFilter={setFilter}>
-          <p className="create-btn" onClick={backToHome}> <FaArrowLeft/> Projects</p>
+          {/* <p className="create-btn" onClick={backToHome}> <FaArrowLeft/> Projects</p> */}
           <CreateTask id_project={id} addNewTask={addNewTask} />
           <div className="search-bar">
             <FaSearch className="search-icon" />

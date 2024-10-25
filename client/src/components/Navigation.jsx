@@ -2,7 +2,7 @@ export function Navigation({ filter }) {
 
   return (
     <div className="nav">
-      <h2>Workloud</h2>
+      <h2>WorkCloud</h2>
       {/* <div className="profile">
         Hi {isLoggedIn ? username : 'guest'}!
       </div> */}
