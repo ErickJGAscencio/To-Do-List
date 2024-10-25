@@ -25,6 +25,7 @@ function App() {
         {isLoggedIn ? (
           <>
             <Route path='*' element={<Navigate to="/home" />} />
+            <Route path='/login' element={<Navigate to="/home" />} />
             <Route path='/home' element={<HomePage filter={filter} />} />
             <Route path='/home/project/:id' element={<ProjectPage />} />
           </>
