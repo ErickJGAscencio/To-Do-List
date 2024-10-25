@@ -24,13 +24,13 @@ function App() {
       <Routes>
         {isLoggedIn ? (
           <>
-            {/* <Route path='*' element={<Navigate to="/home" />} /> */}
+            <Route path='*' element={<Navigate to="/home" />} />
             <Route path='/home' element={<HomePage filter={filter} />} />
             <Route path='/home/project/:id' element={<ProjectPage />} />
           </>
         ) : (
           <>
-            {/* <Route path='*' element={<Navigate to="/login" />} /> */}
+            <Route path='*' element={<Navigate to="/login" />} />
             <Route path='/login' element={<LogInPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/home/project/:id' element={<ProjectPage />} />
