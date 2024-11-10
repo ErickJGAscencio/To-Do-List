@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 import { CreateTask } from '../components/modal/CreateTask';
 import { TaskCard } from '../components/TaskCard';
 import { fetchTasksByProject } from "../api/todolist.api";
-import { FaArrowLeft, FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaEdit, FaPlus, FaSearch } from "react-icons/fa";
 import { Sidebar } from "../components/Sidebar";
 import TitleLabel from "../components/atoms/TitleLabel";
 import SubTitleLabel from "../components/atoms/SubTitleLabel";
@@ -78,54 +78,97 @@ export function ProjectPage() {
   }
 
   return (
-    <div className="main-main-container">
-      <div className="main-container">
+    <div className="content">
+      <div className="main-content-items">
         <div className="menu">
-          <button>back</button>
-          <TitleLabel label={"Website Redesing"} />
-          <span>in progress</span>
-          <button>Edit project</button>
+          <div>
+            <button>back</button>
+            <TitleLabel label={"Website Redesing"} />
+            <span>in progress</span>
+          </div>
+          <div>
+            <button><FaEdit />Edit project</button>
+          </div>
         </div>
 
-        <div className="card-section">
-          <p>Project Description</p>
-          <SubTitleLabel label={'Deasjico j ajsd sjdias isa dskdjasdjo asjd sajdsadjas diasjdi saji si jisa djsia djias jsiadjsiadjisadsa sidsahdsdhas dhsa d.a sdjasi djas as as,d asd asd, as-dasdas dasio.'} />
-        </div>
+        <div className="cards-sections">
+          <div className="card-section">
+            <p>Project Description</p>
+            <SubTitleLabel label={'Deasjico j ajsd sjdias isa dskdjasdjo asjd sajdsadjas diasjdi saji si jisa djsia djias jsiadjsiadjisadsa sidsahdsdhas dhsa d.a sdjasi djas as as,d asd asd, as-dasdas dasio.'} />
+          </div>
 
-        <div className="card-section">
-          <p>Overall Progress</p>
-          <div className="progress-section">
-            <div className="progress-bar">
-              <div className="progress-bar-fill"
-                style={{
-                  // width: `${progress}%`,
-                  width: '50%'
-                }}></div>
+          <div className="card-section">
+            <p>Overall Progress</p>
+            <div className="progress-section">
+              <div className="progress-bar">
+                <div className="progress-bar-fill"
+                  style={{
+                    // width: `${progress}%`,
+                    width: '50%'
+                  }}></div>
+              </div>
+            </div>
+            <SubTitleLabel label={'50% completed'} />
+          </div>
+
+          <div className="card-section">
+            <div className="menu">
+              <div>
+                <TitleLabel label={"Task"} />
+              </div>
+              <div>
+                <button><FaPlus />New Task</button>
+              </div>
+            </div>
+            <div className="main-tasks">
+              {getFilteredProjects().map((task) => (
+                <TaskCard key={task.id} task={task} removeTask={removeTask} />
+              ))}
             </div>
           </div>
-            <SubTitleLabel label={'50% completed'}/>
-        </div>
 
-        <div className="card-section">
-          <p>Tasks</p>
-          <div className="main-tasks">
-            {getFilteredProjects().map((task) => (
-              <TaskCard key={task.id} task={task} removeTask={removeTask} />
-            ))}
+          <div className="card-section">
+            <p>Commnets</p>
           </div>
         </div>
+      </div>
+      <div className="side-bar-project">
+        <div className="cards-sections">
+          <div className="card-section">
+            <TitleLabel label={'Documents & Files'} />
+            <SubTitleLabel label={'Deasjico j ajsd sjdias isa dskdjasdjo asjd sajdsadjas diasjdi saji si jisa djsia djias jsiadjsiadjisadsa sidsahdsdhas dhsa d.a sdjasi djas as as,d asd asd, as-dasdas dasio.'} />
+          </div>
 
-        <div className="card-section">
-          <p>Commnets</p>
+          <div className="card-section">
+            <TitleLabel label={'Team Members'} />
+            <div className="progress-section">
+              <div className="progress-bar">
+                <div className="progress-bar-fill"
+                  style={{
+                    // width: `${progress}%`,
+                    width: '50%'
+                  }}></div>
+              </div>
+            </div>
+            <SubTitleLabel label={'50% completed'} />
+          </div>
+
+          <div className="card-section">
+            <TitleLabel label={'Project Statics'} />
+          </div>
         </div>
-
+        <div className="control-buttons">
+          <div>
+            <button><FaPlus />New Task</button>
+          </div>
+          <div>
+            <button><FaPlus />Generate Report</button>
+          </div>
+          <div>
+            <button><FaPlus />Archive Project</button>
+          </div>
+        </div>
       </div>
-      <div>
-        <Sidebar setFilter={setFilter}>
-
-        </Sidebar>
-      </div>
-
     </div>
   )
 }

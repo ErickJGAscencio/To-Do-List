@@ -62,8 +62,8 @@ export function HomePage() {
 
 
   return (
-    <div className="main-main-container">
-      <div className="main-container">
+    <div className="content">
+      <div className="main-content-items">
         <div className="menu">
           <div>
             <p>Projects</p>
@@ -85,8 +85,7 @@ export function HomePage() {
           ))}
         </div>
       </div>
-      <div>
-        <Sidebar setFilter={setFilter}>
+      <Sidebar setFilter={setFilter}>
           <p>Dashboard</p>
           <div className='card-section'>
             <h2>3</h2>
@@ -117,7 +116,6 @@ export function HomePage() {
             </div>
           </div>
         </Sidebar>
-      </div>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
 import { SubTaskCard } from './SubTaskCard';
 import { ContextMenu } from './ContextMenu';
+import SubTitleLabel from './atoms/SubTitleLabel';
 
 export function TaskCard({ task, removeTask }) {
   const [subtasks, setSubTasks] = useState([]);
@@ -130,17 +131,21 @@ export function TaskCard({ task, removeTask }) {
   return (
     <div className="card-task">
       <div className='card-task-info'>
-        <FaCheckCircle />
-        <div>{task.task_name}</div>
-        <div className='due-date' >Due Date: 2023-12-31</div>
-        <div onClick={toggleDescriptionVisibility} >
-          {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}
+        <div>
+          <FaCheckCircle />
+          <div>{task.task_name}</div>
+        </div>
+        <div>
+          <div className='due-date' >Due Date: 2023-12-31</div>
+          <div onClick={toggleDescriptionVisibility} >
+            {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}
+          </div>
         </div>
       </div>
       {isDescriptionVisible && (
         <div className='card-task-description'>
+          <SubTitleLabel label={task.description} />
 
-          {task.description}
           <FaEdit />
         </div>
       )}

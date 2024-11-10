@@ -28,19 +28,19 @@ html, body {
   font-size: 15px
 }
 
-.main-main-container{
+.content{
   display: flex;
+  justify-content: space-between;
 }
 
-.main-container{
+.main-content-items{
   display: flex;
   flex-direction: column;
-  width: 96%; 
+  width: 80%; 
   height: 95vh ;
-  overflow: hidden;
+  overflow: auto;
   padding-left: 3%;
   padding-right: 1%;
-  overflow-y: auto;
 }
 
 .menu{
@@ -66,15 +66,27 @@ html, body {
 }
 
 .aside {
+  width: 20%;
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: calc(100vh - 17%);
   padding: 20px;
-  width: 200px;
   transition: width 0.3s ease;
   box-shadow: 1px 10px 10px rgba(0, 0, 0, 0.2); /* Desplazamiento horizontal, vertical, desenfoque, color */
+  overflow: auto;
+}
+
+.side-bar-project{
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 17%);
+  padding: 20px;
+  transition: width 0.3s ease;
+  overflow-y: auto;
 }
 
 .aside .card-section{
@@ -84,17 +96,9 @@ html, body {
   padding-left: 20px;
   padding-right: 20px;
 }
+
 .deadline-section p{
   color: #7d7d7d;
-}
-
-.subtitle-label{
-  font-size: 10px;
-}
-
-.deadline-list{
-  display: flex;
-  justify-content: space-between;
 }
 
 .aside .card-section h2{
@@ -107,40 +111,15 @@ html, body {
   font-size: 12px;
 }
 
-.search-bar {
+.subtitle-label{
+  font-size: 10px;
+}
+
+.deadline-list{
   display: flex;
-  background-color: white;
-  border-radius: 50px;
-  align-items: center;
-  width: 100%;
+  justify-content: space-between;
 }
 
-.search-icon {
-  color: #0884c4;
-  margin-left: 5px;
-  width: 10%;
-}
-
-.search-input {
-  border: none;
-  outline: none;
-  font-size: 12px;
-  border-radius: 20px;
-  padding: 5px;
-  width: 100%;
-  color: #0884c4;
-}
-
-.aside .aux-buttons{
-  display: flex;
-  flex-direction: column;
-  margin: 10px;
-  gap: 5px;
-}
-
-.main-filter-contain{
-  width: 100%;
-}
 
 .main {
   padding-top: 20px;
@@ -152,9 +131,15 @@ html, body {
   overflow-x: hidden;
 }
 
+.cards-sections{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .card-section{
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 5px;
   border: .5px solid #d6d6d6;
   padding: 20px;
   color: #1E1E1E;
@@ -174,7 +159,32 @@ html, body {
   padding-bottom: 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
+
+.control-buttons{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.control-buttons button{
+  width: 100%;
+  background-color: #1E1E1E;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.control-buttons button:hover{
+  background-color: #ffffff;
+  color: #1E1E1E;
+  cursor: pointer;
+}
+
 
 /* ---MODAL--- */
 .modal {
