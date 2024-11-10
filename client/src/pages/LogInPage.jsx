@@ -13,7 +13,7 @@ export function LogInPage() {
 
   const handleLogin = () => {
     setLoading(true);
-    if (username && password) { // Cambié '||' a '&&' para asegurar que ambos campos están llenos
+    if (username && password) {
       login(username, password).finally(() => {
         setLoading(false);
       });
@@ -23,32 +23,32 @@ export function LogInPage() {
   return (
     <div className="container">
       <div className="main-content">
-        <h1>LogIn</h1>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleLogin} disabled={loading}>Log In</button>
-        
-        {loading && <LoadingSpinner />}
-        
         <div>
-          <h3>Do you haven't an account?
-            <span
-              style={{ textDecoration: 'underline', cursor: "pointer" }}
-              onClick={() => navigate('/register')}
-            >
-              Register
-            </span>
-          </h3>
+          <h1>Login</h1>
+          <p className='label-input'>User/Email</p>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <p className='label-input'>Password</p>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className='btn-login'>
+          {loading && <LoadingSpinner />}
+          <button onClick={handleLogin} disabled={loading}>Login</button>
+          <div>
+            <p>Do you haven't an account?
+              <span onClick={() => navigate('/register')}
+              >
+                click here
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>

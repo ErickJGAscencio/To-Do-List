@@ -1,40 +1,56 @@
 .container {
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
   height: 100vh;
-  background-color: #0884c4;
 }
 
 .main-content {
-  background-color: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  background-color: #FFFFFF;
+  margin: 50px;
+  width: 250px;
+  height: 80vh;
+  border-radius: 5px;
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
 }
 
 .main-content h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 1.5rem;
+  color: #1E1E1E;
 }
 
+.label-input {
+  color: #1E1E1E;
+  height: auto;
+} 
+
 .main-content input {
-  width: 94%;
-  padding: 12px;
-  margin-bottom: 15px;
+  width: 95%;
+  padding: 3px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  font-size: 1rem;
+}
+
+input[type="text"],
+input[type="password"] {
+  font-size: .9em;
+  color: #1E1E1E;
+}
+
+.btn-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .main-content button {
-  width: 100%;
-  padding: 12px;
-  background-color: #686868;
+  width: 100px;
+  padding: 5px;
+  background-color: #3B82F6;
   color: white;
   border: none;
   border-radius: 5px;
@@ -47,16 +63,16 @@
   background-color: #363636;
 }
 
-.main-content h3 {
-  font-size: 1rem;
-  margin-top: 20px;
-  color: #555;
+.main-content p {
+  font-size: .8rem;
+  color: #979797;
 }
 
-.main-content h3 span {
-  color: #686868;
+.main-content p span {
+  color: #979797;
   cursor: pointer;
   font-weight: bold;
+  text-decoration: underline;
 }
 
 .main-content h3 span:hover {
@@ -70,10 +86,16 @@
   width: 40px;
   height: 40px;
   animation: spin 1s linear infinite;
-  margin: 20px auto; /* Centrar el spinner */
+  margin: 20px auto;
+  /* Centrar el spinner */
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
