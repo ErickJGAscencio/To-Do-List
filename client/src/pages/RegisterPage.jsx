@@ -3,6 +3,7 @@ import { registerUser } from "../api/todolist.api";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import Button from "../components/atoms/Button";
 
 export function RegisterPage() {
   const { login } = useContext(AuthContext);
@@ -12,6 +13,7 @@ export function RegisterPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [fName, setFName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
 
@@ -25,10 +27,10 @@ export function RegisterPage() {
     try {
       const response = await registerUser(username, password, email);
       console.log(response);
-      
+
       if (response.status === 200) {
         const token = response.data.token;
-        localStorage.setItem('token', token);  
+        localStorage.setItem('token', token);
         login(username, password).finally(() => {
           setLoading(false);
         });
@@ -43,43 +45,53 @@ export function RegisterPage() {
   return (
     <div className="container">
       <div className="main-content">
-        <h1>SingIn</h1>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-        type="password"
-        placeholder="Password"
-        value={confirmPass}
-        onChange={(e) => setConfirmPass(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <button onClick={handleSingIn}>Sing In</button>
-        {loading && <LoadingSpinner />}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
         <div>
-          <h3>Do you have an account?
-            <span
-              style={{ textDecoration: 'underline', cursor: "pointer" }}
-              onClick={() => navigate('/login')}>
-              Log in
-            </span>
-          </h3>
+          <h1>SingIn</h1>
+          <p className='label-input'>Full Name</p>
+          <input
+            type="text"
+            value={fName}
+            onChange={(e) => setFName(e.target.value)}
+          />
+          <p className='label-input'>User</p>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <p className='label-input'>Password</p>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <p className='label-input'>Confirm Password</p>
+          <input
+            type="password"
+            value={confirmPass}
+            onChange={(e) => setConfirmPass(e.target.value)}
+          />
+          <p className='label-input'>Email</p>
+          <input
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className='btn-login'>
+          {/* <button onClick={handleSingIn}>Sing In</button> */}
+          <Button handle={handleSingIn} label={ "Singin" } />
+          {loading && <LoadingSpinner />}
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div>
+            <p>Do you have an account?
+              <span
+                style={{ textDecoration: 'underline', cursor: "pointer" }}
+                onClick={() => navigate('/login')}>
+                click here
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>

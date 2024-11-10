@@ -7,10 +7,13 @@ import { FaEllipsisH } from 'react-icons/fa';
 import { EditProject } from './modal/EditProject';
 import { Delete } from './modal/Delete';
 import { ContextMenu } from './ContextMenu';
+import TitleLabel from './atoms/TitleLabel';
+import SubTitleLabel from './atoms/SubTitleLabel';
 
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
+  const [tasksRemaining, setTasksRemaining] = useState([]);
   const [progress, setProgress] = useState(0);
   const { setSection } = useContext(AuthContext);
 
@@ -48,6 +51,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
   const calculateProgress = (tasks) => {
     if (tasks.length === 0) return 0;
     const completedTasks = tasks.filter(task => task.is_completed).length;
+    setTasksRemaining(completedTasks);
     const newProgress = (completedTasks / tasks.length) * 100;
 
     setProgress(newProgress);
@@ -77,31 +81,23 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
   }, [progress])
 
   return (
-    <div>
-      <div className="card" style={{ backgroundColor: project.color }}>
-        <div className="header-card">
-          <div className='title-card'>{project.project_name}</div>
-          <ContextMenu items={["Edit", "Delete"]} menuRef={menuRef}>
-            <EditProject project={project} updateDataProject={updateDataProject} />
-            <Delete name={"project " + project.project_name} deleteMethod={deleteMethod} />
-          </ContextMenu>
-        </div>
-        <div className="click-zone" onClick={() => {
-          navigate(`/home/project/${project.id}`);
-          // setSection(project.project_name);
-        }}>
-          <div className="content-section">
-            <div className="card-description">
-              {project.description}
-            </div>
+    <div className='card' onClick={() => {
+      navigate(`/home/project/${project.id}`);
+      // setSection(project.project_name);
+    }}>
+      <div className='top-side'>
+        <TitleLabel label={project.project_name} />
+      </div>
+      <div className='bottom-side'>
+        <div className="progress-section">
+          <div className="progress-bar">
+            <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
           </div>
         </div>
-      </div>
-      <div className="progress-section">
-        <div className="progress-bar">
-          <div className="progress-bar-fill" style={{ width: `${progress}%` }}></div>
+        <div className='progress-info'>
+        <SubTitleLabel label={"Due: 2024-02-08"} />
+        <SubTitleLabel label={`${tasksRemaining} tasks remaining`} />
         </div>
-        <div>{progress.toFixed(0) || 0}%</div>
       </div>
     </div>
   );

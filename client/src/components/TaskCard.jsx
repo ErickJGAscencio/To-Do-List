@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle, FaChevronDown, FaChevronUp, FaEdit } from 'react-icons/fa';
 import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
 import { SubTaskCard } from './SubTaskCard';
 import { ContextMenu } from './ContextMenu';
+import SubTitleLabel from './atoms/SubTitleLabel';
 
 export function TaskCard({ task, removeTask }) {
   const [subtasks, setSubTasks] = useState([]);
@@ -119,43 +120,36 @@ export function TaskCard({ task, removeTask }) {
     getAllSubTasks();
   }, [task]);
 
+
+  const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
+
+  const toggleDescriptionVisibility = () => {
+    setDescriptionVisibility(!isDescriptionVisible);
+
+  };
+
   return (
     <div className="card-task">
-      <div className="card" style={{ backgroundColor: task.color }}>
-        <div className="header-card">
-          <div className='title-card'>{task.task_name}</div>
-          <ContextMenu items={["Create", "Edit", "Delete"]} menuRef={menuRef} >
-            <CreateSubTask task={task} addNewSubTask={addNewSubTask} />
-            <EditTask task={task} modifySubtaskList={modifySubtaskData} />
-            <Delete name={"task " + task.task_name} deleteMethod={deleteMethod} />
-          </ContextMenu>
+      <div className='card-task-info'>
+        <div>
+          <FaCheckCircle />
+          <div>{task.task_name}</div>
         </div>
-        <div className='content-section'>
-          <div className="card-description">
-            {task.description}
+        <div>
+          <div className='due-date' >Due Date: 2023-12-31</div>
+          <div onClick={toggleDescriptionVisibility} >
+            {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}
           </div>
-          {subtasks.length === 0 && (
-            <FaCheckCircle />
-          )}
         </div>
       </div>
-      <div className="progress-section">
-        <div className="progress-bar">
-          <div
-            className="progress-bar-fill"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-        <div>{progress || 0}%</div>
-      </div>
-      {/* Mostrar Subtareas */}
-      {subtasks.length > 0 && (
-        <div className="content-subtask">
-          {subtasks.map((subtask) => (
-            <SubTaskCard color={task.color} key={subtask.id} subtask={subtask} removeSubTask={removeSubTask} modifySubtask={modifySubtaskData} />
-          ))}
+      {isDescriptionVisible && (
+        <div className='card-task-description'>
+          <SubTitleLabel label={task.description} />
+
+          <FaEdit />
         </div>
       )}
+
     </div>
-  )
+  );
 }

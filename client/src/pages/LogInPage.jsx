@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { LoadingSpinner } from '../components/LoadingSpinner'; // Importa el componente LoadingSpinner
+import Button from '../components/atoms/Button';
 
 export function LogInPage() {
   const { login } = useContext(AuthContext);
@@ -13,7 +14,7 @@ export function LogInPage() {
 
   const handleLogin = () => {
     setLoading(true);
-    if (username && password) { // Cambié '||' a '&&' para asegurar que ambos campos están llenos
+    if (username && password) {
       login(username, password).finally(() => {
         setLoading(false);
       });
@@ -23,32 +24,32 @@ export function LogInPage() {
   return (
     <div className="container">
       <div className="main-content">
-        <h1>LogIn</h1>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleLogin} disabled={loading}>Log In</button>
-        
-        {loading && <LoadingSpinner />}
-        
         <div>
-          <h3>Do you haven't an account?
-            <span
-              style={{ textDecoration: 'underline', cursor: "pointer" }}
-              onClick={() => navigate('/register')}
-            >
-              Register
-            </span>
-          </h3>
+          <h1>Login</h1>
+          <p className='label-input'>User/Email</p>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <p className='label-input'>Password</p>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className='btn-login'>
+          {loading && <LoadingSpinner />}
+          <Button handle={handleLogin} disabled={loading} label={ "Login" } />
+          <div>
+            <p>Do you haven't an account?
+              <span onClick={() => navigate('/register')}
+              >
+                click here
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
