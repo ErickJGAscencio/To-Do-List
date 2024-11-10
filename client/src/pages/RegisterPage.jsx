@@ -3,6 +3,7 @@ import { registerUser } from "../api/todolist.api";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import Button from "../components/atoms/Button";
 
 export function RegisterPage() {
   const { login } = useContext(AuthContext);
@@ -50,7 +51,7 @@ export function RegisterPage() {
           <input
             type="text"
             value={fName}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setFName(e.target.value)}
           />
           <p className='label-input'>User</p>
           <input
@@ -78,7 +79,8 @@ export function RegisterPage() {
           />
         </div>
         <div className='btn-login'>
-          <button onClick={handleSingIn}>Sing In</button>
+          {/* <button onClick={handleSingIn}>Sing In</button> */}
+          <Button handle={handleSingIn} label={ "Singin" } />
           {loading && <LoadingSpinner />}
           {error && <p style={{ color: 'red' }}>{error}</p>}
           <div>

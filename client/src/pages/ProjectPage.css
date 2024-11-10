@@ -1,12 +1,10 @@
 .main-tasks {
   /* background-color: #a52f2f; */
   display: flex;
+  flex-direction: column;
   flex-wrap: 20px;
   padding: 20px;
   gap: 15px;
-  overflow-x: auto;
-  width: 86.5%;
-  height: calc(100vh - 70px);
 }
 
 /*MediaQuerys*/

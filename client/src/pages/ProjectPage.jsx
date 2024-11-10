@@ -8,6 +8,8 @@ import { TaskCard } from '../components/TaskCard';
 import { fetchTasksByProject } from "../api/todolist.api";
 import { FaArrowLeft, FaSearch } from "react-icons/fa";
 import { Sidebar } from "../components/Sidebar";
+import TitleLabel from "../components/atoms/TitleLabel";
+import SubTitleLabel from "../components/atoms/SubTitleLabel";
 
 export function ProjectPage() {
   const navigate = useNavigate();
@@ -76,30 +78,54 @@ export function ProjectPage() {
   }
 
   return (
-    <div>
+    <div className="main-main-container">
       <div className="main-container">
-        <Sidebar setFilter={setFilter}>
-          {/* <p className="create-btn" onClick={backToHome}> <FaArrowLeft/> Projects</p> */}
-          <CreateTask id_project={id} addNewTask={addNewTask} />
-          <div className="search-bar">
-            <FaSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search projects..."
-              className="search-input"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)} // Método para actualizar el término de búsqueda
-            />
+        <div className="menu">
+          <button>back</button>
+          <TitleLabel label={"Website Redesing"} />
+          <span>in progress</span>
+          <button>Edit project</button>
+        </div>
+
+        <div className="card-section">
+          <p>Project Description</p>
+          <SubTitleLabel label={'Deasjico j ajsd sjdias isa dskdjasdjo asjd sajdsadjas diasjdi saji si jisa djsia djias jsiadjsiadjisadsa sidsahdsdhas dhsa d.a sdjasi djas as as,d asd asd, as-dasdas dasio.'} />
+        </div>
+
+        <div className="card-section">
+          <p>Overall Progress</p>
+          <div className="progress-section">
+            <div className="progress-bar">
+              <div className="progress-bar-fill"
+                style={{
+                  // width: `${progress}%`,
+                  width: '50%'
+                }}></div>
+            </div>
           </div>
-        </Sidebar>
-        <div className="main-filter-contain">
+            <SubTitleLabel label={'50% completed'}/>
+        </div>
+
+        <div className="card-section">
+          <p>Tasks</p>
           <div className="main-tasks">
             {getFilteredProjects().map((task) => (
               <TaskCard key={task.id} task={task} removeTask={removeTask} />
             ))}
           </div>
         </div>
+
+        <div className="card-section">
+          <p>Commnets</p>
+        </div>
+
       </div>
+      <div>
+        <Sidebar setFilter={setFilter}>
+
+        </Sidebar>
+      </div>
+
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { LoadingSpinner } from '../components/LoadingSpinner'; // Importa el componente LoadingSpinner
+import Button from '../components/atoms/Button';
 
 export function LogInPage() {
   const { login } = useContext(AuthContext);
@@ -40,7 +41,7 @@ export function LogInPage() {
         </div>
         <div className='btn-login'>
           {loading && <LoadingSpinner />}
-          <button onClick={handleLogin} disabled={loading}>Login</button>
+          <Button handle={handleLogin} disabled={loading} label={ "Login" } />
           <div>
             <p>Do you haven't an account?
               <span onClick={() => navigate('/register')}

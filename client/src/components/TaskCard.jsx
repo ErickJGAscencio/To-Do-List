@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FaCheckCircle } from 'react-icons/fa';
+import { FaCheckCircle, FaChevronDown, FaChevronUp, FaEdit } from 'react-icons/fa';
 import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
@@ -119,43 +119,32 @@ export function TaskCard({ task, removeTask }) {
     getAllSubTasks();
   }, [task]);
 
+
+  const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
+
+  const toggleDescriptionVisibility = () => {
+    setDescriptionVisibility(!isDescriptionVisible);
+
+  };
+
   return (
     <div className="card-task">
-      <div className="card" style={{ backgroundColor: task.color }}>
-        <div className="header-card">
-          <div className='title-card'>{task.task_name}</div>
-          <ContextMenu items={["Create", "Edit", "Delete"]} menuRef={menuRef} >
-            <CreateSubTask task={task} addNewSubTask={addNewSubTask} />
-            <EditTask task={task} modifySubtaskList={modifySubtaskData} />
-            <Delete name={"task " + task.task_name} deleteMethod={deleteMethod} />
-          </ContextMenu>
-        </div>
-        <div className='content-section'>
-          <div className="card-description">
-            {task.description}
-          </div>
-          {subtasks.length === 0 && (
-            <FaCheckCircle />
-          )}
+      <div className='card-task-info'>
+        <FaCheckCircle />
+        <div>{task.task_name}</div>
+        <div className='due-date' >Due Date: 2023-12-31</div>
+        <div onClick={toggleDescriptionVisibility} >
+          {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}
         </div>
       </div>
-      <div className="progress-section">
-        <div className="progress-bar">
-          <div
-            className="progress-bar-fill"
-            style={{ width: `${progress}%` }}
-          ></div>
-        </div>
-        <div>{progress || 0}%</div>
-      </div>
-      {/* Mostrar Subtareas */}
-      {subtasks.length > 0 && (
-        <div className="content-subtask">
-          {subtasks.map((subtask) => (
-            <SubTaskCard color={task.color} key={subtask.id} subtask={subtask} removeSubTask={removeSubTask} modifySubtask={modifySubtaskData} />
-          ))}
+      {isDescriptionVisible && (
+        <div className='card-task-description'>
+
+          {task.description}
+          <FaEdit />
         </div>
       )}
+
     </div>
-  )
+  );
 }

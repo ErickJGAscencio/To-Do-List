@@ -2,12 +2,13 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { FaSearch } from "react-icons/fa";
+import { FaPlus, FaSearch } from "react-icons/fa";
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
 import { fetchProjectsByUser, getUserProfile } from "../api/todolist.api";
 import { Sidebar } from "../components/Sidebar";
 import { useProjectFilter } from "../hook/useProjectFilter";
+import SubTitleLabel from "../components/atoms/SubTitleLabel";
 
 export function HomePage() {
   const [projects, setProjects] = useState([]);
@@ -61,21 +62,18 @@ export function HomePage() {
 
 
   return (
-    <div>
+    <div className="main-main-container">
       <div className="main-container">
-        <Sidebar setFilter={setFilter}>
-          <CreateProject addNewProject={addNewProject} />
-          <div className="search-bar">
-            <FaSearch className="search-icon" />
-            <input
-              type="text"
-              placeholder="Search projects..."
-              className="search-input"
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-            />
+        <div className="menu">
+          <div>
+            <p>Projects</p>
+            <input type="text"
+              placeholder="Search projects..." />
           </div>
-        </Sidebar>
+          <div>
+            <button><FaPlus />Create new project</button>
+          </div>
+        </div>
         <div className="main">
           {filteredProjects.map((project) => (
             <ProjectCard
@@ -87,56 +85,39 @@ export function HomePage() {
           ))}
         </div>
       </div>
+      <div>
+        <Sidebar setFilter={setFilter}>
+          <p>Dashboard</p>
+          <div className='card-section'>
+            <h2>3</h2>
+            <p>Active projects</p>
+          </div>
+          <div className='card-section'>
+            <h2>33%</h2>
+            <p>Projects completed</p>
+          </div>
+          <div className='card-section'>
+            <h2>23</h2>
+            <p>Pending tasks</p>
+          </div>
+
+          <div className='deadline-section'>
+            <h5>Upcoming Deadlines</h5>
+            <div className='deadline-list'>
+              <SubTitleLabel label={'Grand Mansion Tokyo:'} />
+              <SubTitleLabel label={'2024-02-08'} />
+            </div>
+            <div className='deadline-list'>
+              <SubTitleLabel label={'Workcloud:'} />
+              <SubTitleLabel label={'2024-02-08'} />
+            </div>
+            <div className='deadline-list'>
+              <SubTitleLabel label={'Grand Mansion Tokyo:'} />
+              <SubTitleLabel label={'2024-02-08'} />
+            </div>
+          </div>
+        </Sidebar>
+      </div>
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <DragDropContext onDragEnd={handleOnDragEnd}>
-  //       <div className="main-container">
-
-  //         <Sidebar setFilter={setFilter}>
-  //           <CreateProject addNewProject={addNewProject} />
-  //           <div className="search-bar">
-  //             <FaSearch className="search-icon" />
-  //             <input
-  //               type="text"
-  //               placeholder="Search projects..."
-  //               className="search-input"
-  //               value={searchTerm}
-  //               onChange={(e) => handleSearch(e.target.value)}
-  //             />
-  //           </div>
-  //         </Sidebar>
-
-  //         <Droppable droppableId="projects">
-  //           {(provided) => (
-  //             <div {...provided.droppableProps} ref={provided.innerRef}>
-  //               {filteredProjects.map((project, index) => (
-  //                 <Draggable key={project.id} draggableId={String(project.id)} index={index}>
-  //                   {(provided) => (
-  //                     <div
-  //                       ref={provided.innerRef}
-  //                       {...provided.draggableProps}
-  //                       {...provided.dragHandleProps}
-  //                     >
-  //                       <ProjectCard
-  //                         project={project}
-  //                         updateDataProject={updateDataProject}
-  //                         removeProject={removeProject}
-  //                       />
-  //                     </div>
-  //                   )}
-  //                 </Draggable>
-  //               ))}
-  //               {provided.placeholder}
-  //             </div>
-  //           )}
-  //         </Droppable>
-
-  //       </div>
-  //     </DragDropContext>
-
-  //   </div>
-  // );
 }
