@@ -46,8 +46,33 @@ html, body {
 .menu{
   display: flex;
   justify-content: space-between;
-  padding-top: 10px;
   color: #1E1E1E;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.menu-project{
+  display: flex;
+  justify-content: space-between;
+  color: #1E1E1E;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.menu-project button{
+  background-color: #3B82F6;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.menu-project button:hover{
+  background-color: #2f68c3;
+  cursor: pointer;
 }
 
 .menu p{
@@ -137,6 +162,11 @@ html, body {
   gap: 8px;
 }
 
+.card-section p{
+  margin: 0;
+  padding: 0;
+}
+
 .card-section{
   background-color: #ffffff;
   border-radius: 5px;
@@ -145,6 +175,13 @@ html, body {
   color: #1E1E1E;
   box-shadow: 1px 10px 10px rgba(0, 0, 0, 0.2); /* Desplazamiento horizontal, vertical, desenfoque, color */
 }
+
+.task-items{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
 .card-task-info{
   background-color: #f3f3f3;
   padding: 5px;
@@ -155,8 +192,7 @@ html, body {
 
 .card-task-description{
   background-color: #c0d8ff;
-  padding: 5px;
-  padding-bottom: 0;
+  padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;

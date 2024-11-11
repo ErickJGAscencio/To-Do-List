@@ -82,7 +82,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
 
   return (
     <div className='card' onClick={() => {
-      navigate(`/home/project/${project.id}`);
+      navigate(`/home/project/${project.id}`, {state:{project}});
       // setSection(project.project_name);
     }}>
       <div className='top-side'>

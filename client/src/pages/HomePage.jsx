@@ -48,17 +48,6 @@ export function HomePage() {
 
 
 
-  // Función que se llama cuando se termina el drag-and-drop
-  const handleOnDragEnd = (result) => {
-    if (!result.destination) return; // Si el elemento no se suelta en un lugar válido
-
-    const reorderedProjects = Array.from(projects);
-    const [movedProject] = reorderedProjects.splice(result.source.index, 1); // Quita el proyecto movido
-    reorderedProjects.splice(result.destination.index, 0, movedProject); // Inserta el proyecto en la nueva posición
-
-    setProjects(reorderedProjects); // Actualiza el estado con el nuevo orden
-  };
-
 
 
   return (
