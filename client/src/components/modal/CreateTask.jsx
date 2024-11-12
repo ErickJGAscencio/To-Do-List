@@ -42,7 +42,7 @@ export function CreateTask({ id_project, addNewTask }) {
 
     try {
       const token = localStorage.getItem("token");
-      const newTask = await createTask(id_project, titleTask, subTasks, token);
+      const newTask = await createTask(id_project, titleTask,descriptionTask, subTasks, token);
 
       addNewTask(newTask.data);
 
@@ -56,7 +56,7 @@ export function CreateTask({ id_project, addNewTask }) {
 
   return (
     <div>
-      <p className="create-btn" onClick={openModal}><FaPlus /> New Task</p>
+      <button onClick={openModal}><FaPlus /> New Task</button>
       {isOpen && (
         <div className="modal">
           <div className="modal-content">

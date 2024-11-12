@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaTrash } from 'react-icons/fa';
 
-export function Delete({ name, deleteMethod }) {
+export function Delete({ name, deleteMethod, type }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -14,7 +14,7 @@ export function Delete({ name, deleteMethod }) {
 
   return (
     <div>
-      <div onClick={openModal}><FaTrash /></div>
+      <div onClick={openModal}><FaTrash /> { type }</div>
       {isOpen && (
         <div className="modal">
           <div className="modal-content">

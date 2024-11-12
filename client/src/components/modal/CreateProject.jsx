@@ -61,7 +61,7 @@ export function CreateProject({ addNewProject }) {
 
   return (
     <div>
-      <p className="create-btn" onClick={openModal}> <FaPlus /> New Project</p>
+      <button className="create-btn" onClick={openModal}> <FaPlus /> New Project</button>
       {isOpen && (
         <div className="modal">
           <div className="modal-content"

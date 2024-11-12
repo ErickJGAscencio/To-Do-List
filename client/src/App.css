@@ -19,6 +19,11 @@ html, body {
   align-items: center;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2); /* Desplazamiento horizontal, vertical, desenfoque y color */
 }
+
+#nav-mobile {
+  display: none;
+}
+
 .container-nav-user{
   display: flex;
   align-items: center;
@@ -96,7 +101,7 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: calc(100vh - 17%);
+  height: 100vh;
   padding: 20px;
   transition: width 0.3s ease;
   box-shadow: 1px 10px 10px rgba(0, 0, 0, 0.2); /* Desplazamiento horizontal, vertical, desenfoque, color */
@@ -120,6 +125,9 @@ html, body {
   border-radius: 5px;
   padding-left: 20px;
   padding-right: 20px;
+}
+.deadline-section{
+  margin-bottom: 9vh;
 }
 
 .deadline-section p{
@@ -376,8 +384,16 @@ html, body {
 }
 
 
-/*MediaQuerys*/
+/*Dispositivos con un ancho máximo de 768 píxeles*/
 @media (max-width: 768px) {
+  #nav-lg {
+    display: none;
+  }
+
+  #nav-mobile {
+    display: block;
+  }
+
   .aside {
     border-right: 2px solid #0884c4;
     display: flex;
@@ -395,16 +411,41 @@ html, body {
     transition: width 0.3s ease;
   }
 
+  .menu-project{
+    display: flex;
+    flex-direction: column;
+  }
+
   .main {
-    padding: 20px;
+    background-color: yellowgreen;
+    padding: 2px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     grid-auto-rows: min-content; 
     grid-gap: 20px; 
     height: 100%;
-    width: 50%;
+    width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+  }
+  .card-section{
+    padding: 15px;
+  }
+  
+  .main-tasks{
+    display: flex;
+    flex-wrap: 20px;
+    padding: 0px;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .card-task {
+    background-color: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
   }
   
   .modal-body{

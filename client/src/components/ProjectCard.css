@@ -11,6 +11,7 @@
   border-radius: 5px 5px 0 0;
   font-size: 20px;
   width: auto;
+  padding: 5px;
 }
 
 .bottom-side{
@@ -23,7 +24,6 @@
 
 .title-label{
   font-size: 20px;
-  padding: 5px;
 }
 
 .progress-info{

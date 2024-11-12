@@ -2,17 +2,21 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { FaPlus, FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaPlus, FaSearch } from "react-icons/fa";
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
 import { fetchProjectsByUser, getUserProfile } from "../api/todolist.api";
 import { Sidebar } from "../components/Sidebar";
 import { useProjectFilter } from "../hook/useProjectFilter";
 import SubTitleLabel from "../components/atoms/SubTitleLabel";
+import TitleLabel from "../components/atoms/TitleLabel";
+import EditProject from "../components/modal/EditProject";
 
 export function HomePage() {
   const [projects, setProjects] = useState([]);
   const { filteredProjects, searchTerm, setFilter, handleSearch } = useProjectFilter(projects);
+  const [activeProjects, setActiveProjects] = useState();
+  const [projectsCompleted, setProjectsCompleted] = useState();
 
   const addNewProject = (newProject) => {
     setProjects([...projects, newProject]);
@@ -38,6 +42,9 @@ export function HomePage() {
           const id = resUser.data.id;
           const res = await fetchProjectsByUser(id, token);
           setProjects(res.data);
+          setActiveProjects(res.data.length);
+          // console.log(res.data);
+          GetCompletedProjects(res.data);
         } catch (error) {
           console.error('Error fetching projects:', error);
         }
@@ -46,22 +53,23 @@ export function HomePage() {
     getAllProjects();
   }, []);
 
-
-
+  const GetCompletedProjects = (projects) => {
+    const completed_amount = projects.filter(project => project.is_completed === true).length;
+    const porcent = (completed_amount / projects.length) * 100;
+    setProjectsCompleted(porcent.toFixed(1));
+  }
 
 
   return (
     <div className="content">
       <div className="main-content-items">
-        <div className="menu">
-          <div>
-            <p>Projects</p>
+        <div className="menu-project">
+          <div className="menu-project">
+            <TitleLabel label={'Projects'} />
             <input type="text"
               placeholder="Search projects..." />
           </div>
-          <div>
-            <button><FaPlus />Create new project</button>
-          </div>
+          <CreateProject addNewProject={addNewProject} />
         </div>
         <div className="main">
           {filteredProjects.map((project) => (
@@ -74,37 +82,38 @@ export function HomePage() {
           ))}
         </div>
       </div>
+      {/* SIDEBAR */}
       <Sidebar setFilter={setFilter}>
-          <p>Dashboard</p>
-          <div className='card-section'>
-            <h2>3</h2>
-            <p>Active projects</p>
-          </div>
-          <div className='card-section'>
-            <h2>33%</h2>
-            <p>Projects completed</p>
-          </div>
-          <div className='card-section'>
-            <h2>23</h2>
-            <p>Pending tasks</p>
-          </div>
+        <TitleLabel label={'Dashboard'} />
+        <div className='card-section'>
+          <h2>{activeProjects}</h2>
+          <SubTitleLabel label={'Active projects'} />
+        </div>
+        <div className='card-section'>
+          <h2>{projectsCompleted}%</h2>
+          <SubTitleLabel label={'Projects completed'} />
+        </div>
+        <div className='card-section'>
+          <h2>23</h2>
+          <SubTitleLabel label={'Pending tasks'} />
+        </div>
 
-          <div className='deadline-section'>
-            <h5>Upcoming Deadlines</h5>
-            <div className='deadline-list'>
-              <SubTitleLabel label={'Grand Mansion Tokyo:'} />
-              <SubTitleLabel label={'2024-02-08'} />
-            </div>
-            <div className='deadline-list'>
-              <SubTitleLabel label={'Workcloud:'} />
-              <SubTitleLabel label={'2024-02-08'} />
-            </div>
-            <div className='deadline-list'>
-              <SubTitleLabel label={'Grand Mansion Tokyo:'} />
-              <SubTitleLabel label={'2024-02-08'} />
-            </div>
+        <div className='deadline-section'>
+          <h5>Upcoming Deadlines</h5>
+          <div className='deadline-list'>
+            <SubTitleLabel label={'Grand Mansion Tokyo:'} />
+            <SubTitleLabel label={'2024-02-08'} />
           </div>
-        </Sidebar>
+          <div className='deadline-list'>
+            <SubTitleLabel label={'Workcloud:'} />
+            <SubTitleLabel label={'2024-02-08'} />
+          </div>
+          <div className='deadline-list'>
+            <SubTitleLabel label={'Grand Mansion Tokyo:'} />
+            <SubTitleLabel label={'2024-02-08'} />
+          </div>
+        </div>
+      </Sidebar>
     </div>
   );
 }
