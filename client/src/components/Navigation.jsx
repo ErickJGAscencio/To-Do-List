@@ -1,5 +1,5 @@
 import { FaBell, FaCloud, FaUser } from 'react-icons/fa';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ export function Navigation({ filter }) {
     logout();
     navigate('/login');
   };
+
   
   return (
     <div className="nav">

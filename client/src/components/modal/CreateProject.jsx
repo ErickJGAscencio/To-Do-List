@@ -1,18 +1,24 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaPalette, FaPlus } from 'react-icons/fa';
 import { FaTrash } from 'react-icons/fa';
 import { createProject, getUserProfile } from '../../api/todolist.api';
 import { ContextMenuColors } from '../ContextMenuColors';
+import Modal from '../organisims/Modal';
+import TitleLabel from '../atoms/TitleLabel';
+import Button from '../atoms/Button';
 
 export function CreateProject({ addNewProject }) {
   const [titleProject, setTitleProject] = useState("");
   const [descripcionProject, setDescriptionProject] = useState("");
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState("");
+  const [limitDate, setLimitDate] = useState(""); // Estado para la fecha límite
   const [isOpen, setIsOpen] = useState(false);
-
-  const menuRef = useRef(null);
   const [color, setColor] = useState();
+
+ // Miembros
+ const [members, setMembers] = useState([]);
+ const [searchQuery, setSearchQuery] = useState("");
+ const [suggestions, setSuggestions] = useState([]);
 
   const openModal = () => {
     setIsOpen(true);
@@ -22,20 +28,31 @@ export function CreateProject({ addNewProject }) {
     setIsOpen(false);
     setTitleProject("");
     setDescriptionProject("");
-    setTasks([]); // Limpiar tareas
+    setTasks([]);
+    setMembers([]);
+    setLimitDate("");
   };
 
-  const addTask = () => {
-    if (newTask) {
-      setTasks([...tasks, newTask]);
-      setNewTask("");
+  const addMember = (member) => {
+    setMembers([...members, member]);
+    setSearchQuery("");
+    setSuggestions([]);
+  };
+
+  const removeMember = (index) => {
+    const updatedMembers = members.filter((_, i) => i !== index);
+    setMembers(updatedMembers);
+  };
+
+  useEffect(() => {
+    if (searchQuery) {
+      // Buscar miembros cuando el usuario escribe en el campo de búsqueda
+      // searchMembers(searchQuery).then(setSuggestions);
+    } else {
+      setSuggestions([]); // Limpiar sugerencias si el campo está vacío
     }
-  };
-
-  const removeTask = (index) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    setTasks(updatedTasks);
-  };
+    
+  }, [searchQuery]);
 
   const sendRequest = async () => {
     if (!titleProject || !descripcionProject) {
@@ -55,83 +72,76 @@ export function CreateProject({ addNewProject }) {
     }
   };
 
-  const setSelectedColor = (color) => {
-    setColor(color);
-  }
-
   return (
     <div>
       <button className="create-btn" onClick={openModal}> <FaPlus /> New Project</button>
       {isOpen && (
-        <div className="modal">
-          <div className="modal-content"
-            style={{
-              backgroundImage: `linear-gradient(to bottom, #2D2D2D, ${color})`
-            }}
-          >
-            <div className="modal-header">
-              <h2>Create New Project</h2>
-              <ContextMenuColors menuRef={menuRef} setSelectedColor={setSelectedColor} />
+        <Modal>
+          <div className="modal-content">
+            <TitleLabel label={'Create New Project'} />
+            <div className='input-label'>
+              <p>Name</p>
+              <input
+                type="text"
+                placeholder="Project name..." 
+                value={titleProject}
+                onChange={(e) => setTitleProject(e.target.value)}/>
             </div>
-            <div className="modal-body">
-              <div className='left-section'>
-                <h3 className='title-input'>Project name</h3>
-                <input
-                  className='modal-name-input'
-                  type="text"
-                  placeholder="eg. BioApp"
-                  value={titleProject}
-                  onChange={(e) => setTitleProject(e.target.value)}
-                />
-                <div className='modal-tasks'>
-                <h3 className='label-input'>
-                    {titleProject}
-                    {titleProject != "" && (
-                      "'s "
-                    )}
-                    Tasks
-                  </h3>
-                  <div className='add-controller'>
-                    <p className="button" onClick={addTask}>Add</p>
-                    <input
-                      className='modal-name-input'
-                      type="text"
-                      placeholder="Task Name"
-                      value={newTask}
-                      onChange={(e) => setNewTask(e.target.value)}
-                    />
-                  </div>
-                  <h3 className="label-input">Task List</h3>
-                  <div className='task-container'>
-                    {tasks.map((task, index) => (
-                      <div key={index} className='task-item'>
-                        {task}
-                        <p className="button" onClick={() => removeTask(index)}>
-                          <FaTrash
-                            size={10} />
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+
+            <div className='input-label'>
+              <p>Description</p>
+              <textarea
+                className="description-textarea" // Clase CSS añadida
+                placeholder="Project description..."
+                value={descripcionProject}
+                onChange={(e) => setDescriptionProject(e.target.value)} />
+            </div>
+
+            <div className='input-label'>
+              <p>Limit Date</p>
+              <input
+                type="date"
+                value={limitDate}
+                onChange={(e) => setLimitDate(e.target.value)} />
+            </div>
+            
+            <div className='input-label'>
+              <p>Members</p>
+              <input
+                type="text"
+                placeholder="Search members by email..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)} />
+
+              {suggestions.length > 0 && (
+                <ul className="suggestions-list">
+                  {suggestions.map((suggestion, index) => (
+                    <li key={index} onClick={() => addMember(suggestion)}>
+                      {suggestion.email}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              <ul className="members-list">
+                {members.map((member, index) => (
+                  <li key={index}>
+                    {member.email}
+                    <span className="remove-member" onClick={() => removeMember(index)}>x</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="button-container">
+              <Button label={'Create'} />
+            </div>
+              <div className="modal-footer">
+                <p className="button" onClick={sendRequest}>Create</p>
+                <p className="button" onClick={closeModal}>Cancel</p>
               </div>
-              <div className='right-section'>
-                <div className='description'>
-                  <h1 className='title-input'>Description</h1>
-                  <textarea
-                    placeholder="Project Description"
-                    value={descripcionProject}
-                    onChange={(e) => setDescriptionProject(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <p className="button" onClick={sendRequest}>Create</p>
-              <p className="button" onClick={closeModal}>Cancel</p>
-            </div>
           </div>
-        </div>
+        </Modal>        
       )}
     </div>
   );

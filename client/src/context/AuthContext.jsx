@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
       }
     }
     checkLoginStatus();
-  },[]);
+  });
 
   const login = async (username, password) => {
     try {

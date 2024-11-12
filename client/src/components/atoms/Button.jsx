@@ -1,10 +1,11 @@
 import React from 'react'
 
-function Button({ handle, disabled, label}) {
-
+function Button({ label, handle }) {
   return (
-    <button onClick={handle} disabled={disabled}>{label}</button>
-  )
+    <button onClick={handle}>
+      {label}
+    </button>
+  );
 }
 
-export default Button
+export default Button;
