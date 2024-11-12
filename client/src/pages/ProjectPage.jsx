@@ -13,14 +13,25 @@ import Button from "../components/atoms/Button";
 import SubTitleLabel from "../components/atoms/SubTitleLabel";
 import EditProject from "../components/modal/EditProject";
 import Delete from "../components/modal/Delete";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export function ProjectPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const location = useLocation();
   const { project } = location.state;
+
+  const handleLogin = () => {
+    setLoading(true);
+    if (username && password) {
+      login(username, password).finally(() => {
+        setLoading(false);
+      });
+    }
+  };
 
   const addNewTask = (newTask) => {
     setTasks([...tasks, newTask]);
@@ -32,11 +43,13 @@ export function ProjectPage() {
 
   useEffect(() => {
     async function getAllPjcts() {
+      setLoading(true);
       const token = localStorage.getItem('token');
       if (token && id) {
         try {
           const res = await fetchTasksByProject(id, token);
           setTasks(res.data);
+          setLoading(false);
         } catch (error) {
           console.error(error);
         }
@@ -107,6 +120,7 @@ export function ProjectPage() {
               <CreateTask id_project={project.id} addNewTask={addNewTask} />
             </div>
             <div className="main-tasks">
+            {loading && <LoadingSpinner />}
               {tasks.length > 0 ? (
                 tasks.map((task) =>
                 (<TaskCard key={task.id}

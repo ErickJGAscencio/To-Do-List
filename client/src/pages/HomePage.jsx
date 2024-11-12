@@ -18,6 +18,7 @@ export function HomePage() {
   const [activeProjects, setActiveProjects] = useState();
   const [projectsCompleted, setProjectsCompleted] = useState();
 
+  const [loading, setLoading] = useState(false);
   const addNewProject = (newProject) => {
     setProjects([...projects, newProject]);
   };
@@ -35,6 +36,7 @@ export function HomePage() {
 
   useEffect(() => {
     async function getAllProjects() {
+      setLoading(true);
       const token = localStorage.getItem("token");
       if (token) {
         try {
@@ -42,6 +44,7 @@ export function HomePage() {
           const id = resUser.data.id;
           const res = await fetchProjectsByUser(id, token);
           setProjects(res.data);
+          setLoading(false);
           setActiveProjects(res.data.length);
           // console.log(res.data);
           GetCompletedProjects(res.data);
@@ -62,6 +65,7 @@ export function HomePage() {
 
   return (
     <div className="content">
+      {/* MAIN-CONTAIN */}
       <div className="main-content-items">
         <div className="menu-project">
           <div className="menu-project">
@@ -72,6 +76,7 @@ export function HomePage() {
           <CreateProject addNewProject={addNewProject} />
         </div>
         <div className="main">
+            {loading && <LoadingSpinner />}
           {filteredProjects.map((project) => (
             <ProjectCard
               key={project.id}
