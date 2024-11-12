@@ -11,6 +11,7 @@ import { useProjectFilter } from "../hook/useProjectFilter";
 import SubTitleLabel from "../components/atoms/SubTitleLabel";
 import TitleLabel from "../components/atoms/TitleLabel";
 import EditProject from "../components/modal/EditProject";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export function HomePage() {
   const [projects, setProjects] = useState([]);
