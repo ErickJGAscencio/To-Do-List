@@ -7,8 +7,6 @@ from todolist import views
 router = DefaultRouter()
 router.register(r'projects', views.ProjectViewSet)
 router.register(r'tasks', views.TaskViewSet)
-router.register(r'subtasks', views.SubTaskViewSet)
-
 urlpatterns = [
     # path('', RedirectView.as_view(url='/login/', permanent=False)),  # Redirige la ruta vacía a /login/
     path('', include(router.urls)),
@@ -17,5 +15,5 @@ urlpatterns = [
     path("login/", views.login, name='login'),
     path("register/", views.register, name='register'),
     path("profile/", views.profile, name='profile'),
-    # path('docs/', include_docs_urls(title='WorkCloud Documentation')),
+    path('docs/', include_docs_urls(title='WorkCloud Documentation')),
 ]
