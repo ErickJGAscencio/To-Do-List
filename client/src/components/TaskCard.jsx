@@ -4,16 +4,13 @@ import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
 import { CreateSubTask } from './modal/CreateSubTask';
 import { Delete } from './modal/Delete';
 import { EditTask } from './modal/EditTask';
-import { SubTaskCard } from './SubTaskCard';
 import { ContextMenu } from './ContextMenu';
 import SubTitleLabel from './atoms/SubTitleLabel';
-import EditSubTask from './modal/EditSubTask';
 
 export function TaskCard({ task, removeTask }) {
   const [subtasks, setSubTasks] = useState([]);
   const [progress, setProgress] = useState(0);
   const menuRef = useRef(null);
-
 
   const addNewSubTask = (newSubTask) => {
     setSubTasks([...subtasks, newSubTask]);
@@ -28,7 +25,6 @@ export function TaskCard({ task, removeTask }) {
   const modifySubtaskData = (data) => {
     if (data.subtasks) {
       // Si hay subtasks, actualiza la tarea y la lista de subtareas
-      console.log(data);
       task.task_name = data.task_name;
       task.description = data.description;
       task.color = data.color;
@@ -65,7 +61,6 @@ export function TaskCard({ task, removeTask }) {
     const token = localStorage.getItem("token");
     const updatedData = { is_completed: isCompleted };
 
-    console.log("Is Task " + task.task_name + " completed? " + isCompleted);
     try {
       await updateTask(task.id, updatedData, token);
       console.log({
@@ -85,15 +80,10 @@ export function TaskCard({ task, removeTask }) {
       return;
     }
 
-    console.log("calculateProgress");
-    console.log(subtasks);
     const completedSubtasks = subtasks.filter(subtask => subtask.is_completed).length;
-    console.log(completedSubtasks);
     const newProgress = (completedSubtasks / subtasks.length) * 100;
 
-    console.log("Old progress " + progress);
     setProgress(newProgress);
-    console.log("New progress " + newProgress);
 
     // Solo actualiza el estado de la tarea SI ha cambiado
     if (newProgress === 100) {
@@ -121,24 +111,26 @@ export function TaskCard({ task, removeTask }) {
     getAllSubTasks();
   }, [task]);
 
-
   const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
 
   const toggleDescriptionVisibility = () => {
     setDescriptionVisibility(!isDescriptionVisible);
+  };
 
+  const handleCheckClick = () => {
+    setStatusTask(!task.is_completed); // Cambia el estado de la tarea al contrario del actual
   };
 
   return (
     <div className="card-task">
       <div className='card-task-info'>
         <div className='task-items'>
-          <FaCheckCircle />
+          <FaCheckCircle onClick={handleCheckClick} color={task.is_completed ? 'green' : 'gray'} />
           <div>{task.task_name}</div>
         </div>
         <div className='task-items'>
-          <div className='due-date' >Due Date: 2023-12-31</div>
-          <div onClick={toggleDescriptionVisibility} >
+          <div className='due-date'>Due Date: 2023-12-31</div>
+          <div onClick={toggleDescriptionVisibility}>
             {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}
           </div>
         </div>
@@ -147,10 +139,9 @@ export function TaskCard({ task, removeTask }) {
         <div className='card-task-description'>
           <SubTitleLabel label={task.description} />
 
-          <EditTask task={task } modifySubtaskList={ modifySubtaskData } />
+          <EditTask task={task} modifySubtaskList={modifySubtaskData} />
         </div>
       )}
-
     </div>
   );
 }
