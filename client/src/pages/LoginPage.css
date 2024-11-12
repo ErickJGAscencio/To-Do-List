@@ -99,3 +99,17 @@ input[type="password"] {
     transform: rotate(360deg);
   }
 }
+
+/* Dispositivos con un ancho máximo de 768 píxeles */
+@media (max-width: 768px) {
+  .container{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+  }
+  
+  .main-content{
+    width: 70%;
+    height: 70%;
+  }
+}

@@ -6,19 +6,30 @@ import { LoadingSpinner } from '../components/LoadingSpinner'; // Importa el com
 import Button from '../components/atoms/Button';
 
 export function LogInPage() {
-  const { login } = useContext(AuthContext);
+  const { login, error } = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  // Estados para los mensajes de error
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleLogin = () => {
-    setLoading(true);
-    if (username && password) {
-      login(username, password).finally(() => {
-        setLoading(false);
-      });
+    setUsernameError("");
+    setPasswordError("");
+    
+    if (!username) {
+      setUsernameError("Username is required");
+      return;
     }
+    if (!password) {
+      setPasswordError("Password is required");
+      return;
+    }
+
+    setLoading(true);
+    login(username, password).finally(() => setLoading(false));
   };
 
   return (
@@ -32,16 +43,20 @@ export function LogInPage() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
+          {usernameError && <div className="error-message">{usernameError}</div>}
+          
           <p className='label-input'>Password</p>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
         <div className='btn-login'>
           {loading && <LoadingSpinner />}
           <Button handle={handleLogin} disabled={loading} label={ "Login" } />
+          {error && <div className="error-message">{error}</div>} {/* Mostrar el error del backend */}
           <div>
             <p>Do you haven't an account?
               <span onClick={() => navigate('/register')}

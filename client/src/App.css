@@ -390,6 +390,11 @@ body {
   outline: none;
 }
 
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
 
 /* Dispositivos con un ancho máximo de 768 píxeles */
 @media (max-width: 768px) {
@@ -455,12 +460,17 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
   }
 
+  .card-task-description {
+    background-color: #c0d8ff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   .aside {
     display: flex;
     flex-direction: column;

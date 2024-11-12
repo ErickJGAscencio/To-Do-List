@@ -15,10 +15,9 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
 from .models import Project, Task
-# , SubTask
+
 
 from .serializers import ProjectSerializer, TaskSerializer
-# , SubTaskSerializer
 
 # Create your views here.
 
@@ -222,9 +221,12 @@ class TaskViewSet(viewsets.ModelViewSet):
         description = request.data.get('description')
         id_project = request.data.get('id_project')
         subtasks_data = request.data.get('subtasks', [])
+        
+        if not id_project:
+            return Response({"error": "Project Id is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if not task_name or not description:
-            return Response({"error": "Task name and description are required"}, status=status.HTTP_400_BAD_REQUEST)
+        if not task_name:
+            return Response({"error": "Task name is required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             project = Project.objects.get(id=id_project)
@@ -241,7 +243,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         for subtask_data in subtasks_data:
             subtask_name = subtask_data.get('subtask_name')
-            subtask_description = subtask_data.get('description', '')
+            subtask_description = subtask_data.get('description')
 
             if subtask_name:
                 subtask = SubTask.objects.create(
@@ -257,17 +259,17 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['delete'])
     def delete_task(self, request):
         id_task = request.query_params.get('id_task')
+        
         if id_task is None:
             return Response({"error": "id_task is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            task = Task.objects.filter(id=id_task)
+            task = Task.objects.get(id=id_task)
             task.delete()
         except Task.DoesNotExist:
-            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        return Response({"success": f"Deleted task"}, status=status.HTTP_204_NO_CONTENT)        
+            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)     
     
+        return Response({"success": "Deleted task"}, status=status.HTTP_200_OK)
     @action(detail=False, methods=['put'])
     def update_task(self, request):
         id_task = request.data.get('id_task')
