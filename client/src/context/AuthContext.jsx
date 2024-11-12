@@ -7,39 +7,38 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [username, setUsername] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     async function checkLoginStatus() {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          // console.log("Si hay token: " + token);
           const res = await getUserProfile(token);
           setUsername(res.data.username);
           setIsLoggedIn(true);
         } catch (error) {
           setIsLoggedIn(false);
+          localStorage.removeItem('token');
         }
       } else {
         setIsLoggedIn(false);
-        //redirigir al login
       }
     }
     checkLoginStatus();
-  });
+  },[]);
 
   const login = async (username, password) => {
-    const res = await loginUser(username, password);
-    console.log(res);
-    console.log("Token send");
-    console.log(res.data.token);
-
-    localStorage.setItem('token', res.data.token);
-
-    console.log("Token in Local Storage");
-    console.log(localStorage.getItem('token'));
-    setUsername(res.data.username);
-    setIsLoggedIn(true);
+    try {
+      const res = await loginUser(username, password);
+      localStorage.setItem('token', res.data.token);
+      setUsername(res.data.username);
+      setIsLoggedIn(true);
+      setError(null);
+    } catch (error) {
+      setError("Invalid username or password"); 
+      setIsLoggedIn(false);
+    }
   };
 
   const logout = () => {
@@ -49,7 +48,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, username, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, username, login, logout, error }}>
       {children}
     </AuthContext.Provider>
   );

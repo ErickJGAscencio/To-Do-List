@@ -14,9 +14,10 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
-from .models import Project, Task, SubTask
+from .models import Project, Task
 
-from .serializers import ProjectSerializer, TaskSerializer, SubTaskSerializer
+
+from .serializers import ProjectSerializer, TaskSerializer
 
 # Create your views here.
 
@@ -220,9 +221,12 @@ class TaskViewSet(viewsets.ModelViewSet):
         description = request.data.get('description')
         id_project = request.data.get('id_project')
         subtasks_data = request.data.get('subtasks', [])
+        
+        if not id_project:
+            return Response({"error": "Project Id is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if not task_name or not description:
-            return Response({"error": "Task name and description are required"}, status=status.HTTP_400_BAD_REQUEST)
+        if not task_name:
+            return Response({"error": "Task name is required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             project = Project.objects.get(id=id_project)
@@ -239,7 +243,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         for subtask_data in subtasks_data:
             subtask_name = subtask_data.get('subtask_name')
-            subtask_description = subtask_data.get('description', '')
+            subtask_description = subtask_data.get('description')
 
             if subtask_name:
                 subtask = SubTask.objects.create(
@@ -255,17 +259,17 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['delete'])
     def delete_task(self, request):
         id_task = request.query_params.get('id_task')
+        
         if id_task is None:
             return Response({"error": "id_task is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            task = Task.objects.filter(id=id_task)
+            task = Task.objects.get(id=id_task)
             task.delete()
         except Task.DoesNotExist:
-            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        return Response({"success": f"Deleted task"}, status=status.HTTP_204_NO_CONTENT)        
+            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)     
     
+        return Response({"success": "Deleted task"}, status=status.HTTP_200_OK)
     @action(detail=False, methods=['put'])
     def update_task(self, request):
         id_task = request.data.get('id_task')
@@ -320,48 +324,3 @@ class TaskViewSet(viewsets.ModelViewSet):
             return 100 if self.is_completed else 0
 
         return (completed_subtasks / total_subtasks) * 100
-
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-class SubTaskViewSet(viewsets.ModelViewSet):
-    queryset = SubTask.objects.all()
-    serializer_class = SubTaskSerializer
-
-    @action(detail=False, methods=['get'])
-    def by_task(self, request):
-        id_task = request.query_params.get('id_task')
-        if id_task is None:
-            return Response({"error": "id_task is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-        subtasks = SubTask.objects.filter(task=id_task)
-        serializer = self.get_serializer(subtasks, many=True)
-        return Response(serializer.data)
-
-    @action(detail=False, methods=['delete'])
-    def delete_subtask(self, request):
-        id_subtask = request.query_params.get('id_subtask')
-        if id_subtask is None:
-            return Response({"error": "id_subtask is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-        subtask = SubTask.objects.filter(id=id_subtask)
-        subtask.delete()
-        
-        return Response({"success": f"Deleted subtask"}, status=status.HTTP_204_NO_CONTENT)
-    
-    @action(detail=False, methods=['put'])
-    def update_subtask(self, request):
-        id_subtask = request.data.get('id_subtask')
-        
-        if id_subtask is None:
-            return Response({"error": "id_subtask is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-        try:
-            subtask = SubTask.objects.get(id=id_subtask)
-        except SubTask.DoesNotExist:
-            return Response({"error": "SubTask not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.get_serializer(subtask, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

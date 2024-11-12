@@ -1,10 +1,17 @@
 import { FaBell, FaCloud, FaUser } from 'react-icons/fa';
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export function Navigation({ filter }) {
+  const navigate = useNavigate();
   const { username, logout } = useContext(AuthContext);
 
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+  
   return (
     <div className="nav">
       <div className='container-nav-user'>
@@ -16,7 +23,7 @@ export function Navigation({ filter }) {
         <p className='greeting'>Welcome back, {username}!</p> {/* Aquí he añadido la variable username */}
         <div className="icon-container">
           <FaBell />
-          <FaUser onClick={logout} />
+          <FaUser onClick={handleLogout} />
         </div>
       </div>
     </div>
