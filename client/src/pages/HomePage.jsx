@@ -1,8 +1,4 @@
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { useEffect, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import { FaArrowLeft, FaPlus, FaSearch } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { ProjectCard } from "../components/ProjectCard";
 import { CreateProject } from "../components/modal/CreateProject";
 import { fetchProjectsByUser, getUserProfile } from "../api/todolist.api";
@@ -10,17 +6,19 @@ import { Sidebar } from "../components/Sidebar";
 import { useProjectFilter } from "../hook/useProjectFilter";
 import SubTitleLabel from "../components/atoms/SubTitleLabel";
 import TitleLabel from "../components/atoms/TitleLabel";
-import EditProject from "../components/modal/EditProject";
 import { LoadingSpinner } from "../components/LoadingSpinner";
-import Modal from "../components/organisims/Modal";
 
 export function HomePage() {
   const [projects, setProjects] = useState([]);
-  const { filteredProjects, searchTerm, setFilter, handleSearch } = useProjectFilter(projects);
-  const [activeProjects, setActiveProjects] = useState();
-  const [projectsCompleted, setProjectsCompleted] = useState();
-
+  const { filteredProjects, setFilter } = useProjectFilter(projects);
   const [loading, setLoading] = useState(false);
+
+  // Dashboard
+  const [activeProjects, setActiveProjects] = useState("");
+  const [projectsCompleted, setProjectsCompleted] = useState("");
+  const [pendingTasks, setPendingTasks] = useState("");
+
+
   const addNewProject = (newProject) => {
     setProjects([...projects, newProject]);
   };
@@ -48,8 +46,9 @@ export function HomePage() {
           setProjects(res.data);
           setLoading(false);
           setActiveProjects(res.data.length);
-          // console.log(res.data);
           GetCompletedProjects(res.data);
+          // setPendingTasks(pendingTasks);
+
         } catch (error) {
           console.error('Error fetching projects:', error);
         }
@@ -79,7 +78,7 @@ export function HomePage() {
           <CreateProject addNewProject={addNewProject} />
         </div>
         <div className="main">
-            {loading && <LoadingSpinner />}
+          {loading && <LoadingSpinner />}
           {filteredProjects.map((project) => (
             <ProjectCard
               key={project.id}
@@ -93,7 +92,7 @@ export function HomePage() {
       {/* SIDEBAR */}
       <Sidebar setFilter={setFilter}>
         <div>
-        <TitleLabel label={'Dashboard'} />
+          <TitleLabel label={'Dashboard'} />
           <div className='card-section'>
             <h2>{activeProjects}</h2>
             <SubTitleLabel label={'Active projects'} />
@@ -103,7 +102,7 @@ export function HomePage() {
             <SubTitleLabel label={'Projects completed'} />
           </div>
           <div className='card-section'>
-            <h2>23</h2>
+          <h2>{pendingTasks}--</h2>
             <SubTitleLabel label={'Pending tasks'} />
           </div>
         </div>

@@ -51,7 +51,10 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
   const calculateProgress = (tasks) => {
     if (tasks.length === 0) return 0;
     const completedTasks = tasks.filter(task => task.is_completed).length;
-    setTasksRemaining(completedTasks);
+
+    const incompletedTasks = tasks.filter(task => !task.is_completed).length;
+    setTasksRemaining(incompletedTasks);
+    
     const newProgress = (completedTasks / tasks.length) * 100;
 
     setProgress(newProgress);
