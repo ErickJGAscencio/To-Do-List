@@ -108,7 +108,27 @@ class ProjectTests(APITestCase):
     self.user = User.objects.create_user(username='testuser', password='password123')
     self.token = Token.objects.create(user=self.user)
     self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
-
+     
+  def test_get_projects_by_user_athenticated(self):
+    self.project = Project.objects.create(project_name='Project 1', description='Test 1', user=self.user)
+    
+    user2 = User.objects.create_user(username='user2', password='pass')
+    token_user2 = Token.objects.create(user=user2)
+    self.client.credentials(HTTP_AUTHORIZATION='Token ' + token_user2.key)    
+    
+    project2 = Project.objects.create(project_name='Project 2', description='Test 2', user=user2)
+    
+    url = '/projects/by_user/'
+    response = self.client.get(url, format='json')
+    
+    print(f"Response Data (Get Project By User Authenticated): {response.data}")
+    
+    # Verificar que solo ve su proyecto, no el de self.user
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(len(response.data), 1)
+    self.assertEqual(response.data[0]['project_name'], 'Project 2')
+    self.assertEqual(response.data[0]['description'], 'Test 2')
+    
   def test_create_project_success(self):
     url = '/projects/create_project/' 
     data = {
@@ -165,12 +185,12 @@ class ProjectTests(APITestCase):
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(Project.objects.count(), 0)
 
-  def test_delete_project_failure(self):
+  def test_delete_project_wrong_id(self):
     project = Project.objects.create(project_name='Project to delete', description='Will be deleted', user=self.user)    
-    url = f'/projects/delete_project/?id_project=2'    
+    url = f'/projects/delete_project/?id_project=10'    
     response = self.client.delete(url)
     
-    print(f"Response Data (Delete Project Failure): {response.data}")
+    print(f"Response Data (Delete Project Wrong Id): {response.data}")
     print(f"Remaining Projects: {Project.objects.count()}")
     
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

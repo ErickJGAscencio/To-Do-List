@@ -97,14 +97,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def by_user(self, request):
-        user_id = request.query_params.get('user_id')
-        if user_id is None:
-            return Response({"error": "user_id is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-        projects = Project.objects.filter(user=user_id)
-        serializer = self.get_serializer(projects, many=True)
-
-        return Response(serializer.data)
+        user = request.user
+        
+        if user.is_authenticated:
+            projects = Project.objects.filter(user=user)
+            serializer = self.get_serializer(projects, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)        
 
     @action(detail=False, methods=['post'])
     def create_project(self, request):
