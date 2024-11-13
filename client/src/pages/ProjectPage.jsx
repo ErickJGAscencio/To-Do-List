@@ -147,19 +147,19 @@ export function ProjectPage() {
             <TitleLabel label={'Documents & Files'} />
             <div className="files-items">
               <div className="file-item">
-                <FaFile />
+                <SubTitleLabel label={<FaFile />} />
                 <SubTitleLabel label={'projectko.pdf'} />
-                <FaDownload />
+                <SubTitleLabel label={<FaDownload />} />
               </div>
               <div className="file-item">
-                <FaFile />
+                <SubTitleLabel label={<FaFile />} />
                 <SubTitleLabel label={'projectko.pdf'} />
-                <FaDownload />
+                <SubTitleLabel label={<FaDownload />} />
               </div>
               <div className="file-item">
-                <FaFile />
+                <SubTitleLabel label={<FaFile />} />
                 <SubTitleLabel label={'projectko.pdf'} />
-                <FaDownload />
+                <SubTitleLabel label={<FaDownload />} />
               </div>
               <Button label={'Upload File'} />
             </div>            
