@@ -12,6 +12,7 @@ import SubTitleLabel from "../components/atoms/SubTitleLabel";
 import TitleLabel from "../components/atoms/TitleLabel";
 import EditProject from "../components/modal/EditProject";
 import { LoadingSpinner } from "../components/LoadingSpinner";
+import Modal from "../components/organisims/Modal";
 
 export function HomePage() {
   const [projects, setProjects] = useState([]);
@@ -74,6 +75,7 @@ export function HomePage() {
             <input type="text"
               placeholder="Search projects..." />
           </div>
+          {/* <Modal label={ 'asd' } /> */}
           <CreateProject addNewProject={addNewProject} />
         </div>
         <div className="main">
@@ -90,18 +92,20 @@ export function HomePage() {
       </div>
       {/* SIDEBAR */}
       <Sidebar setFilter={setFilter}>
+        <div>
         <TitleLabel label={'Dashboard'} />
-        <div className='card-section'>
-          <h2>{activeProjects}</h2>
-          <SubTitleLabel label={'Active projects'} />
-        </div>
-        <div className='card-section'>
-          <h2>{projectsCompleted}%</h2>
-          <SubTitleLabel label={'Projects completed'} />
-        </div>
-        <div className='card-section'>
-          <h2>23</h2>
-          <SubTitleLabel label={'Pending tasks'} />
+          <div className='card-section'>
+            <h2>{activeProjects}</h2>
+            <SubTitleLabel label={'Active projects'} />
+          </div>
+          <div className='card-section'>
+            <h2>{projectsCompleted}%</h2>
+            <SubTitleLabel label={'Projects completed'} />
+          </div>
+          <div className='card-section'>
+            <h2>23</h2>
+            <SubTitleLabel label={'Pending tasks'} />
+          </div>
         </div>
 
         <div className='deadline-section'>

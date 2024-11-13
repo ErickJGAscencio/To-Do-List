@@ -156,13 +156,22 @@ class ProjectViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['put'])
     def update_project(self, request):
         id_project = request.data.get('id_project')
-        if id_project is None:
+        project_name = request.data.get('project_name')
+        description = request.data.get('description')
+        
+        if id_project is None or id_project == '':
             return Response({"error": "id_project is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             project = Project.objects.get(id=id_project)
         except Project.DoesNotExist:
             return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        if project_name is None or project_name == '':
+            return Response({"error": "Project name is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if description is None or description == '':
+            return Response({"error": "Project description is required"}, status=status.HTTP_400_BAD_REQUEST)
         
         incoming_tasks_data = request.data.get('tasks', [])
         if incoming_tasks_data:
@@ -185,7 +194,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(project, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @property

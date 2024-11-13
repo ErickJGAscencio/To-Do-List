@@ -156,7 +156,7 @@ class ProjectTests(APITestCase):
     
   def test_delete_project_success(self):
     project = Project.objects.create(project_name='Project to delete', description='Will be deleted', user=self.user)    
-    url = f'/projects/delete_project/?id_project={project.id}'    
+    url = f'/projects/delete_project/?id_project={project.id}'
     response = self.client.delete(url)
     
     print(f"Response Data (Delete Project Success): {response.data}")
@@ -175,6 +175,70 @@ class ProjectTests(APITestCase):
     
     self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
     self.assertEqual(Project.objects.count(), 1)
+
+  def test_update_project_success(self):
+    project = Project.objects.create(project_name='Project to edit', description='Will be edited', user=self.user)
+    url = '/projects/update_project/'
+    updated_data = {
+        'id_project': project.id,
+        'project_name': 'Updated Project Name',
+        'description': 'Updated description',
+    }
+    response = self.client.put(url, updated_data, format='json')
+    print(f"Response Data (Update Project Success): {response.data}")
+    
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    project.refresh_from_db()
+    self.assertEqual(project.project_name, updated_data['project_name'])
+    self.assertEqual(project.description, updated_data['description'])
+    
+  def test_update_project_no_id(self):
+    project = Project.objects.create(project_name='Project to edit', description='Will be edited', user=self.user)
+    url = '/projects/update_project/'
+    updated_data = {
+        'id_project': '',
+        'project_name': 'Updated Project Name',
+        'description': 'Updated description',
+    }
+    response = self.client.put(url, updated_data, format='json')
+    print(f"Response Data (Update Project No Id): {response.data}")
+    
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    project.refresh_from_db()
+    self.assertEqual(project.project_name, 'Project to edit')
+    self.assertEqual(project.description, 'Will be edited')
+
+  def test_update_project_no_name(self):
+    project = Project.objects.create(project_name='Project to edit', description='Will be edited', user=self.user)
+    url = '/projects/update_project/'
+    updated_data = {
+        'id_project': project.id,
+        'project_name': '',
+        'description': 'Updated description',
+    }
+    response = self.client.put(url, updated_data, format='json')
+    print(f"Response Data (Update Project No Name): {response.data}")
+    
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    project.refresh_from_db()
+    self.assertEqual(project.project_name, 'Project to edit')
+    self.assertEqual(project.description, 'Will be edited')
+  
+  def test_update_project_no_name(self):
+    project = Project.objects.create(project_name='Project to edit', description='Will be edited', user=self.user)
+    url = '/projects/update_project/'
+    updated_data = {
+        'id_project': project.id,
+        'project_name': 'Updated Project Name',
+        'description': '',
+    }
+    response = self.client.put(url, updated_data, format='json')
+    print(f"Response Data (Update Project No Description): {response.data}")
+    
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    project.refresh_from_db()
+    self.assertEqual(project.project_name, 'Project to edit')
+    self.assertEqual(project.description, 'Will be edited')
 
 class TaskTests(APITestCase):
   def setUp(self):    
