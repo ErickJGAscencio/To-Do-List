@@ -22,3 +22,10 @@ class Task(models.Model):
 
   def __str__(self):
     return self.task_name
+  
+class Document(models.Model):
+  project = models.ForeignKey(Project, on_delete=models.CASCADE)
+  file = models.FileField(upload_to='documents/')
+    
+  def __str__(self):
+    return self.file.namecl
