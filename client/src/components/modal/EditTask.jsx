@@ -25,23 +25,23 @@ export function EditTask({ task, modifySubtaskList }) {
 
 
 
-  useEffect(() => {
-    async function getAllSubTasks() {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const res = await fetchSubTask(task.id, token);
+  // useEffect(() => {
+  //   async function getAllSubTasks() {
+  //     const token = localStorage.getItem("token");
+  //     if (token) {
+  //       try {
+  //         const res = await fetchSubTask(task.id, token);
 
-          if (res.data && res.data.length > 0) {
-            setSubTasks(res.data);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    }
-    getAllSubTasks();
-  }, [isOpen]);
+  //         if (res.data && res.data.length > 0) {
+  //           setSubTasks(res.data);
+  //         }
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     }
+  //   }
+  //   getAllSubTasks();
+  // }, [isOpen]);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -96,7 +96,6 @@ export function EditTask({ task, modifySubtaskList }) {
   return (
     <div>
       <FaPen onClick={openModal} />
-
       {isOpen && (
         <div className="modal">
           <div className="modal-content"

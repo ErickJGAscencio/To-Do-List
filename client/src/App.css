@@ -9,6 +9,9 @@ body {
   font-style: normal;
 }
 
+button:hover{
+  cursor: pointer;
+}
 
 .nav {
   background-color: #ffffff;
@@ -119,8 +122,8 @@ body {
   justify-content: space-between;
   height: calc(100vh - 17%);
   padding: 20px;
-  transition: width 0.3s ease;
   overflow-y: auto;
+  transition: width 0.3s ease;
 }
 
 .aside .card-section {
@@ -129,6 +132,41 @@ body {
   border-radius: 5px;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.files-items{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.file-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.members{
+  color: #ffffff;
+  display: flex;
+  gap: 5px;
+}
+
+.member {
+  background-color: #1E1E1E;
+  border-radius: 50px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  font-size: 15px;
+  justify-content: center; 
+  align-items: center;
+  text-align: center;
+}
+
+.stadistic-item{
+  display: flex;
+  justify-content: space-between;
 }
 
 .deadline-section {
@@ -184,7 +222,7 @@ body {
   background-color: #ffffff;
   border-radius: 5px;
   border: .5px solid #d6d6d6;
-  padding: 20px;
+  padding: 15px;
   color: #1E1E1E;
   box-shadow: 1px 10px 10px rgba(0, 0, 0, 0.2);
   /* Desplazamiento horizontal, vertical, desenfoque, color */

@@ -76,9 +76,9 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
     getAllTasks();
   }, [project]);
 
-  useEffect(() => {
-    setStatusProject();
-  }, [progress])
+  // useEffect(() => {
+  //   setStatusProject();
+  // }, [progress])
 
   return (
     <div className='card' onClick={() => {

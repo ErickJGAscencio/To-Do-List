@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-// import './CreateProject.css';
-import { FaPalette, FaPlus } from 'react-icons/fa';
-import { FaTrash } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import { createTask } from '../../api/todolist.api';
+import Modal from '../organisims/Modal';
+import TitleLabel from '../atoms/TitleLabel';
+import Button from '../atoms/Button';
 
 export function CreateTask({ id_project, addNewTask }) {
   const [titleTask, setTitleTask] = useState("");
@@ -10,7 +11,7 @@ export function CreateTask({ id_project, addNewTask }) {
   const [subTasks, setSubTasks] = useState([]);
   const [newSubTask, setNewSubTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-
+  const [limitDate, setLimitDate] = useState("");
 
   const openModal = () => {
     setIsOpen(true);
@@ -21,18 +22,7 @@ export function CreateTask({ id_project, addNewTask }) {
     setTitleTask("");
     setDescriptionTask("");
     setSubTasks([]);
-  };
-
-  const addSubTask = () => {
-    if (newSubTask) {
-      setSubTasks([...subTasks, newSubTask]);
-      setNewSubTask("");
-    }
-  };
-
-  const removeSubTask = (index) => {
-    const updatedTasks = subTasks.filter((_, i) => i !== index);
-    setSubTasks(updatedTasks);
+    setLimitDate("");
   };
 
   const sendRequest = async () => {
@@ -42,7 +32,7 @@ export function CreateTask({ id_project, addNewTask }) {
 
     try {
       const token = localStorage.getItem("token");
-      const newTask = await createTask(id_project, titleTask,descriptionTask, subTasks, token);
+      const newTask = await createTask(id_project, titleTask, descriptionTask, subTasks, token);
 
       addNewTask(newTask.data);
 
@@ -58,71 +48,38 @@ export function CreateTask({ id_project, addNewTask }) {
     <div>
       <button onClick={openModal}><FaPlus /> New Task</button>
       {isOpen && (
-        <div className="modal">
+        <Modal>
           <div className="modal-content">
-            <div className="modal-header">
-              <h2>Create new task</h2>
-              <p className='button'><FaPalette /></p>
+            <TitleLabel label={'Create New Task'} />
+            <div className='input-label'>
+              <p>Name</p>
+              <input
+                type="text"
+                placeholder="Project name..."
+                value={titleTask}
+                onChange={(e) => setTitleTask(e.target.value)} />
             </div>
-            <div className="modal-body">
-              <div className='left-section'>
-                <h1 className='title-input'>Task name</h1>
-                <input
-                  className='modal-name-input'
-                  type="text"
-                  placeholder="e.g Do something"
-                  value={titleTask}
-                  onChange={(e) => setTitleTask(e.target.value)}
-                />
-                <div className='modal-tasks'>
-                  <h3 className='label-input'>
-                    {titleTask}
-                    {titleTask != "" && (
-                      "'s "
-                    )}
-                    Subtasks
-                  </h3>
-                  <div className='add-controller'>
-                    <p className='button' onClick={addSubTask}>Add</p>
-                    <input
-                      className='modal-name-input'
-                      type="text"
-                      placeholder="SubTask Name"
-                      value={newSubTask}
-                      onChange={(e) => setNewSubTask(e.target.value)}
-                    />
-                  </div>
-                  <h3 className='label-input'>Subtask list</h3>
-                  <div className='task-container'>
-                    {subTasks.map((subtask, index) => (
-                      <div key={index} className='task-item'>
-                        {subtask}
-                        <p className='button' onClick={() => removeSubTask(index)}>
-                          <FaTrash
-                            size={10} />
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className='right-section'>
-                <div className='description'>
-                  <h1 className='title-input'>Description</h1>
-                  <textarea
-                    placeholder="Task Description"
-                    value={descriptionTask}
-                    onChange={(e) => setDescriptionTask(e.target.value)}
-                  />
-                </div>
-              </div>
+            <div className='input-label'>
+              <p>Description</p>
+              <textarea
+                className="description-textarea" // Clase CSS añadida
+                placeholder="Project description..."
+                value={descriptionTask}
+                onChange={(e) => setDescriptionTask(e.target.value)} />
+            </div>
+            <div className='input-label'>
+              <p>Limit Date</p>
+              <input
+                type="date"
+                value={limitDate}
+                onChange={(e) => setLimitDate(e.target.value)} />
             </div>
             <div className="modal-footer">
-                <p className='button' onClick={sendRequest}>Create</p>
-                <p className='button' onClick={closeModal}>Cancel</p>
+              <p className="button" onClick={sendRequest}>Save</p>
+              <p className="button" onClick={closeModal}>Cancel</p>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

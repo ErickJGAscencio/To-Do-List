@@ -93,23 +93,23 @@ export function TaskCard({ task, removeTask }) {
     }
   };
 
-  useEffect(() => {
-    async function getAllSubTasks() {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const response = await fetchSubTask(task.id, token);
-          if (response.data && response.data.length > 0) {
-            setSubTasks(response.data);
-            calculateProgress(response.data);
-          }
-        } catch (error) {
-          console.error('Error getting project:', error);
-        }
-      }
-    }
-    getAllSubTasks();
-  }, [task]);
+  // useEffect(() => {
+  //   async function getAllSubTasks() {
+  //     const token = localStorage.getItem("token");
+  //     if (token) {
+  //       try {
+  //         const response = await fetchSubTask(task.id, token);
+  //         if (response.data && response.data.length > 0) {
+  //           setSubTasks(response.data);
+  //           calculateProgress(response.data);
+  //         }
+  //       } catch (error) {
+  //         console.error('Error getting project:', error);
+  //       }
+  //     }
+  //   }
+  //   getAllSubTasks();
+  // }, [task]);
 
   const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
 
