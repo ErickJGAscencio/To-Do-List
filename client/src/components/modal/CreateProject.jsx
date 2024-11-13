@@ -15,10 +15,10 @@ export function CreateProject({ addNewProject }) {
   const [isOpen, setIsOpen] = useState(false);
   const [color, setColor] = useState();
 
- // Miembros
- const [members, setMembers] = useState([]);
- const [searchQuery, setSearchQuery] = useState("");
- const [suggestions, setSuggestions] = useState([]);
+  // Miembros
+  const [members, setMembers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
   const openModal = () => {
     setIsOpen(true);
@@ -51,7 +51,7 @@ export function CreateProject({ addNewProject }) {
     } else {
       setSuggestions([]); // Limpiar sugerencias si el campo está vacío
     }
-    
+
   }, [searchQuery]);
 
   const sendRequest = async () => {
@@ -83,9 +83,9 @@ export function CreateProject({ addNewProject }) {
               <p>Name</p>
               <input
                 type="text"
-                placeholder="Project name..." 
+                placeholder="Project name..."
                 value={titleProject}
-                onChange={(e) => setTitleProject(e.target.value)}/>
+                onChange={(e) => setTitleProject(e.target.value)} />
             </div>
 
             <div className='input-label'>
@@ -104,7 +104,7 @@ export function CreateProject({ addNewProject }) {
                 value={limitDate}
                 onChange={(e) => setLimitDate(e.target.value)} />
             </div>
-            
+
             <div className='input-label'>
               <p>Members</p>
               <input
@@ -136,12 +136,12 @@ export function CreateProject({ addNewProject }) {
             <div className="button-container">
               <Button label={'Create'} />
             </div>
-              <div className="modal-footer">
-                <p className="button" onClick={sendRequest}>Create</p>
-                <p className="button" onClick={closeModal}>Cancel</p>
-              </div>
+            <div className="modal-footer">
+              <p className="button" onClick={sendRequest}>Create</p>
+              <p className="button" onClick={closeModal}>Cancel</p>
+            </div>
           </div>
-        </Modal>        
+        </Modal>
       )}
     </div>
   );

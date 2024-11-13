@@ -93,6 +93,8 @@ export const updateProject = async (id_project, updatedData, token) => {
         }
       }
     );
+
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error updating project:', error);
