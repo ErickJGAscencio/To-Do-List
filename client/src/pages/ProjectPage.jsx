@@ -1,18 +1,20 @@
 import "./ProjectPage.css";
-
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from "react"
-
-import { CreateTask } from '../components/modal/CreateTask';
-import { TaskCard } from '../components/TaskCard';
+// API
 import { deleteProject, fetchTasksByProject, updateProject } from "../api/todolist.api";
-import { FaArrowLeft, FaEdit, FaPlus, FaSearch } from "react-icons/fa";
-import { Sidebar } from "../components/Sidebar";
+// Icons
+import { FaArrowLeft, FaDownload, FaFile, FaPlus } from "react-icons/fa";
+// Modal
+import { CreateTask } from '../components/modal/CreateTask';
+import Delete from "../components/modal/Delete";
+import EditProject from "../components/modal/EditProject";
+// Atoms
 import TitleLabel from "../components/atoms/TitleLabel";
 import Button from "../components/atoms/Button";
 import SubTitleLabel from "../components/atoms/SubTitleLabel";
-import EditProject from "../components/modal/EditProject";
-import Delete from "../components/modal/Delete";
+
+import { TaskCard } from '../components/TaskCard';
 import { LoadingSpinner } from "../components/LoadingSpinner";
 
 export function ProjectPage() {
@@ -20,18 +22,13 @@ export function ProjectPage() {
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const location = useLocation();
   const { project } = location.state;
 
-  const handleLogin = () => {
-    setLoading(true);
-    if (username && password) {
-      login(username, password).finally(() => {
-        setLoading(false);
-      });
-    }
-  };
+  // Statics
+  const [amountTasks, setAmountTasks] = useState("");
+  const [amountTasksCompleted, setAmountTasksCompleted] = useState("");
+
 
   const addNewTask = (newTask) => {
     setTasks([...tasks, newTask]);
@@ -49,6 +46,8 @@ export function ProjectPage() {
         try {
           const res = await fetchTasksByProject(id, token);
           setTasks(res.data);
+          setAmountTasks(res.data.length);
+          setAmountTasksCompleted(res.data.filter(project => project.is_completed === true).length);
           setLoading(false);
         } catch (error) {
           console.error(error);
@@ -87,7 +86,7 @@ export function ProjectPage() {
             <TitleLabel label={project.project_name} />
             <span>in progress</span>
           </div>
-          <p><EditProject project={project} updateDataProject={updateProject} /></p>
+          <EditProject project={project} updateDataProject={updateProject} />
         </div>
 
         <div className="cards-sections">
@@ -120,15 +119,15 @@ export function ProjectPage() {
               <CreateTask id_project={project.id} addNewTask={addNewTask} />
             </div>
             <div className="main-tasks">
-            {loading && <LoadingSpinner />}
+              {loading && <LoadingSpinner />}
               {tasks.length > 0 ? (
                 tasks.map((task) =>
                 (<TaskCard key={task.id}
-                            task={task}
+                  task={task}
                   removeTask={removeTask} />
                 ))
               ) : (
-                <SubTitleLabel label={'You need make some tasks'}/>
+                <SubTitleLabel label={'You need make some tasks'} />
               )}
             </div>
           </div>
@@ -146,35 +145,75 @@ export function ProjectPage() {
           {/* DOCUMENT & FILES */}
           <div className="card-section">
             <TitleLabel label={'Documents & Files'} />
-            <div>
-              <SubTitleLabel label={'projectko.pdf'} />
-              <SubTitleLabel label={'projectko.doc'} />
-              <SubTitleLabel label={'projectko.fig'} />
-            </div>
-            <Button label={'Upload File'}/>
+            <div className="files-items">
+              <div className="file-item">
+                <SubTitleLabel label={<FaFile />} />
+                <SubTitleLabel label={'projectko.pdf'} />
+                <SubTitleLabel label={<FaDownload />} />
+              </div>
+              <div className="file-item">
+                <SubTitleLabel label={<FaFile />} />
+                <SubTitleLabel label={'projectko.pdf'} />
+                <SubTitleLabel label={<FaDownload />} />
+              </div>
+              <div className="file-item">
+                <SubTitleLabel label={<FaFile />} />
+                <SubTitleLabel label={'projectko.pdf'} />
+                <SubTitleLabel label={<FaDownload />} />
+              </div>
+              <Button label={'Upload File'} />
+            </div>            
           </div>
 
           {/* TEAM MEMBERS */}
           <div className="card-section">
             <TitleLabel label={'Team Members'} />
-            <p>Coming soon</p>
+            <div className="members">
+              <div className="member">
+                EJ
+              </div>
+              <div className="member">
+                ML
+              </div>
+              <div className="member">
+                AM
+              </div>
+              <div className="member">
+                <FaPlus/>
+              </div>
+            </div>
           </div>
 
           {/* PROJECTS STATICS */}
           <div className="card-section">
-            <TitleLabel label={'Project Statics'} />
-            <p>Coming soon</p>
+            <TitleLabel label={'Project Stadistics'} />
+            <div className="stadistic-item">
+              <SubTitleLabel label={'Total tasks:'} />
+              <SubTitleLabel label={amountTasks} />
+            </div>
+            <div className="stadistic-item">
+              <SubTitleLabel label={'Tasks completed:'} />
+              <SubTitleLabel label={amountTasksCompleted} />
+            </div>
+            <div className="stadistic-item">
+              <SubTitleLabel label={'Days remaining:'} />
+              <SubTitleLabel label={amountTasks} />
+            </div>
+            <div className="stadistic-item">
+              <SubTitleLabel label={'Team members:'} />
+              <SubTitleLabel label={amountTasks} />
+            </div>
           </div>
         </div>
         <div className="control-buttons">
           <div>
-            <button><CreateTask id_project={project.id} addNewTask={addNewTask} /></button>
+            <CreateTask id_project={project.id} addNewTask={addNewTask} />
           </div>
           <div>
             <button><FaPlus /> Generate Report</button>
           </div>
           <div>
-            <button><Delete name={project.project_name} deleteMethod={ deleteMethod } type={ 'Project' } /></button>
+            <Delete name={project.project_name} deleteMethod={deleteMethod} type={'Project'} />
           </div>
         </div>
       </div>

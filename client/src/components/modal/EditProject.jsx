@@ -16,7 +16,7 @@ export function EditProject({ project, updateDataProject }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const [color, setColor] = useState();
-  const [limitDate, setLimitDate] = useState(""); // Estado para la fecha límite
+  const [limitDate, setLimitDate] = useState("");
 
   // Miembros
   const [members, setMembers] = useState([]);
@@ -73,7 +73,6 @@ export function EditProject({ project, updateDataProject }) {
   };
 
   const openModal = async () => {
-    console.log("Open modal");
     setColor(project.color);
     setIsOpen(true);
     setIdProject(project.id);
@@ -105,12 +104,11 @@ export function EditProject({ project, updateDataProject }) {
 
   return (
     <div>
-      <button onClick={openModal}><FaPen />Edit Project</button>
+      <button onClick={openModal}><FaPen /> Edit Project</button>
       {isOpen && (
         <Modal>
           <div className="modal-content">
             <TitleLabel label={'Edit Project'} />
-            
             <div className='input-label'>
               <p>Name</p>
               <input
@@ -119,7 +117,6 @@ export function EditProject({ project, updateDataProject }) {
                 value={titleProject}
                 onChange={(e) => setTitleProject(e.target.value)} />
             </div>
-
             <div className='input-label'>
               <p>Description</p>
               <textarea
@@ -135,7 +132,6 @@ export function EditProject({ project, updateDataProject }) {
                 value={limitDate}
                 onChange={(e) => setLimitDate(e.target.value)} />
             </div>
-
             <div className='input-label'>
               <p>Members</p>
               <input
@@ -162,11 +158,7 @@ export function EditProject({ project, updateDataProject }) {
                   </li>
                 ))}
               </ul>
-            </div>
-
-            <div className="button-container">
-              <Button label={'Create'} />
-            </div>
+            </div>            
             <div className="modal-footer">
               <p className="button" onClick={pdtProject}>Save</p>
               <p className="button" onClick={closeModal}>Cancel</p>

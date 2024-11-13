@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { FaTrash } from 'react-icons/fa';
+import Modal from "../organisims/Modal";
+import TitleLabel from "../atoms/TitleLabel";
 
 export function Delete({ name, deleteMethod, type }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,13 +16,11 @@ export function Delete({ name, deleteMethod, type }) {
 
   return (
     <div>
-      <div onClick={openModal}><FaTrash /> { type }</div>
+      <button onClick={openModal}><FaTrash /> {type}</button>
       {isOpen && (
-        <div className="modal">
+        <Modal>
           <div className="modal-content">
-            <div className="modal-header">
-              <h2>Are you sure you want to delete {name}?</h2>
-            </div>
+            <TitleLabel label={`Are you sure you want to delete ${name}?`}/>
             <div className="modal-footer">
               <p className="button" onClick={() => {
                 deleteMethod();
@@ -29,7 +29,7 @@ export function Delete({ name, deleteMethod, type }) {
               <p className="button" onClick={closeModal}>No</p>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );
