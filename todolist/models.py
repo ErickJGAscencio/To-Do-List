@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 class Project(models.Model):
-  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_projects')  # Dueño del proyecto
+  team_members = models.ManyToManyField(User, related_name='shared_projects', blank=True)  # Usuarios con acceso  
   project_name = models.CharField(max_length=50)
   description = models.CharField(max_length=200)
   progress = models.DecimalField(max_digits=5, decimal_places=2, default= 0.0)

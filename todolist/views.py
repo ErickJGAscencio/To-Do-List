@@ -98,8 +98,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
         user = request.user
         
         if user.is_authenticated:
-            projects = Project.objects.filter(user=user)
-            serializer = self.get_serializer(projects, many=True)
+            owned_projects = Project.objects.filter(user=user)
+            shared_projects = Project.objects.filter(team_members=user)
+            
+            all_projects = owned_projects | shared_projects
+            
+            serializer = self.get_serializer(all_projects, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         
         return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)        

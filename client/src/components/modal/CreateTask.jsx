@@ -5,7 +5,7 @@ import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
 import Button from '../atoms/Button';
 
-export function CreateTask({ id_project, addNewTask }) {
+export function CreateTask({ id_project, addNewTask, classStyle }) {
   const [titleTask, setTitleTask] = useState("");
   const [descriptionTask, setDescriptionTask] = useState("");
   const [subTasks, setSubTasks] = useState([]);
@@ -46,7 +46,7 @@ export function CreateTask({ id_project, addNewTask }) {
 
   return (
     <div>
-      <button onClick={openModal}><FaPlus /> New Task</button>
+      <button className={ classStyle } onClick={openModal}><FaPlus /> New Task</button>
       {isOpen && (
         <Modal>
           <div className="modal-content">
