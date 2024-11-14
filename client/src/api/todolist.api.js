@@ -198,72 +198,44 @@ export const deleteTask = async (id_task, token) => {
   }
 };
 
-// SubTasks
-export const createSubTask = async (id_task, titleSubTask, descriptionSubTask, token) => {
-  const data = {
-    task: id_task,
-    subtask_name: titleSubTask,
-    description: descriptionSubTask
-  };
-
-  let response;
+//COMMENTS
+export const fetchComments = async (id_project, token) => {
   try {
-    response = await axios.post(`${BASE_URL}/api/v1/subtasks/`, data, {
-      headers: {
-        'Authorization': `Token ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    return response.data;
-  } catch (error) {
-    console.error(`Error creating subtask '${titleSubTask}':`, error);
-    throw error;
-  }
-};
-
-export const fetchSubTask = async (id_task, token) => {
-  return axios.get(`${BASE_URL}/api/v1/subtasks/by_task/`, {
-    params: {
-      id_task: id_task
-    },
-    headers: {
-      'Authorization': `Token ${token}`,
-    },
-  });
-};
-
-export const deleteSubTask = async (id_subtask, token) => {
-  let response;
-  try {
-    response = await axios.delete(`${BASE_URL}/api/v1/subtasks/delete_subtask/`, {
+    const response = await axios.get(`${BASE_URL}/api/v1/comments/by_project/`, {
       params: {
-        id_subtask: id_subtask
+        id_project: id_project
       },
       headers: {
         'Authorization': `Token ${token}`
       }
-    });
+    })
+
+    return response
+
   } catch (error) {
-    console.error("Error deleting subtask:", error);
-    throw error;
+    console.error(`Error getting comments.`, error);
+    return { error: "Error getting comments." };
   }
-  return response;
 };
 
-export const updateSubtask = async (id_subtask, updatedData, token) => {
+export const createComment = async (id_project, token, comment) => {
+  const data = {
+    id_project: id_project,
+    comment: comment
+  };
+
   try {
-    const response = await axios.put(`${BASE_URL}/api/v1/subtasks/update_subtask/`, {
-      id_subtask,
-      ...updatedData
-    }, {
+    const response = await axios.post(`${BASE_URL}/api/v1/comments/create_comment/`, data, {
       headers: {
-        'Authorization': `Token ${token}`
-      }
+        'Authorization': `Token ${token}`,
+        'Content-Type': 'application/json'
+      },
     });
-    return response.data;
+    
+    return response;
+
   } catch (error) {
-    console.error('Error updating subtask:', error);
-    throw error;
+    console.error(`Error creating comment`, error);
+    return { error: "Failed to create comment" };
   }
-};
+}

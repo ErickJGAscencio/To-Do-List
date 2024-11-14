@@ -69,7 +69,7 @@ export function HomePage() {
       {/* MAIN-CONTAIN */}
       <div className="main-content-items">
         <div className="menu-project">
-          <div className="menu-project">
+          <div className="menu-group">
             <TitleLabel label={'Projects'} />
             <input type="text"
               placeholder="Search projects..." />

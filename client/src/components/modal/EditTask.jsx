@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import './EditProject.css'
-import { FaCircle, FaPalette, FaTrash } from 'react-icons/fa';
+import { FaTrash } from 'react-icons/fa';
 import { FaPen } from 'react-icons/fa';
 
-import { fetchSubTask, updateTask } from '../../api/todolist.api';
-import { ContextMenu } from '../ContextMenu';
+import { updateTask } from '../../api/todolist.api';
 import { ContextMenuColors } from '../ContextMenuColors';
 
 export function EditTask({ task, modifySubtaskList }) {
@@ -15,33 +14,9 @@ export function EditTask({ task, modifySubtaskList }) {
   const [newSubTask, setNewSubTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-
   const [color, setColor] = useState();
 
-
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuRef = useRef(null);
-
-
-
-
-  // useEffect(() => {
-  //   async function getAllSubTasks() {
-  //     const token = localStorage.getItem("token");
-  //     if (token) {
-  //       try {
-  //         const res = await fetchSubTask(task.id, token);
-
-  //         if (res.data && res.data.length > 0) {
-  //           setSubTasks(res.data);
-  //         }
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //     }
-  //   }
-  //   getAllSubTasks();
-  // }, [isOpen]);
 
   const closeModal = () => {
     setIsOpen(false);
