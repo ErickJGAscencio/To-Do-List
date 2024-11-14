@@ -11,7 +11,7 @@ export function CreateProject({ addNewProject }) {
   const [titleProject, setTitleProject] = useState("");
   const [descripcionProject, setDescriptionProject] = useState("");
   const [tasks, setTasks] = useState([]);
-  const [limitDate, setLimitDate] = useState(""); // Estado para la fecha límite
+  const [limitDate, setLimitDate] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [color, setColor] = useState();
 
@@ -28,7 +28,6 @@ export function CreateProject({ addNewProject }) {
     setIsOpen(false);
     setTitleProject("");
     setDescriptionProject("");
-    setTasks([]);
     setMembers([]);
     setLimitDate("");
   };
@@ -62,7 +61,7 @@ export function CreateProject({ addNewProject }) {
     try {
       const token = localStorage.getItem('token');
 
-      const newProject = await createProject(titleProject, descripcionProject, color, tasks, token);
+      const newProject = await createProject(titleProject, descripcionProject, color, limitDate, token);
 
       addNewProject(newProject.data);
 

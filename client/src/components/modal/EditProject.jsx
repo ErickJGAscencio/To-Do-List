@@ -78,6 +78,7 @@ export function EditProject({ project, updateDataProject }) {
     setIdProject(project.id);
     setTitleProject(project.project_name);
     setDescriptionProject(project.description);
+    setLimitDate(project.due_date);
   };
 
   const pdtProject = async () => {

@@ -40,9 +40,22 @@ function ProjectPageTemplate() {
 
   // console.log("Id user:" + userId);
   // console.log("Id project:" + project.user);
-
   const isOwner = project.user === userId;
 
+  const getDaysLeft = (dueDate) => {
+    // Convertir la fecha de vencimiento y la fecha actual en milisegundos
+    const dueDateMs = new Date(dueDate).getTime();
+    const todayMs = new Date().getTime();
+  
+    // Calcular la diferencia en milisegundos y convertir a días
+    const diffDays = Math.ceil((dueDateMs - todayMs) / (1000 * 60 * 60 * 24));
+  
+    return diffDays;
+  };
+
+  const daysLeft = getDaysLeft(project.due_date);
+  
+  
   const addNewTask = (newTask) => {
     setTasks([...tasks, newTask]);
   };
@@ -114,18 +127,22 @@ function ProjectPageTemplate() {
   };
 
   const postComment = async () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const response = await createComment(id, token, comment);
-
-        // Agrega el nuevo comentario al estado `comments`
-        setComments(prevComments => [...prevComments, response.data]);
-
-        setComment("");
-      } catch (error) {
-        console.error(error);
+    if (comment != "") {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await createComment(id, token, comment);
+  
+          // Agrega el nuevo comentario al estado `comments`
+          setComments(prevComments => [...prevComments, response.data]);
+  
+          setComment("");
+        } catch (error) {
+          console.error(error);
+        }
       }
+    } else {
+      console.log("empty comment");
     }
   };
 
@@ -208,7 +225,7 @@ function ProjectPageTemplate() {
                 onChange={(e) => setComment(e.target.value)} />
 
               {/* <Button label={'Postear'} onClick={postComment} /> */}
-              <button onClick={postComment} >Postear</button>
+              <button className={ "blue-button" } onClick={postComment} >Post</button>
             </div>
           </div>
         </div>
@@ -272,7 +289,7 @@ function ProjectPageTemplate() {
             </div>
             <div className="stadistic-item">
               <SubTitleLabel label={'Days remaining:'} />
-              <SubTitleLabel label={amountTasks} />
+              <SubTitleLabel label={daysLeft} />
             </div>
             <div className="stadistic-item">
               <SubTitleLabel label={'Team members:'} />

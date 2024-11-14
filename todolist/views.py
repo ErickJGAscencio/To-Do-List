@@ -112,8 +112,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def create_project(self, request):
         project_name = request.data.get('project_name')
         description = request.data.get('description')
+        due_date = request.data.get('due_date')
         user = request.user
-        tasks_data = request.data.get('tasks', [])
 
         if not project_name or not description:
             return Response({"error": "Project name and description are required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -121,21 +121,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
         project = Project.objects.create(
             project_name=project_name,
             description=description,
+            due_date=due_date,
             user=user
         )
-
-        created_tasks = []
-        for task_data in tasks_data:
-            task_name = task_data.get('task_name')
-            task_description = task_data.get('description', '')
-            
-            if task_name:
-                task = Task.objects.create(
-                    project=project,
-                    task_name=task_name,
-                    description=task_description
-                )
-                created_tasks.append(task)
 
         serializer = self.get_serializer(project)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
