@@ -15,10 +15,26 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
 from .models import Project, Task, Document, Comment
-from .serializers import ProjectSerializer, TaskSerializer, DocumentSerializer, CommentSerializer
+from .serializers import UserSerializer, ProjectSerializer, TaskSerializer, DocumentSerializer, CommentSerializer
 
-# Create your views here.
+from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    
+    def get_queryset(self):
+        filter_backends = [DjangoFilterBackend]
+        queryset = User.objects.all()
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(email__icontains=search_query)
+            )
+        return queryset
+
+    
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login(request):

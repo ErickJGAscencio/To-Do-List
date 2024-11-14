@@ -1,21 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { FaPalette, FaPlus } from 'react-icons/fa';
-import { FaTrash } from 'react-icons/fa';
-import { createProject, getUserProfile } from '../../api/todolist.api';
-import { ContextMenuColors } from '../ContextMenuColors';
+import React, { useEffect, useState } from 'react';
+import { FaPlus } from 'react-icons/fa';
+import { createProject, fetchUsers, getUserProfile } from '../../api/todolist.api';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
-import Button from '../atoms/Button';
 
 export function CreateProject({ addNewProject }) {
   const [titleProject, setTitleProject] = useState("");
   const [descripcionProject, setDescriptionProject] = useState("");
-  const [tasks, setTasks] = useState([]);
   const [limitDate, setLimitDate] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [color, setColor] = useState();
 
-  // Miembros
+  // Miembros 
   const [members, setMembers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -30,6 +25,7 @@ export function CreateProject({ addNewProject }) {
     setDescriptionProject("");
     setMembers([]);
     setLimitDate("");
+    setSuggestions([]);
   };
 
   const addMember = (member) => {
@@ -44,13 +40,21 @@ export function CreateProject({ addNewProject }) {
   };
 
   useEffect(() => {
-    if (searchQuery) {
-      // Buscar miembros cuando el usuario escribe en el campo de búsqueda
-      // searchMembers(searchQuery).then(setSuggestions);
-    } else {
-      setSuggestions([]); // Limpiar sugerencias si el campo está vacío
-    }
-
+    const fetchUsersAsync = async () => {
+      if (searchQuery != "") {
+        try {
+          // Buscar miembros cuando el usuario escribe en el campo de búsqueda 
+          const response = await fetchUsers(searchQuery);
+          console.log(response.data);
+          setSuggestions(response.data);
+        } catch (error) {
+          console.error('Error fetching users:', error);
+        }
+      } else {
+        setSuggestions([]);
+      }
+    };
+    fetchUsersAsync();
   }, [searchQuery]);
 
   const sendRequest = async () => {
@@ -61,7 +65,7 @@ export function CreateProject({ addNewProject }) {
     try {
       const token = localStorage.getItem('token');
 
-      const newProject = await createProject(titleProject, descripcionProject, color, limitDate, token);
+      const newProject = await createProject(titleProject, descripcionProject, '#fff', limitDate, token);
 
       addNewProject(newProject.data);
 
@@ -111,7 +115,9 @@ export function CreateProject({ addNewProject }) {
                 placeholder="Search members by email..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)} />
+            </div>
 
+            <div>
               {suggestions.length > 0 && (
                 <ul className="suggestions-list">
                   {suggestions.map((suggestion, index) => (
@@ -132,9 +138,6 @@ export function CreateProject({ addNewProject }) {
               </ul>
             </div>
 
-            <div className="button-container">
-              <Button label={'Create'} />
-            </div>
             <div className="modal-footer">
               <p className="button" onClick={sendRequest}>Create</p>
               <p className="button" onClick={closeModal}>Cancel</p>

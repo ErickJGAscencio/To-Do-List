@@ -9,23 +9,24 @@ body {
   font-style: normal;
 }
 
-button{
+button {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 5px;
 }
 
-button:hover{
+button:hover {
   cursor: pointer;
 }
 
-button:active { 
-  transform: scale(0.98); /* Reduce el tamaño del botón un poco */ 
+button:active {
+  transform: scale(0.98);
+  /* Reduce el tamaño del botón un poco */
   transition: transform 0.2s ease;
 }
 
-.blue-button{
+.blue-button {
   background-color: #3B82F6;
   border: none;
   border-radius: 5px;
@@ -40,7 +41,7 @@ button:active {
   cursor: pointer;
 }
 
-.black-button{
+.black-button {
   background-color: #1E1E1E;
   border: none;
   border-radius: 5px;
@@ -58,7 +59,7 @@ button:active {
   cursor: pointer;
 }
 
-.white-button{
+.white-button {
   background-color: #ffffff;
   border: 1px solid #d3d3d3;
   border-radius: 5px;
@@ -85,7 +86,8 @@ button:active {
   align-items: center;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
-.nav .icon-cloud{
+
+.nav .icon-cloud {
   color: #2f68c3;
   font-size: 30px;
 }
@@ -108,7 +110,8 @@ button:active {
   background-color: yellow;
   padding: 10px;
   position: absolute;
-  display: none; /* Por defecto no se muestra */
+  display: none;
+  /* Por defecto no se muestra */
 }
 
 
@@ -144,7 +147,7 @@ button:active {
   margin-bottom: 10px;
 }
 
-.menu-group{
+.menu-group {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -158,7 +161,7 @@ button:active {
 
 .progress-1,
 .progress-2,
-.progress-3{
+.progress-3 {
   min-width: 50px;
   width: auto;
   height: 50%;
@@ -169,17 +172,17 @@ button:active {
   padding-right: 10px;
 }
 
-.progress-1{
+.progress-1 {
   background-color: #DBEAFE;
   color: #172a60;
 }
 
-.progress-2{
+.progress-2 {
   background-color: #FEF9C3;
   color: #854D0E;
 }
 
-.progress-3{
+.progress-3 {
   background-color: #D1FAE5;
   color: #065F46;
 }
@@ -216,7 +219,7 @@ button:active {
   gap: 10px;
 }
 
-.files-items{
+.files-items {
   display: flex;
   flex-direction: column;
   height: 100px;
@@ -226,18 +229,18 @@ button:active {
   padding-right: 7px;
 }
 
-.file-item{
+.file-item {
   display: flex;
   justify-content: space-between;
 }
 
-.icon-namedoc{
+.icon-namedoc {
   display: flex;
   width: 50%;
   gap: 5px;
 }
 
-.members{
+.members {
   color: #ffffff;
   display: flex;
   gap: 5px;
@@ -250,12 +253,12 @@ button:active {
   height: 30px;
   display: flex;
   font-size: 15px;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   text-align: center;
 }
 
-.stadistic-item{
+.stadistic-item {
   display: flex;
   justify-content: space-between;
 }
@@ -332,7 +335,7 @@ button:active {
   align-items: center;
 }
 
-.card-task{
+.card-task {
   width: 100%;
 }
 
@@ -360,7 +363,7 @@ button:active {
   margin-top: 10px;
 }
 
-.control-buttons button{
+.control-buttons button {
   width: 100%;
 }
 
@@ -379,7 +382,7 @@ button:active {
   cursor: pointer;
 } */
 
-.comments-list{
+.comments-list {
   padding: 2px;
   padding-bottom: 10px;
   max-height: 115px;
@@ -389,26 +392,27 @@ button:active {
 /* .comment{  
 } */
 
-.comment-adding{
+.comment-adding {
   display: flex;
   justify-content: space-between;
   gap: 10px;
 }
 
-.comment-adding input{
+.comment-adding input {
   width: 100%;
   outline: none;
 }
 
 /* Modal */
-.modal-content{
+.modal-content {
   background-color: #ffffff;
   border-radius: 5px;
   padding: 10px;
   min-width: 250px;
   max-width: 450px;
 }
-.input-label{
+
+.input-label {
   display: flex;
   height: auto;
   width: 100%;
@@ -416,7 +420,7 @@ button:active {
   gap: 10px;
 }
 
-.input-label p{
+.input-label p {
   width: 30%;
 }
 
@@ -427,14 +431,14 @@ button:active {
 }
 
 .description-textarea {
-  width: 100%;        
-  height: 100px;      
-  padding: 8px;       
-  resize: none;   
-  border-radius: 4px; 
+  width: 100%;
+  height: 100px;
+  padding: 8px;
+  resize: none;
+  border-radius: 4px;
   border: 1px solid #ccc;
-  font-size: 16px;    
-  line-height: 1.5;   
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 
@@ -619,17 +623,50 @@ input {
   padding-right: 10px;
 }
 
+.suggestions-list,
+.members-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  max-height: 150px;
+  /* Ajusta la altura máxima */
+  overflow-y: auto;
+  /* Añade desplazamiento si es necesario */
+  border: 1px solid #b7b7b7;
+  border-radius: 5px;
+}
 
-/* Dispositivos con un ancho máximo de 768 píxeles */
-@media (max-width: 768px) {
+.suggestions-list li,
+.members-list li {
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  html,
-  body {
-    height: 100%;
-    overflow-y: auto;
-  }
+.suggestions-list li:hover,
+.members-list li:hover {
+  background-color: #f0f0f0;
+  color: #1E1E1E;
+}
 
-  /* .container-nav-user {
+.remove-member {
+  color: #1E1E1E;
+  cursor: pointer;
+}
+
+
+  /* Dispositivos con un ancho máximo de 768 píxeles */
+  @media (max-width: 768px) {
+
+    html,
+    body {
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    /* .container-nav-user {
     display: none;
   }
 
@@ -647,114 +684,115 @@ input {
     margin: 0;
     box-shadow: 0px 4px 15px 0px #1E1E1E;
   } */
-  
 
-  .nav{
-    padding: 0px 15px;
-  }
-  
-  #nav-lg {
-    display: none;
+
+    .nav {
+      padding: 0px 15px;
+    }
+
+    #nav-lg {
+      display: none;
+    }
+
+    #nav-mobile {
+      display: block;
+
+    }
+
+    .content {
+      width: 100%;
+      padding: 0px;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .menu-project {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content-items {
+      width: 94%;
+      padding: 10px;
+      padding-bottom: 10px;
+      height: auto;
+    }
+
+    .main {
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-auto-rows: min-content;
+      grid-gap: 20px;
+      height: 500px;
+    }
+
+    .card-section {
+      padding: 7px;
+    }
+
+    .main-tasks {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 0px;
+      width: 99%;
+      overflow-y: hidden;
+      overflow-x: hidden;
+    }
+
+    .card-task {
+      background-color: #f3f3f3;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .card-task-description {
+      background-color: #c0d8ff;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .aside {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 94.5%;
+      padding: 10px;
+      height: auto;
+    }
+
+    .side-bar-project {
+      width: 94%;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: calc(100vh - 17%);
+      overflow-y: auto;
+    }
+
+    .cards-sections {
+      color: #1E1E1E;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 80%;
+      gap: 10px;
+    }
+
+    .deadline-section {
+      padding-bottom: 30px;
+    }
   }
 
-  #nav-mobile {
-    display: block;
-    
-  }
-
-  .content {
-    width: 100%;
-    padding: 0px;
-    flex-direction: column;
-    overflow-y: auto;
-  }
-
-  .menu-project {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .main-content-items {
-    width: 94%;
-    padding: 10px;
-    padding-bottom: 10px;
-    height: auto;
-  }
-
-  .main {
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-auto-rows: min-content;
-    grid-gap: 20px;
-    height: 500px;
-  }
-
-  .card-section {
-    padding: 7px;
-  }
-
-  .main-tasks {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 0px;
-    width: 99%;
-    overflow-y: hidden;
-    overflow-x: hidden;
-  }
-
-  .card-task {
-    background-color: #f3f3f3;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-  }
-
-  .card-task-description {
-    background-color: #c0d8ff;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .aside {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 94.5%;
-    padding: 10px;
-    height: auto;
-  }
-
-  .side-bar-project {
-    width: 94%;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: calc(100vh - 17%);
-    overflow-y: auto;
-  }
-
-  .cards-sections {
-    color: #1E1E1E;
-  }
-
-  .modal-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 80%;
-    gap: 10px;
-  }
-
-  .deadline-section{
-    padding-bottom: 30px;
-  }
-}
-
-/* tablets */
-@media (max-width: 768px) {}
+  /* tablets */
+  @media (max-width: 768px) {}

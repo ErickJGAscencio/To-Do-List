@@ -41,6 +41,13 @@ export const getUserProfile = (token) => {
   });
 };
 
+export const fetchUsers = (searchQuery) => {
+  return axios.get(`${BASE_URL}/api/v1/users/`, {
+    params: { search: searchQuery }
+  });
+}
+
+
 // Projects
 export const fetchProjects = () => {
   return axios.get(`${BASE_URL}/api/v1/projects/`, {});
