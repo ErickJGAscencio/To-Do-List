@@ -3,7 +3,7 @@ import { FaTrash } from 'react-icons/fa';
 import Modal from "../organisims/Modal";
 import TitleLabel from "../atoms/TitleLabel";
 
-export function Delete({ name, deleteMethod, type }) {
+export function Delete({ name, deleteMethod, type, classStyle }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -16,7 +16,7 @@ export function Delete({ name, deleteMethod, type }) {
 
   return (
     <div>
-      <button onClick={openModal}><FaTrash /> Delete {type}</button>
+      <button className={ classStyle } onClick={openModal}><FaTrash /> Delete {type}</button>
       {isOpen && (
         <Modal>
           <div className="modal-content">

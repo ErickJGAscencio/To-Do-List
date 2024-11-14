@@ -16,7 +16,7 @@ export function Navigation({ filter }) {
   return (
     <div className="nav">
       <div className='container-nav-user'>
-        <FaCloud />
+        <FaCloud className='icon-cloud' />
         <h2 id='nav-lg'>WorkCloud</h2>
         <h2 id='nav-mobile'>WrCd</h2>
       </div>

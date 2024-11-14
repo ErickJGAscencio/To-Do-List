@@ -104,7 +104,7 @@ export function EditProject({ project, updateDataProject }) {
 
   return (
     <div>
-      <button onClick={openModal}><FaPen /> Edit Project</button>
+      <button className={ 'blue-button' } onClick={openModal}><FaPen /> Edit Project</button>
       {isOpen && (
         <Modal>
           <div className="modal-content">
