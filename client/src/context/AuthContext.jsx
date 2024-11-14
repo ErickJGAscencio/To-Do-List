@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState(null);
   const [error, setError] = useState(null);
 
@@ -16,6 +17,7 @@ export function AuthProvider({ children }) {
         try {
           const res = await getUserProfile(token);
           setUsername(res.data.username);
+          setUserId(res.data.id);
           setIsLoggedIn(true);
         } catch (error) {
           setIsLoggedIn(false);
@@ -48,7 +50,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, username, login, logout, error }}>
+    <AuthContext.Provider value={{ isLoggedIn, userId, username, login, logout, error }}>
       {children}
     </AuthContext.Provider>
   );

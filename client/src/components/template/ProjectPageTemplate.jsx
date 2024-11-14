@@ -1,6 +1,6 @@
 import "../../pages/ProjectPage.css";
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 // API
 import { createComment, deleteProject, fetchComments, fetchTasksByProject, updateProject } from "../../api/todolist.api";
 // Icons
@@ -18,10 +18,12 @@ import ProgressLabel from "../../components/molecules/ProgressLabel";
 
 import { TaskCard } from '../../components/TaskCard';
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { AuthContext } from "../../context/AuthContext";
 
 
 function ProjectPageTemplate() {
   const navigate = useNavigate();
+  const { userId } = useContext(AuthContext);
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,11 @@ function ProjectPageTemplate() {
   const [amountTasks, setAmountTasks] = useState("");
   const [amountTasksCompleted, setAmountTasksCompleted] = useState("");
 
+  // console.log("Id user:" + userId);
+  // console.log("Id project:" + project.user);
+
+  const isOwner = project.user === userId;
+
   const addNewTask = (newTask) => {
     setTasks([...tasks, newTask]);
   };
@@ -45,19 +52,19 @@ function ProjectPageTemplate() {
   };
 
   const GetStatusProject = () => {
-    let gotStatus = 1; 
+    let gotStatus = 1;
     const progress = parseFloat(project.progress);
 
     switch (true) {
-      case (progress >= 100): gotStatus = 3; 
+      case (progress >= 100): gotStatus = 3;
         break;
       case (progress >= 25): gotStatus = 2;
         break;
-      default: gotStatus = 1; 
+      default: gotStatus = 1;
         break;
     }
 
-    setStatusProject(gotStatus); 
+    setStatusProject(gotStatus);
   };
 
 
@@ -128,7 +135,7 @@ function ProjectPageTemplate() {
       <div className="main-content-items">
         <div className="menu-project">
           <div className="menu-group">
-            <button className={ 'blue-button' } onClick={backToHome}><FaArrowLeft /></button>
+            <button className={'blue-button'} onClick={backToHome}><FaArrowLeft /></button>
             <TitleLabel label={project.project_name} />
             <ProgressLabel status={statusProject} />
           </div>
@@ -228,8 +235,8 @@ function ProjectPageTemplate() {
                 <SubTitleLabel label={'projectko.pdf'} />
                 <SubTitleLabel label={<FaDownload />} />
               </div>
-              
-              <Button classStyle={ 'black-button' } label={'Upload File'} />
+
+              <Button classStyle={'black-button'} label={'Upload File'} />
             </div>
           </div>
 
@@ -275,14 +282,16 @@ function ProjectPageTemplate() {
         </div>
         <div className="control-buttons">
           <div>
-            <CreateTask id_project={project.id} addNewTask={addNewTask} classStyle={ 'black-button' } />
+            <CreateTask id_project={project.id} addNewTask={addNewTask} classStyle={'black-button'} />
           </div>
           <div>
             <button className="white-button"><FaPlus /> Generate Report</button>
           </div>
+          {isOwner && (
           <div>
-            <Delete classStyle={ "white-button" } name={project.project_name} deleteMethod={deleteMethod} type={'Project'} />
+            <Delete classStyle={"white-button"} name={project.project_name} deleteMethod={deleteMethod} type={'Project'} />
           </div>
+          )}
         </div>
       </div>
     </div>
