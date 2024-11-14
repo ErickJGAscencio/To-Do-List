@@ -104,6 +104,14 @@ button:active {
   font-size: 15px
 }
 
+.container-nav-user-mobile {
+  background-color: yellow;
+  padding: 10px;
+  position: absolute;
+  display: none; /* Por defecto no se muestra */
+}
+
+
 .content {
   display: flex;
   justify-content: space-between;
@@ -205,18 +213,28 @@ button:active {
   border-radius: 5px;
   padding-left: 20px;
   padding-right: 20px;
+  gap: 10px;
 }
 
 .files-items{
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  height: 100px;
+  overflow-y: auto;
+  gap: 10px;
+  padding-left: 7px;
+  padding-right: 7px;
 }
 
 .file-item{
   display: flex;
-  align-items: center;
   justify-content: space-between;
+}
+
+.icon-namedoc{
+  display: flex;
+  width: 50%;
+  gap: 5px;
 }
 
 .members{
@@ -591,6 +609,17 @@ input {
   margin-top: 5px;
 }
 
+.main-tasks {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: 20px;
+  gap: 10px;
+  width: 98%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
 /* Dispositivos con un ancho máximo de 768 píxeles */
 @media (max-width: 768px) {
 
@@ -600,8 +629,28 @@ input {
     overflow-y: auto;
   }
 
+  /* .container-nav-user {
+    display: none;
+  }
+
+  .container-nav-user-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: start;
+    background-color: #ffffff;
+    transform: translate(-15px, 48.5vh);
+    width: 65%;
+    height: calc(100vh - 10%);
+    z-index: 10;
+    padding: 10px;
+    margin: 0;
+    box-shadow: 0px 4px 15px 0px #1E1E1E;
+  } */
+  
+
   .nav{
-    padding: 0px 20;
+    padding: 0px 15px;
   }
   
   #nav-lg {
@@ -650,7 +699,7 @@ input {
     flex-direction: column;
     gap: 15px;
     padding: 0px;
-    width: 100%;
+    width: 99%;
     overflow-y: hidden;
     overflow-x: hidden;
   }

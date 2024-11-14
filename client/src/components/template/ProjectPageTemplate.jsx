@@ -238,23 +238,49 @@ function ProjectPageTemplate() {
             <TitleLabel label={'Documents & Files'} />
             <div className="files-items">
               <div className="file-item">
-                <SubTitleLabel label={<FaFile />} />
-                <SubTitleLabel label={'projectko.pdf'} />
+                <div className="icon-namedoc">
+                  <SubTitleLabel label={<FaFile />} />
+                  <SubTitleLabel label={'projectko.pdf'} />
+                </div>
                 <SubTitleLabel label={<FaDownload />} />
               </div>
               <div className="file-item">
-                <SubTitleLabel label={<FaFile />} />
-                <SubTitleLabel label={'projectko.pdf'} />
+                <div className="icon-namedoc">
+                  <SubTitleLabel label={<FaFile />} />
+                  <SubTitleLabel label={'projectko.pdf'} />
+                </div>
                 <SubTitleLabel label={<FaDownload />} />
               </div>
               <div className="file-item">
-                <SubTitleLabel label={<FaFile />} />
-                <SubTitleLabel label={'projectko.pdf'} />
+                <div className="icon-namedoc">
+                  <SubTitleLabel label={<FaFile />} />
+                  <SubTitleLabel label={'projDSFko.pdf'} />
+                </div>
                 <SubTitleLabel label={<FaDownload />} />
               </div>
-
-              <Button classStyle={'black-button'} label={'Upload File'} />
+              <div className="file-item">
+                <div className="icon-namedoc">
+                  <SubTitleLabel label={<FaFile />} />
+                  <SubTitleLabel label={'prSAtko.pdf'} />
+                </div>
+                <SubTitleLabel label={<FaDownload />} />
+              </div>
+              <div className="file-item">
+                <div className="icon-namedoc">
+                  <SubTitleLabel label={<FaFile />} />
+                  <SubTitleLabel label={'proxcvxcvko.pdf'} />
+                </div>
+                <SubTitleLabel label={<FaDownload />} />
+              </div>
+              <div className="file-item">
+                <div className="icon-namedoc">
+                  <SubTitleLabel label={<FaFile />} />
+                  <SubTitleLabel label={'pstko.pdf'} />
+                </div>
+                <SubTitleLabel label={<FaDownload />} />
+              </div>
             </div>
+            <Button classStyle={'black-button'} label={'Upload File'} />
           </div>
 
           {/* TEAM MEMBERS */}
