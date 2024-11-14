@@ -2,7 +2,7 @@ import "./ProjectPage.css";
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from "react"
 // API
-import { deleteProject, fetchTasksByProject, updateProject } from "../api/todolist.api";
+import { createComment, deleteProject, fetchComments, fetchTasksByProject, updateProject } from "../api/todolist.api";
 // Icons
 import { FaArrowLeft, FaDownload, FaFile, FaPlus } from "react-icons/fa";
 // Modal
@@ -14,6 +14,8 @@ import TitleLabel from "../components/atoms/TitleLabel";
 import Button from "../components/atoms/Button";
 import SubTitleLabel from "../components/atoms/SubTitleLabel";
 
+import ProgressLabel from "../components/molecules/ProgressLabel";
+
 import { TaskCard } from '../components/TaskCard';
 import { LoadingSpinner } from "../components/LoadingSpinner";
 
@@ -24,11 +26,14 @@ export function ProjectPage() {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { project } = location.state;
+  const [statusProject, setStatusProject] = useState();
+
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
 
   // Statics
   const [amountTasks, setAmountTasks] = useState("");
   const [amountTasksCompleted, setAmountTasksCompleted] = useState("");
-
 
   const addNewTask = (newTask) => {
     setTasks([...tasks, newTask]);
@@ -38,23 +43,46 @@ export function ProjectPage() {
     setTasks(tasks.filter((task) => task.id !== idToRemove));
   };
 
+  const GetStatusProject = () => {
+    let gotStatus = 1; 
+    const progress = parseFloat(project.progress);
+
+    switch (true) {
+      case (progress >= 100): gotStatus = 3; 
+        break;
+      case (progress >= 25): gotStatus = 2;
+        break;
+      default: gotStatus = 1; 
+        break;
+    }
+
+    setStatusProject(gotStatus); 
+  };
+
+
   useEffect(() => {
-    async function getAllPjcts() {
+    async function getAllData() {
       setLoading(true);
       const token = localStorage.getItem('token');
       if (token && id) {
         try {
-          const res = await fetchTasksByProject(id, token);
-          setTasks(res.data);
-          setAmountTasks(res.data.length);
-          setAmountTasksCompleted(res.data.filter(project => project.is_completed === true).length);
+          // Obtener las tareas
+          const resTasks = await fetchTasksByProject(id, token);
+          setTasks(resTasks.data);
+          setAmountTasks(resTasks.data.length);
+          setAmountTasksCompleted(resTasks.data.filter(project => project.is_completed === true).length);
+          GetStatusProject();
+          // Obtener los comentarios
+          const resComments = await fetchComments(id, token);
+          setComments(resComments.data);
+
           setLoading(false);
         } catch (error) {
           console.error(error);
         }
       }
     }
-    getAllPjcts();
+    getAllData();
   }, [id]);
 
   useEffect(() => {
@@ -70,21 +98,38 @@ export function ProjectPage() {
     if (token) {
       try {
         await deleteProject(project.id, token);
-        navigate('/home');
+        backToHome()
       } catch (error) {
         console.error(error);
       }
     }
   };
 
+  const postComment = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const response = await createComment(id, token, comment);
+
+        // Agrega el nuevo comentario al estado `comments`
+        setComments(prevComments => [...prevComments, response.data]);
+
+        setComment("");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+
   return (
     <div className="content">
       <div className="main-content-items">
         <div className="menu-project">
-          <div className="menu-project">
+          <div className="menu-group">
             <button onClick={backToHome}><FaArrowLeft /></button>
             <TitleLabel label={project.project_name} />
-            <span>in progress</span>
+            <ProgressLabel status={statusProject} />
           </div>
           <EditProject project={project} updateDataProject={updateProject} />
         </div>
@@ -135,7 +180,28 @@ export function ProjectPage() {
           {/* Comments */}
           <div className="card-section">
             <TitleLabel label={"Comments"} />
-            <p>Coming soon</p>
+            <div className="comments-list">
+              {comments.length > 0 ? (
+                comments.slice().reverse().map(comment => (
+                  <div key={comment.id} className="comment">
+                    <p><strong>{comment.user}</strong>: {comment.comment}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No comments yet</p>
+              )}
+            </div>
+            <hr />
+            <div className="comment-adding">
+              <input
+                type="text"
+                placeholder="Add comment..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)} />
+
+              {/* <Button label={'Postear'} onClick={postComment} /> */}
+              <button onClick={postComment} >Postear</button>
+            </div>
           </div>
         </div>
       </div>
@@ -162,7 +228,7 @@ export function ProjectPage() {
                 <SubTitleLabel label={<FaDownload />} />
               </div>
               <Button label={'Upload File'} />
-            </div>            
+            </div>
           </div>
 
           {/* TEAM MEMBERS */}
@@ -179,7 +245,7 @@ export function ProjectPage() {
                 AM
               </div>
               <div className="member">
-                <FaPlus/>
+                <FaPlus />
               </div>
             </div>
           </div>

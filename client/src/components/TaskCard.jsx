@@ -1,26 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { FaCheckCircle, FaChevronDown, FaChevronUp, FaEdit } from 'react-icons/fa';
-import { deleteTask, fetchSubTask, updateTask } from '../api/todolist.api';
-import { CreateSubTask } from './modal/CreateSubTask';
-import { Delete } from './modal/Delete';
+import { useRef, useState } from 'react';
+import { FaCheckCircle, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { deleteTask, updateTask } from '../api/todolist.api';
 import { EditTask } from './modal/EditTask';
-import { ContextMenu } from './ContextMenu';
 import SubTitleLabel from './atoms/SubTitleLabel';
 
 export function TaskCard({ task, removeTask }) {
   const [subtasks, setSubTasks] = useState([]);
   const [progress, setProgress] = useState(0);
-  const menuRef = useRef(null);
-
-  const addNewSubTask = (newSubTask) => {
-    setSubTasks([...subtasks, newSubTask]);
-    calculateProgress([...subtasks, newSubTask]);
-  };
-
-  const removeSubTask = (idToRemove) => {
-    setSubTasks(subtasks.filter((subtask) => subtask.id !== idToRemove));
-    calculateProgress(subtasks.filter((subtask) => subtask.id !== idToRemove));
-  };
 
   const modifySubtaskData = (data) => {
     if (data.subtasks) {

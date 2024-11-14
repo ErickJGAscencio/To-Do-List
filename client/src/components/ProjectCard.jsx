@@ -9,44 +9,33 @@ import { Delete } from './modal/Delete';
 import { ContextMenu } from './ContextMenu';
 import TitleLabel from './atoms/TitleLabel';
 import SubTitleLabel from './atoms/SubTitleLabel';
+import ProgressLabel from './molecules/ProgressLabel';
 
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [tasksRemaining, setTasksRemaining] = useState([]);
   const [progress, setProgress] = useState(0);
-  const { setSection } = useContext(AuthContext);
+  const [statusProject, setStatusProject] = useState();
 
   const menuRef = useRef(null);
 
-  const deleteMethod = async () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        await deleteProject(project.id, token);
-        removeProject(project.id);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  };
+  const GetStatusProject = () => {
+    let gotStatus = 1; 
+    const progress = parseFloat(project.progress);
 
-  const setStatusProject = async () => {
-    let updatedData = {
-      progress: progress,
-      is_completed: false
-    };
-
-    if (progress === 100) {
-      updatedData = {
-        progress: progress,
-        is_completed: true
-      };
+    switch (true) {
+      case (progress >= 100): gotStatus = 3; 
+        break;
+      case (progress >= 25): gotStatus = 2;
+        break;
+      default: gotStatus = 1; 
+        break;
     }
 
-    const token = localStorage.getItem("token");
-    await updateProject(project.id, updatedData, token);
+    setStatusProject(gotStatus); 
   };
+
 
   const calculateProgress = (tasks) => {
     if (tasks.length === 0) return 0;
@@ -70,6 +59,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
           if (response.data) {
             setTasks(response.data);
             calculateProgress(response.data);
+            GetStatusProject();
           }
         } catch (error) {
           console.error('Error getting tasks:', error);
@@ -90,7 +80,7 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
     }}>
       <div className='top-side'>
         <TitleLabel label={project.project_name} />
-      </div>
+        <ProgressLabel status={statusProject} /></div>
       <div className='bottom-side'>
         <div className="progress-section">
           <div className="progress-bar">

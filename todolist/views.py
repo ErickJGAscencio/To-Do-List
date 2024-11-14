@@ -14,10 +14,8 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
-from .models import Project, Task
-
-
-from .serializers import ProjectSerializer, TaskSerializer
+from .models import Project, Task, Document, Comment
+from .serializers import ProjectSerializer, TaskSerializer, DocumentSerializer, CommentSerializer
 
 # Create your views here.
 
@@ -279,6 +277,7 @@ class TaskViewSet(viewsets.ModelViewSet):
             return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)     
     
         return Response({"success": "Deleted task"}, status=status.HTTP_200_OK)
+    
     @action(detail=False, methods=['put'])
     def update_task(self, request):
         id_task = request.data.get('id_task')
@@ -333,3 +332,63 @@ class TaskViewSet(viewsets.ModelViewSet):
             return 100 if self.is_completed else 0
 
         return (completed_subtasks / total_subtasks) * 100
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+class DocumentViewSet(viewsets.ModelViewSet):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
+    
+    @action(detail=False, methods=['get'])
+    def by_project(self, request):
+        id_project = request.query_params.get('id_project')
+        if id_project is None:
+            return Response({"error": "id_project is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        document = Document.objects.filter(project=id_project)
+        serializer = self.get_serializer(document, many=True)
+        return Response(serializer.data)
+    
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    
+    @action(detail=False, methods=['get'])
+    def by_project(self, request):
+        id_project = request.query_params.get('id_project')
+        if id_project is None:
+            return Response({"error": "id_project is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        comments = Comment.objects.filter(project=id_project)        
+        serializer = CommentSerializer(comments, many=True)
+        
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['post'])
+    def create_comment(self, request):
+        user = request.user
+        id_project = request.data.get('id_project')
+        comment = request.data.get('comment')
+
+        if not id_project:
+            return Response({"error": "Project Id is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not comment:
+            return Response({"error": "Comment is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            project = Project.objects.get(id=id_project)
+        except Project.DoesNotExist:
+            return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        comment = Comment.objects.create(
+            user=user,
+            comment = comment,
+            project = project
+        )
+            
+        serializer = self.get_serializer(comment)
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

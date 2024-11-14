@@ -16,7 +16,7 @@ export function Delete({ name, deleteMethod, type }) {
 
   return (
     <div>
-      <button onClick={openModal}><FaTrash /> {type}</button>
+      <button onClick={openModal}><FaTrash /> Delete {type}</button>
       {isOpen && (
         <Modal>
           <div className="modal-content">

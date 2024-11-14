@@ -7,6 +7,9 @@ from todolist import views
 router = DefaultRouter()
 router.register(r'projects', views.ProjectViewSet)
 router.register(r'tasks', views.TaskViewSet)
+router.register(r'documents', views.DocumentViewSet)
+router.register(r'comments', views.CommentViewSet)
+
 urlpatterns = [
     # path('', RedirectView.as_view(url='/login/', permanent=False)),  # Redirige la ruta vacía a /login/
     path('', include(router.urls)),

@@ -28,4 +28,12 @@ class Document(models.Model):
   file = models.FileField(upload_to='documents/')
     
   def __str__(self):
-    return self.file.namecl
+    return self.file.name
+  
+class Comment(models.Model):
+  project = models.ForeignKey(Project, on_delete=models.CASCADE)
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  comment = models.CharField(max_length=100)
+    
+  def __str__(self):
+    return self.user.username
