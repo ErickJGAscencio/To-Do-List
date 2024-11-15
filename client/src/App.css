@@ -164,8 +164,9 @@ button:active {
 .progress-3 {
   min-width: 50px;
   width: auto;
-  height: 50%;
+  height: 25px;
   display: flex;
+   align-items: center;
   justify-content: center;
   border-radius: 20px;
   padding-left: 10px;
@@ -273,6 +274,7 @@ button:active {
   flex-direction: column;
   height: auto;
   gap: 10px;
+  margin-bottom: 50px;
 }
 
 .deadline-section p {

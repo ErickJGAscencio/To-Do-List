@@ -26,6 +26,7 @@ function ProjectPageTemplate() {
   const { userId } = useContext(AuthContext);
   const { id } = useParams();
   const [tasks, setTasks] = useState([]);
+  const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { project } = location.state;
@@ -98,6 +99,7 @@ function ProjectPageTemplate() {
           // Obtener los comentarios
           const resComments = await fetchComments(id, token);
           setComments(resComments.data);
+          setMembers(project.team_members);
 
           setLoading(false);
         } catch (error) {
@@ -280,15 +282,14 @@ function ProjectPageTemplate() {
           <div className="card-section">
             <TitleLabel label={'Team Members'} />
             <div className="members">
-              <div className="member">
-                EJ
-              </div>
-              <div className="member">
-                ML
-              </div>
-              <div className="member">
-                AM
-              </div>
+                <div className="member" >
+                  {userId}
+                </div>
+              {members.map((member, index) => (
+                <div className="member" key={index}>
+                  {member.id}
+                </div>
+              ))}
               <div className="member">
                 <FaPlus />
               </div>
