@@ -274,7 +274,7 @@ button:active {
   flex-direction: column;
   height: auto;
   gap: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .deadline-section p {
