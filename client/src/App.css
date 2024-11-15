@@ -222,7 +222,7 @@ button:active {
 .files-items {
   display: flex;
   flex-direction: column;
-  height: 100px;
+  max-height: 100px;
   overflow-y: auto;
   gap: 10px;
   padding-left: 7px;
@@ -236,9 +236,14 @@ button:active {
 
 .icon-namedoc {
   display: flex;
-  width: 50%;
+  width: 90%;
   gap: 5px;
+  word-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
+
 
 .members {
   color: #ffffff;

@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react"
 // API
 import { createComment, deleteProject, fetchComments, fetchTasksByProject, updateProject } from "../../api/todolist.api";
 // Icons
-import { FaArrowLeft, FaDownload, FaFile, FaPlus } from "react-icons/fa";
+import { FaArrowLeft, FaChartBar, FaDownload, FaFile, FaPlus, FaUpload } from "react-icons/fa";
 // Modal
 import { CreateTask } from '../../components/modal/CreateTask';
 import Delete from "../../components/modal/Delete";
@@ -42,20 +42,22 @@ function ProjectPageTemplate() {
   // console.log("Id project:" + project.user);
   const isOwner = project.user === userId;
 
+  const [files, setFiles] = useState([]);
+
   const getDaysLeft = (dueDate) => {
     // Convertir la fecha de vencimiento y la fecha actual en milisegundos
     const dueDateMs = new Date(dueDate).getTime();
     const todayMs = new Date().getTime();
-  
+
     // Calcular la diferencia en milisegundos y convertir a días
     const diffDays = Math.ceil((dueDateMs - todayMs) / (1000 * 60 * 60 * 24));
-  
+
     return diffDays;
   };
 
   const daysLeft = getDaysLeft(project.due_date);
-  
-  
+
+
   const addNewTask = (newTask) => {
     setTasks([...tasks, newTask]);
   };
@@ -132,10 +134,10 @@ function ProjectPageTemplate() {
       if (token) {
         try {
           const response = await createComment(id, token, comment);
-  
+
           // Agrega el nuevo comentario al estado `comments`
           setComments(prevComments => [...prevComments, response.data]);
-  
+
           setComment("");
         } catch (error) {
           console.error(error);
@@ -145,7 +147,19 @@ function ProjectPageTemplate() {
       console.log("empty comment");
     }
   };
-
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    // if (file) {
+    //   try {
+    //     // Supongamos que uploadFile maneja la lógica de subida 
+    //     await uploadFile(file);
+    setFiles([...files, { name: file.name }]);
+    //     // Añade el nuevo archivo a la lista 
+    //   } catch (error) {
+    //     console.error('Error uploading file:', error);
+    //   }
+    // }
+  };
 
   return (
     <div className="content">
@@ -225,7 +239,7 @@ function ProjectPageTemplate() {
                 onChange={(e) => setComment(e.target.value)} />
 
               {/* <Button label={'Postear'} onClick={postComment} /> */}
-              <button className={ "blue-button" } onClick={postComment} >Post</button>
+              <button className={"blue-button"} onClick={postComment} >Post</button>
             </div>
           </div>
         </div>
@@ -237,50 +251,29 @@ function ProjectPageTemplate() {
           <div className="card-section">
             <TitleLabel label={'Documents & Files'} />
             <div className="files-items">
-              <div className="file-item">
-                <div className="icon-namedoc">
-                  <SubTitleLabel label={<FaFile />} />
-                  <SubTitleLabel label={'projectko.pdf'} />
+
+              {files.map((file, index) => (
+                <div className="file-item" key={index}>
+                  <div className="icon-namedoc">
+                    <SubTitleLabel label={<FaFile />} />
+                    <SubTitleLabel label={file.name} />
+                  </div>
+                  <SubTitleLabel label={<FaDownload />} />
                 </div>
-                <SubTitleLabel label={<FaDownload />} />
-              </div>
-              <div className="file-item">
-                <div className="icon-namedoc">
-                  <SubTitleLabel label={<FaFile />} />
-                  <SubTitleLabel label={'projectko.pdf'} />
-                </div>
-                <SubTitleLabel label={<FaDownload />} />
-              </div>
-              <div className="file-item">
-                <div className="icon-namedoc">
-                  <SubTitleLabel label={<FaFile />} />
-                  <SubTitleLabel label={'projDSFko.pdf'} />
-                </div>
-                <SubTitleLabel label={<FaDownload />} />
-              </div>
-              <div className="file-item">
-                <div className="icon-namedoc">
-                  <SubTitleLabel label={<FaFile />} />
-                  <SubTitleLabel label={'prSAtko.pdf'} />
-                </div>
-                <SubTitleLabel label={<FaDownload />} />
-              </div>
-              <div className="file-item">
-                <div className="icon-namedoc">
-                  <SubTitleLabel label={<FaFile />} />
-                  <SubTitleLabel label={'proxcvxcvko.pdf'} />
-                </div>
-                <SubTitleLabel label={<FaDownload />} />
-              </div>
-              <div className="file-item">
-                <div className="icon-namedoc">
-                  <SubTitleLabel label={<FaFile />} />
-                  <SubTitleLabel label={'pstko.pdf'} />
-                </div>
-                <SubTitleLabel label={<FaDownload />} />
-              </div>
+              ))}
             </div>
-            <Button classStyle={'black-button'} label={'Upload File'} />
+
+            {/* <Button onClick={handleFileChange} classStyle={'black-button'} label={'Upload File'} /> */}
+            <input
+              type="file"
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+              id="file-input" />
+            <button
+              className={'white-button'}
+              onClick={() => document.getElementById('file-input').click()}>
+              <FaUpload />Upload File
+            </button>
           </div>
 
           {/* TEAM MEMBERS */}
@@ -328,12 +321,12 @@ function ProjectPageTemplate() {
             <CreateTask id_project={project.id} addNewTask={addNewTask} classStyle={'black-button'} />
           </div>
           <div>
-            <button className="white-button"><FaPlus /> Generate Report</button>
+            <button className="white-button"><FaChartBar /> Generate Report</button>
           </div>
           {isOwner && (
-          <div>
-            <Delete classStyle={"white-button"} name={project.project_name} deleteMethod={deleteMethod} type={'Project'} />
-          </div>
+            <div>
+              <Delete classStyle={"white-button"} name={project.project_name} deleteMethod={deleteMethod} type={'Project'} />
+            </div>
           )}
         </div>
       </div>
