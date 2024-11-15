@@ -4,8 +4,10 @@ from django.contrib.auth.models import User
 
 class UserSerializer(serializers.ModelSerializer):
   class Meta:
-    model = User
-    fields = ['id', 'username'] 
+    model = User    
+    # fields = ['id', 'username'] 
+    fields = ['id', 'username', 'email']
+    # fields = '__all__'
 
 class ProjectSerializer(serializers.ModelSerializer):
   team_members = UserSerializer(many=True, read_only=True)

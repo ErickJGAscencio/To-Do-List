@@ -41,6 +41,13 @@ export const getUserProfile = (token) => {
   });
 };
 
+export const fetchUsers = (searchQuery) => {
+  return axios.get(`${BASE_URL}/api/v1/users/`, {
+    params: { search: searchQuery }
+  });
+}
+
+
 // Projects
 export const fetchProjects = () => {
   return axios.get(`${BASE_URL}/api/v1/projects/`, {});
@@ -57,12 +64,12 @@ export const fetchProjectsByUser = (userId, token) => {
   });
 };
 
-export const createProject = async (projectName, projectDescription, color, tasks, token) => {
+export const createProject = async (projectName, projectDescription, color, dateLimit, token) => {
   const data = {
     project_name: projectName,
     description: projectDescription,
     color: color,
-    tasks: tasks.map(task => ({ task_name: task }))
+    due_date:dateLimit
   };
 
   let response;

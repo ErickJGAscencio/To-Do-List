@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 from todolist import views
 
 router = DefaultRouter()
+router.register(r'users', views.UserViewSet)
 router.register(r'projects', views.ProjectViewSet)
 router.register(r'tasks', views.TaskViewSet)
 router.register(r'documents', views.DocumentViewSet)

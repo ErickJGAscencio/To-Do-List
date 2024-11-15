@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'coreapi',
     'rest_framework',
     'rest_framework.authtoken',
-    'todolist'
+    'todolist',
+    'django_filters'
 ]
 
 MIDDLEWARE = [

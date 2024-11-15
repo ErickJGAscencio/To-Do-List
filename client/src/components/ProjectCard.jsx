@@ -1,24 +1,16 @@
 import './ProjectCard.css';
-import { useContext, useEffect, useState, useRef } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { deleteProject, fetchTasksByProject, updateProject } from '../api/todolist.api';
-import { FaEllipsisH } from 'react-icons/fa';
-import { EditProject } from './modal/EditProject';
-import { Delete } from './modal/Delete';
-import { ContextMenu } from './ContextMenu';
+import { fetchTasksByProject } from '../api/todolist.api';
 import TitleLabel from './atoms/TitleLabel';
 import SubTitleLabel from './atoms/SubTitleLabel';
 import ProgressLabel from './molecules/ProgressLabel';
 
 export function ProjectCard({ project, updateDataProject, removeProject }) {
   const navigate = useNavigate();
-  const [tasks, setTasks] = useState([]);
   const [tasksRemaining, setTasksRemaining] = useState([]);
   const [progress, setProgress] = useState(0);
   const [statusProject, setStatusProject] = useState();
-
-  const menuRef = useRef(null);
 
   const GetStatusProject = () => {
     let gotStatus = 1; 
@@ -57,7 +49,6 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
         try {
           const response = await fetchTasksByProject(project.id, token);
           if (response.data) {
-            setTasks(response.data);
             calculateProgress(response.data);
             GetStatusProject();
           }
@@ -69,14 +60,10 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
     getAllTasks();
   }, [project]);
 
-  // useEffect(() => {
-  //   setStatusProject();
-  // }, [progress])
 
   return (
     <div className='card' onClick={() => {
       navigate(`/home/project/${project.id}`, {state:{project}});
-      // setSection(project.project_name);
     }}>
       <div className='top-side'>
         <TitleLabel label={project.project_name} />
@@ -88,8 +75,8 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
           </div>
         </div>
         <div className='progress-info'>
-        <SubTitleLabel label={"Due: 2024-02-08"} />
-        <SubTitleLabel label={`${tasksRemaining} tasks remaining`} />
+        <SubTitleLabel label={project.due_date} />
+        <SubTitleLabel label={tasksRemaining.length != 0 ? `${tasksRemaining} tasks remaining` : "Non tasks"} />
         </div>
       </div>
     </div>

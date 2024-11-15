@@ -15,10 +15,26 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
 from .models import Project, Task, Document, Comment
-from .serializers import ProjectSerializer, TaskSerializer, DocumentSerializer, CommentSerializer
+from .serializers import UserSerializer, ProjectSerializer, TaskSerializer, DocumentSerializer, CommentSerializer
 
-# Create your views here.
+from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    
+    def get_queryset(self):
+        filter_backends = [DjangoFilterBackend]
+        queryset = User.objects.all()
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(email__icontains=search_query)
+            )
+        return queryset
+
+    
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def login(request):
@@ -112,8 +128,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def create_project(self, request):
         project_name = request.data.get('project_name')
         description = request.data.get('description')
+        due_date = request.data.get('due_date')
         user = request.user
-        tasks_data = request.data.get('tasks', [])
 
         if not project_name or not description:
             return Response({"error": "Project name and description are required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -121,21 +137,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
         project = Project.objects.create(
             project_name=project_name,
             description=description,
+            due_date=due_date,
             user=user
         )
-
-        created_tasks = []
-        for task_data in tasks_data:
-            task_name = task_data.get('task_name')
-            task_description = task_data.get('description', '')
-            
-            if task_name:
-                task = Task.objects.create(
-                    project=project,
-                    task_name=task_name,
-                    description=task_description
-                )
-                created_tasks.append(task)
 
         serializer = self.get_serializer(project)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

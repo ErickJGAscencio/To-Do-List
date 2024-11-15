@@ -79,24 +79,6 @@ export function TaskCard({ task, removeTask }) {
     }
   };
 
-  // useEffect(() => {
-  //   async function getAllSubTasks() {
-  //     const token = localStorage.getItem("token");
-  //     if (token) {
-  //       try {
-  //         const response = await fetchSubTask(task.id, token);
-  //         if (response.data && response.data.length > 0) {
-  //           setSubTasks(response.data);
-  //           calculateProgress(response.data);
-  //         }
-  //       } catch (error) {
-  //         console.error('Error getting project:', error);
-  //       }
-  //     }
-  //   }
-  //   getAllSubTasks();
-  // }, [task]);
-
   const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
 
   const toggleDescriptionVisibility = () => {
@@ -115,7 +97,7 @@ export function TaskCard({ task, removeTask }) {
           <div>{task.task_name}</div>
         </div>
         <div className='task-items'>
-          <div className='due-date'>Due Date: 2023-12-31</div>
+          <SubTitleLabel className='due-date' label={'Due: 2023-12-31'}/>
           <div onClick={toggleDescriptionVisibility}>
             {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}
           </div>

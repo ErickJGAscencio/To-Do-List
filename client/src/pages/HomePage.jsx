@@ -71,8 +71,9 @@ export function HomePage() {
       <div className="main-content-items">
         <div className="menu-project">
           <div className="menu-group">
-            <TitleLabel label={'Projects'} />
-            <input type="text"
+            <TitleLabel label={'My Projects'} />
+            <input
+              type="text"
               placeholder="Search projects..." />
           </div>
           {/* <Modal label={ 'asd' } /> */}
