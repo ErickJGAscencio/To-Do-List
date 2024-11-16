@@ -45,7 +45,7 @@ export function CreateProject({ addNewProject }) {
         try {
           // Buscar miembros cuando el usuario escribe en el campo de búsqueda 
           const response = await fetchUsers(searchQuery);
-          // console.log(response.data);
+          console.log(response.data);
           setSuggestions(response.data);
         } catch (error) {
           console.error('Error fetching users:', error);
