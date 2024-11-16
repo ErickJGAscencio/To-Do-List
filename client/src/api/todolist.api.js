@@ -41,22 +41,19 @@ export const getUserProfile = (token) => {
   });
 };
 
-export const fetchUsers = (searchQuery) => {
-  let response;
-
+export const fetchUsers = async (searchQuery) => {
   try {
-    response = axios.get(`${BASE_URL}/api/v1/users/`, {
+    const response = await axios.get(`${BASE_URL}/api/v1/users/`, {
       params: { search: searchQuery }
     });
-
+    console.log("Array");
+    console.log(response.data);
+    return response.data;
   } catch (error) {
     console.error("ERROR:", error);
+    return [];
   }
-
-  console.log("Array");
-  console.log(response.data);
-  return response;
-}
+};
 
 // Projects
 export const fetchProjects = () => {
