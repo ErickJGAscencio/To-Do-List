@@ -47,7 +47,6 @@ export const fetchUsers = (searchQuery) => {
   });
 }
 
-
 // Projects
 export const fetchProjects = () => {
   return axios.get(`${BASE_URL}/api/v1/projects/`, {});
