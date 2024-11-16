@@ -42,9 +42,17 @@ export const getUserProfile = (token) => {
 };
 
 export const fetchUsers = (searchQuery) => {
-  return axios.get(`${BASE_URL}/api/v1/users/`, {
-    params: { search: searchQuery }
-  });
+  let response;
+
+  try {
+    response = axios.get(`${BASE_URL}/api/v1/users/`, {
+      params: { search: searchQuery }
+    });
+
+  } catch (error) {
+    console.error("ERROR:", error);
+  }
+  return response;
 }
 
 // Projects
@@ -68,7 +76,7 @@ export const createProject = async (projectName, projectDescription, color, date
     project_name: projectName,
     description: projectDescription,
     color: color,
-    due_date:dateLimit
+    due_date: dateLimit
   };
 
   let response;
@@ -237,7 +245,7 @@ export const createComment = async (id_project, token, comment) => {
         'Content-Type': 'application/json'
       },
     });
-    
+
     return response;
 
   } catch (error) {
