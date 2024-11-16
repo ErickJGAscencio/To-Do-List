@@ -52,6 +52,9 @@ export const fetchUsers = (searchQuery) => {
   } catch (error) {
     console.error("ERROR:", error);
   }
+
+  console.log("Array");
+  console.log(response.data);
   return response;
 }
 
