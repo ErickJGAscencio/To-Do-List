@@ -40,22 +40,23 @@ export function CreateProject({ addNewProject }) {
   };
 
   useEffect(() => {
-    const fetchUsersAsync = async () => {
-      if (searchQuery != "") {
-        try {
-          // Buscar miembros cuando el usuario escribe en el campo de búsqueda 
-          const response = await fetchUsers(searchQuery);
-          console.log(response.data);
-          setSuggestions(response.data);
-        } catch (error) {
-          console.error('Error fetching users:', error);
-        }
-      } else {
-        setSuggestions([]);
+  const fetchUsersAsync = async () => {
+    if (searchQuery !== "") {
+      try {
+        const users = await fetchUsers(searchQuery); 
+        console.log(users);
+        setSuggestions(users);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        setSuggestions([]); 
       }
-    };
-    fetchUsersAsync();
-  }, [searchQuery]);
+    } else {
+      setSuggestions([]); 
+    }
+  };
+  
+  fetchUsersAsync();
+}, [searchQuery]); 
 
   const sendRequest = async () => {
     if (!titleProject || !descripcionProject) {
