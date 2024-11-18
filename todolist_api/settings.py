@@ -94,6 +94,18 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'workcloud_database_5rb1',
+#         'USER': 'workcloud_database_5rb1_user',
+#         'PASSWORD': '3Ju6d0PwhWluIFq0l9KSpU6o38UKdVjj',
+#         'HOST': 'dpg-csn5iv68ii6s73derlh0-a',
+#         'PORT': '5432',
+#     }
+# }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

@@ -26,7 +26,7 @@ export function RegisterPage() {
 
     try {
       const response = await registerUser(username, password, email);
-      console.log(response);
+      // console.log(response);
 
       if (response.status === 200) {
         const token = response.data.token;
