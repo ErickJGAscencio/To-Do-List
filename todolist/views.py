@@ -20,19 +20,23 @@ from .serializers import UserSerializer, ProjectSerializer, TaskSerializer, Docu
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_fields=['email']
     
     def get_queryset(self):
-        filter_backends = [DjangoFilterBackend]
-        queryset = User.objects.all()
+        queryset = super().get_queryset()        
         search_query = self.request.query_params.get('search', None)
         if search_query:
             queryset = queryset.filter(
                 Q(email__icontains=search_query)
             )
         return queryset
+
 
     
 @api_view(["POST"])

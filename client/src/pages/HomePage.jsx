@@ -44,7 +44,7 @@ export function HomePage() {
           const id = resUser.data.id;
           const res = await fetchProjectsByUser(id, token);
           setProjects(res.data);
-          console.log(res.data);
+          // console.log(res.data);
           setLoading(false);
           setActiveProjects(res.data.length);
           GetCompletedProjects(res.data);
