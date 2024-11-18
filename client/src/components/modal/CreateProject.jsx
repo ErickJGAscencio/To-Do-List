@@ -41,7 +41,7 @@ export function CreateProject({ addNewProject }) {
 
   useEffect(() => {
     const fetchUsersAsync = async () => {
-      if (searchQuery != "") {
+      if (searchQuery != "" && searchQuery.length >= 3) {
         try {
           // Buscar miembros cuando el usuario escribe en el campo de búsqueda 
           const response = await fetchUsers(searchQuery);
