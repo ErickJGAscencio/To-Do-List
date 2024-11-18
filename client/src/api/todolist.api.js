@@ -46,14 +46,17 @@ export const fetchUsers = async (searchQuery) => {
     const response = await axios.get(`${BASE_URL}/api/v1/users/`, {
       params: { search: searchQuery }
     });
-    console.log("Array");
+
+    console.log('Back');
     console.log(response.data);
-    return response.data;
+  
+    return response;
+
   } catch (error) {
     console.error("ERROR:", error);
-    return [];
+    return error;
   }
-};
+}
 
 // Projects
 export const fetchProjects = () => {
