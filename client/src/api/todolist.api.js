@@ -41,15 +41,20 @@ export const getUserProfile = (token) => {
   });
 };
 
-export const fetchUsers = async (searchQuery) => {
+export const fetchUsers = async (searchQuery, token) => {
   try {
     const response = await axios.get(`${BASE_URL}/api/v1/users/`, {
-      params: { search: searchQuery }
+      params: {
+        search: searchQuery
+      },
+      headers: {
+        'Authorization': `Token ${token}`
+      }
     });
 
     console.log('Back');
     console.log(response.data);
-  
+
     return response;
 
   } catch (error) {

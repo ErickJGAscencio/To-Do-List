@@ -42,9 +42,10 @@ export function CreateProject({ addNewProject }) {
   useEffect(() => {
     const fetchUsersAsync = async () => {
       if (searchQuery != "" && searchQuery.length >= 3) {
+        const token = localStorage.getItem('token');
         try {
           // Buscar miembros cuando el usuario escribe en el campo de búsqueda 
-          const response = await fetchUsers(searchQuery);
+          const response = await fetchUsers(searchQuery, token);
           console.log('Front');
           console.log(response.data);
           setSuggestions(response.data);
