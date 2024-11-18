@@ -49,13 +49,15 @@ export const fetchUsers = (searchQuery) => {
       params: { search: searchQuery }
     });
 
+    console.log('Back');
+    console.log(response.data);
+  
+    return response;
+
   } catch (error) {
     console.error("ERROR:", error);
+    return error;
   }
-
-  console.log("Array");
-  console.log(response.data);
-  return response;
 }
 
 // Projects
