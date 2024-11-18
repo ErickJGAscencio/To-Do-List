@@ -88,6 +88,7 @@ def register(request):
 
     user = User(username=username)
     user.set_password(password)
+    user.set_email(email)
     user.save()
 
     token = Token.objects.create(user=user)
