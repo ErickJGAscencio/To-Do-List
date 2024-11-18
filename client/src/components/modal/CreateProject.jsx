@@ -54,13 +54,9 @@ export function CreateProject({ addNewProject }) {
       } else {
         setSuggestions([]);
       }
-    } else {
-      setSuggestions([]); 
-    }
-  };
-  
-  fetchUsersAsync();
-}, [searchQuery]); 
+    };
+    fetchUsersAsync();
+  }, [searchQuery]);
 
   const sendRequest = async () => {
     if (!titleProject || !descripcionProject) {
