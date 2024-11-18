@@ -20,6 +20,8 @@ from .serializers import UserSerializer, ProjectSerializer, TaskSerializer, Docu
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
