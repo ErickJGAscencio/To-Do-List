@@ -86,9 +86,8 @@ def register(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    user = User(username=username)
+    user = User(username=username, email=email)
     user.set_password(password)
-    user.set_email(email)
     user.save()
 
     token = Token.objects.create(user=user)
