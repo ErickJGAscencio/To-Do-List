@@ -1,8 +1,13 @@
 .card {
   border-radius: 5px;
-  cursor: pointer;
-  border: .5px solid #d6d6d6;
+  border: 0.5px solid #d6d6d6;
 }
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Sombra agregada */
+}
+
 
 .top-side{
   background-color: #F5F5F5;

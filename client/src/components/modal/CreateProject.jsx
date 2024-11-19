@@ -3,6 +3,7 @@ import { FaPlus } from 'react-icons/fa';
 import { createProject, fetchUsers, getUserProfile } from '../../api/todolist.api';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
+import SubTitleLabel from '../atoms/SubTitleLabel';
 
 export function CreateProject({ addNewProject }) {
   const [titleProject, setTitleProject] = useState("");
@@ -46,8 +47,6 @@ export function CreateProject({ addNewProject }) {
         try {
           // Buscar miembros cuando el usuario escribe en el campo de búsqueda 
           const response = await fetchUsers(searchQuery, token);
-          console.log('Front');
-          console.log(response.data);
           setSuggestions(response.data);
         } catch (error) {
           console.error('Error fetching users:', error);
@@ -60,13 +59,13 @@ export function CreateProject({ addNewProject }) {
   }, [searchQuery]);
 
   const sendRequest = async () => {
-    if (!titleProject || !descripcionProject) {
+    if (!titleProject || !descripcionProject || !limitDate) {
+      console.error("Title, Description and Due date is requiered");
       return;
     }
 
     try {
       const token = localStorage.getItem('token');
-      // console.log(members);
       const newProject = await createProject(titleProject, descripcionProject, '#fff', limitDate, token);
 
       addNewProject(newProject.data);
@@ -84,8 +83,9 @@ export function CreateProject({ addNewProject }) {
         <Modal>
           <div className="modal-content">
             <TitleLabel label={'Create New Project'} />
+            <SubTitleLabel label={'* required'} />
             <div className='input-label'>
-              <p>Name</p>
+              <p>Name*</p>
               <input
                 type="text"
                 placeholder="Project name..."
@@ -94,7 +94,7 @@ export function CreateProject({ addNewProject }) {
             </div>
 
             <div className='input-label'>
-              <p>Description</p>
+              <p>Description*</p>
               <textarea
                 className="description-textarea" // Clase CSS añadida
                 placeholder="Project description..."
@@ -103,7 +103,7 @@ export function CreateProject({ addNewProject }) {
             </div>
 
             <div className='input-label'>
-              <p>Limit Date</p>
+              <p>Limit Date*</p>
               <input
                 type="date"
                 value={limitDate}

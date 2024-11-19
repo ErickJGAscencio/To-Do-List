@@ -23,24 +23,23 @@ import { AuthContext } from "../../context/AuthContext";
 
 function ProjectPageTemplate() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { project } = location.state;
   const { userId } = useContext(AuthContext);
   const { id } = useParams();
+  
   const [tasks, setTasks] = useState([]);
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const location = useLocation();
-  const { project } = location.state;
   const [statusProject, setStatusProject] = useState();
-
+  //Comments
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-
+  const [refreshComments, setRefreshComments] = useState(true);
   // Statics
   const [amountTasks, setAmountTasks] = useState("");
   const [amountTasksCompleted, setAmountTasksCompleted] = useState("");
 
-  // console.log("Id user:" + userId);
-  // console.log("Id project:" + project.user);
   const isOwner = project.user === userId;
 
   const [files, setFiles] = useState([]);
@@ -83,6 +82,18 @@ function ProjectPageTemplate() {
     setStatusProject(gotStatus);
   };
 
+  useEffect(() => {
+    GetProjectStadistics();
+  }, [tasks]);
+  
+  const GetProjectStadistics = () => {
+    const totalTasks = tasks.length;
+    const completedTasks = tasks.filter((task) => task.is_completed).length;
+  
+    setAmountTasks(totalTasks);
+    setAmountTasksCompleted(completedTasks);
+  };
+  
 
   useEffect(() => {
     async function getAllData() {
@@ -93,26 +104,58 @@ function ProjectPageTemplate() {
           // Obtener las tareas
           const resTasks = await fetchTasksByProject(id, token);
           setTasks(resTasks.data);
-          setAmountTasks(resTasks.data.length);
-          setAmountTasksCompleted(resTasks.data.filter(project => project.is_completed === true).length);
           GetStatusProject();
-          // Obtener los comentarios
-          const resComments = await fetchComments(id, token);
-          setComments(resComments.data);
           setMembers(project.team_members);
 
           setLoading(false);
         } catch (error) {
           console.error(error);
+        } finally {
+          GetProjectStadistics();
         }
       }
     }
     getAllData();
   }, [id]);
 
+
   useEffect(() => {
-    setTasks(tasks);
-  }, [tasks])
+    async function getAllComments() {
+      const token = localStorage.getItem('token');
+      if (token && id) {
+        try {
+          const response = await fetchComments(id, token);
+          setComments(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+    if (refreshComments) {
+      getAllComments();
+      setRefreshComments(false);
+    }
+  }, [id, refreshComments]);
+
+  const postComment = async () => {
+    if (comment !== "") {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await createComment(id, token, comment);
+          setComments((prevComments) => [...prevComments, response.data]);
+          setComment("");
+          setRefreshComments(true);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    } else {
+      console.log("empty comment");
+    }
+  };
+
+
 
   const backToHome = () => {
     navigate('/home');
@@ -130,25 +173,6 @@ function ProjectPageTemplate() {
     }
   };
 
-  const postComment = async () => {
-    if (comment != "") {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const response = await createComment(id, token, comment);
-
-          // Agrega el nuevo comentario al estado `comments`
-          setComments(prevComments => [...prevComments, response.data]);
-
-          setComment("");
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    } else {
-      console.log("empty comment");
-    }
-  };
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     // if (file) {
@@ -282,9 +306,9 @@ function ProjectPageTemplate() {
           <div className="card-section">
             <TitleLabel label={'Team Members'} />
             <div className="members">
-                <div className="member" >
-                  {userId}
-                </div>
+              <div className="member" >
+                {userId}
+              </div>
               {members.map((member, index) => (
                 <div className="member" key={index}>
                   {member.id}
