@@ -6,12 +6,10 @@ import { FaPen } from 'react-icons/fa';
 import { updateTask } from '../../api/todolist.api';
 import { ContextMenuColors } from '../ContextMenuColors';
 
-export function EditTask({ task, modifySubtaskList }) {
+export function EditTask({ task, updateTaskData }) {
   const [idTask, setIdTask] = useState("");
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
-  const [subtasks, setSubTasks] = useState([]);
-  const [newSubTask, setNewSubTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const [color, setColor] = useState();
@@ -22,7 +20,6 @@ export function EditTask({ task, modifySubtaskList }) {
     setIsOpen(false);
     setTaskName("");
     setTaskDescription("");
-    setSubTasks([]);
   };
 
   const openModal = async () => {
@@ -34,39 +31,28 @@ export function EditTask({ task, modifySubtaskList }) {
     setTaskDescription(task.description);
   };
 
-  const addSubTask = () => {
-    if (newSubTask) {
-      setSubTasks([...subtasks, newSubTask]);
-      setNewSubTask("");
-    }
-  };
-
-  const removeSubTask = (index) => {
-    const updatedTasks = subtasks.filter((_, i) => i !== index);
-    setSubTasks(updatedTasks);
-  };
-
   const pdtTask = async () => {
-    try {
-      const updatedData = {
-        task_name: taskName,
-        description: taskDescription,
-        color: color,
-        subtasks: subtasks
-      };
-      const token = localStorage.getItem("token");
-      const res = await updateTask(idTask, updatedData, token);
-      modifySubtaskList(res);
-      closeModal();
-    } catch (error) {
-      console.error('Error updating task:', error);
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const updatedData = {
+          task_name: taskName,
+          description: taskDescription,
+          color: color,
+        };
+        await updateTask(task.id, updatedData, token);
+        updateTaskData({ ...task, ...updatedData });
+
+        closeModal();
+      } catch (error) {
+        console.error('Error updating task:', error);
+      }
     }
-  };
+  };  
+
   const setSelectedColor = (color) => {
     setColor(color);
   }
-
-
 
   return (
     <div>
@@ -94,35 +80,7 @@ export function EditTask({ task, modifySubtaskList }) {
                   value={taskName}
                   onChange={(e) => setTaskName(e.target.value)}
                 />
-                <div className='modal-tasks'>
-                  <h3 className='label-input'>
-                    {taskName}
-                    {taskName != "" && (
-                      "'s "
-                    )}
-                    Subtasks
-                  </h3>
-                  <div className='add-controller'>
-                    <p className="button" onClick={addSubTask}>Add</p> {/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
-                    <input
-                      className='modal-name-input'
-                      type="text"
-                      placeholder="Subtask Name"
-                      value={newSubTask}
-                      onChange={(e) => setNewSubTask(e.target.value)}
-                    />
-
-                  </div>
-                  <h3 className='label-input'>Subtask list</h3>
-                  <div className='task-container'>
-                    {subtasks.map((subtask, index) => (
-                      <div key={subtask.id || index} className='task-item'>
-                        {subtask.subtask_name || subtask}
-                        <p className='button' onClick={() => removeSubTask(index)}><FaTrash /></p>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                
               </div>
               <div className='right-section'>
                 <div className='description'>

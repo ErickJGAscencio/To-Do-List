@@ -23,6 +23,10 @@ export function RegisterPage() {
       console.log("password didn't match");
       return
     }
+    if (email != "") {
+      console.log("Email is required");
+      return
+    }
 
     try {
       const response = await registerUser(username, password, email);

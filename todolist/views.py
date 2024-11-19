@@ -19,25 +19,6 @@ from .serializers import UserSerializer, ProjectSerializer, TaskSerializer, Docu
 
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
-
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    filter_backends = [DjangoFilterBackend]
-    filter_fields=['email']
-    
-    def get_queryset(self):
-        queryset = super().get_queryset()        
-        search_query = self.request.query_params.get('search', None)
-        if search_query:
-            queryset = queryset.filter(
-                Q(email__icontains=search_query)
-            )
-        return queryset
-
-
     
 @api_view(["POST"])
 @permission_classes([AllowAny])
@@ -109,6 +90,23 @@ def profile(request):
 
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_fields=['email']
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()        
+        search_query = self.request.query_params.get('search', None)
+        if search_query:
+            queryset = queryset.filter(
+                Q(email__icontains=search_query)
+            )
+        return queryset
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
@@ -168,6 +166,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
         id_project = request.data.get('id_project')
         project_name = request.data.get('project_name')
         description = request.data.get('description')
+        
+        print(id_project)
         
         if id_project is None or id_project == '':
             return Response({"error": "id_project is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -292,47 +292,27 @@ class TaskViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=['put'])
     def update_task(self, request):
+        # Obtener los datos del request
         id_task = request.data.get('id_task')
+        updated_data = request.data
         
-        if id_task is None:
+        if not id_task:
             return Response({"error": "id_task is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             task = Task.objects.get(id=id_task)
         except Task.DoesNotExist:
             return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
-        
-        incoming_subtasks_data = request.data.get('subtasks', [])
-        if incoming_subtasks_data:
-            current_subtasks = list(task.subtask_set.all())
 
-            incoming_subtask_ids = [subtask['id'] for subtask in incoming_subtasks_data if 'id' in subtask]
+        # Serializamos la tarea y actualizamos con los nuevos datos
+        serializer = TaskSerializer(task, data=updated_data, partial=True)
 
-            for subtask in current_subtasks:
-                if subtask.id not in incoming_subtask_ids:
-                    subtask.delete()  # Eliminar la subtarea de la db
-
-            # Agregar nuevas subtareas
-            for subtask_data in incoming_subtasks_data:
-                if 'id' not in subtask_data:
-                    SubTask.objects.create(
-                        task=task,
-                        subtask_name=subtask_data
-                    )
-
-        serializer = self.get_serializer(task, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
-
+            serializer.save()  # Guardamos los datos actualizados
             task_data = serializer.data
-            
-            subtasks_data = SubTaskSerializer(task.subtask_set.all(), many=True).data
-
-            task_data['subtasks'] = subtasks_data
-
             return Response(task_data, status=status.HTTP_200_OK)
-            
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @property
     def progress(self):

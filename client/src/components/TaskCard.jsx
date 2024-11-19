@@ -1,31 +1,32 @@
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCheckCircle, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { deleteTask, updateTask } from '../api/todolist.api';
 import { EditTask } from './modal/EditTask';
 import SubTitleLabel from './atoms/SubTitleLabel';
 
 export function TaskCard({ task, removeTask }) {
-  const [subtasks, setSubTasks] = useState([]);
-  const [progress, setProgress] = useState(0);
+  const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
+  const [currentTask, setCurrentTask] = useState(task);
 
-  const modifySubtaskData = (data) => {
-    if (data.subtasks) {
-      // Si hay subtasks, actualiza la tarea y la lista de subtareas
-      task.task_name = data.task_name;
-      task.description = data.description;
-      task.color = data.color;
-      setSubTasks(data.subtasks);
-      calculateProgress(data.subtasks);
-    } else {
-      // Si no hay subtasks, actualiza solo la subtarea
-      const subtaskList = [...subtasks];
-      const index = subtaskList.findIndex(subtask => subtask.id === data.id);
-      if (index !== -1) {
-        subtaskList[index] = data; // Pasa los datos modificados
-        setSubTasks(subtaskList);
-        calculateProgress(subtaskList);
+  const updateTaskData = (updatedTask) => {
+    setCurrentTask(updatedTask);
+  };
+
+  const handleCheckStatus = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const updatedData = { is_completed: !currentTask.is_completed };
+        setCurrentTask({ ...currentTask, ...updatedData });
+        await updateTask(currentTask.id, updatedData, token);
+      } catch (error) {
+        console.error('Error updating task status:', error);
       }
     }
+  };
+
+  const toggleDescriptionVisibility = () => {
+    setDescriptionVisibility(!isDescriptionVisible);
   };
 
   const deleteMethod = async () => {
@@ -38,66 +39,23 @@ export function TaskCard({ task, removeTask }) {
           removeTask(id_task);
         }
       } catch (error) {
-        console.error(error);
+        console.error('Error deleting task:', error);
       }
     }
   }
-
-  const setStatusTask = async (isCompleted) => {
-    const token = localStorage.getItem("token");
-    const updatedData = { is_completed: isCompleted };
-
-    try {
-      await updateTask(task.id, updatedData, token);
-      console.log({
-        "task-name": task.task_name,
-        "Status task": isCompleted,
-        "progress": progress,
-      });
-    } catch (error) {
-      console.error('Error updating task:', error);
-    }
-  };
-
-  const calculateProgress = (subtasks) => {
-    if (subtasks.length === 0) {
-      setProgress(0);
-      setStatusTask(false); // Si no hay subtareas, no está completada
-      return;
-    }
-
-    const completedSubtasks = subtasks.filter(subtask => subtask.is_completed).length;
-    const newProgress = (completedSubtasks / subtasks.length) * 100;
-
-    setProgress(newProgress);
-
-    // Solo actualiza el estado de la tarea SI ha cambiado
-    if (newProgress === 100) {
-      setStatusTask(true);
-    } else {
-      setStatusTask(false);
-    }
-  };
-
-  const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
-
-  const toggleDescriptionVisibility = () => {
-    setDescriptionVisibility(!isDescriptionVisible);
-  };
-
-  const handleCheckClick = () => {
-    setStatusTask(!task.is_completed); // Cambia el estado de la tarea al contrario del actual
-  };
 
   return (
     <div className="card-task">
       <div className='card-task-info'>
         <div className='task-items'>
-          <FaCheckCircle onClick={handleCheckClick} color={task.is_completed ? 'green' : 'gray'} />
-          <div>{task.task_name}</div>
+          <FaCheckCircle
+            onClick={handleCheckStatus}
+            color={currentTask.is_completed ? 'green' : 'gray'}
+          />
+          <div>{currentTask.task_name}</div>
         </div>
         <div className='task-items'>
-          <SubTitleLabel className='due-date' label={'Due: 2023-12-31'}/>
+          <SubTitleLabel className='due-date' label={'Due: 2023-12-31'} />
           <div onClick={toggleDescriptionVisibility}>
             {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}
           </div>
@@ -105,9 +63,12 @@ export function TaskCard({ task, removeTask }) {
       </div>
       {isDescriptionVisible && (
         <div className='card-task-description'>
-          <SubTitleLabel label={task.description} />
-
-          <EditTask task={task} modifySubtaskList={modifySubtaskData} />
+          <SubTitleLabel label={currentTask.description} />
+          <div>
+            {/* <EditTask task={task} modifySubtaskList={modifySubtaskData} /> */}
+            <EditTask task={currentTask} updateTaskData={updateTaskData} />
+            <button onClick={deleteMethod}>Delete Task</button>
+          </div>
         </div>
       )}
     </div>

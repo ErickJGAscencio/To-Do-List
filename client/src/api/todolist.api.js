@@ -51,10 +51,6 @@ export const fetchUsers = async (searchQuery, token) => {
         'Authorization': `Token ${token}`
       }
     });
-
-    console.log('Back');
-    console.log(response.data);
-
     return response;
 
   } catch (error) {
@@ -196,6 +192,9 @@ export const updateTask = async (id_task, updatedData, token) => {
           'Authorization': `Token ${token}`
         }
       });
+    
+    console.log(`Service: ${id_task} - Updated Data: ${JSON.stringify(updatedData)} - Token: ${token}`);
+    
     return response.data;
   } catch (error) {
     console.error('Error updating task:', error);

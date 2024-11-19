@@ -714,8 +714,8 @@ input {
     }
 
     .menu-project {
-      display: flex;
       flex-direction: column;
+      gap: 10px;
     }
 
     .main-content-items {
@@ -802,4 +802,7 @@ input {
   }
 
   /* tablets */
-  @media (max-width: 768px) {}
+  @media (max-width: 768px) {    
+    .menu-project {
+    flex-direction: row;
+  }}
