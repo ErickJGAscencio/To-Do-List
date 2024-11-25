@@ -1,11 +1,11 @@
 import React from 'react'
-import Input from "../components/atoms/Input";
+import Input from "../atoms/Input";
 import Label from '../atoms/Label';
 
-function InputLabel() {
+function InputLabel({label}) {
   return (
     <div>
-      <Label />
+      <Label label={label}/>
       <Input />
     </div>
   )

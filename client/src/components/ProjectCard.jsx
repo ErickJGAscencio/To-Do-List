@@ -16,10 +16,10 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
     let gotStatus = 1; 
     const progress = parseFloat(project.progress);
 
-    switch (true) {
-      case (progress >= 100): gotStatus = 3; 
+    switch (progress) {
+      case (100): gotStatus = 3; 
         break;
-      case (progress >= 25): gotStatus = 2;
+      case (25): gotStatus = 2;
         break;
       default: gotStatus = 1; 
         break;

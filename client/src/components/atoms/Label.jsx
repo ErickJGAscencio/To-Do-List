@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Label() {
+function Label({label}) {
   return (
-    <div>Label</div>
+    <div>{label}</div>
   )
 }
 

@@ -13,7 +13,6 @@ export function EditProject({ project, updateDataProject }) {
   const [tasks, setTasks] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  const [color, setColor] = useState();
   const [limitDate, setLimitDate] = useState("");
 
   // Miembros
@@ -60,7 +59,6 @@ export function EditProject({ project, updateDataProject }) {
   };
 
   const openModal = async () => {
-    setColor(project.color);
     setIsOpen(true);
     setIdProject(project.id);
     setTitleProject(project.project_name);
@@ -126,7 +124,7 @@ export function EditProject({ project, updateDataProject }) {
             <div className='input-label'>
               <p>Description</p>
               <textarea
-                className="description-textarea" // Clase CSS añadida
+                className="description-textarea"
                 placeholder="Project description..."
                 value={descripcionProject}
                 onChange={(e) => setDescriptionProject(e.target.value)} />
