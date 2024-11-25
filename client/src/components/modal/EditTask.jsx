@@ -5,6 +5,8 @@ import { FaPen } from 'react-icons/fa';
 
 import { updateTask } from '../../api/todolist.api';
 import { ContextMenuColors } from '../ContextMenuColors';
+import Modal from '../organisims/Modal';
+import TitleLabel from '../atoms/TitleLabel';
 
 export function EditTask({ task, updateTaskData }) {
   const [idTask, setIdTask] = useState("");
@@ -12,6 +14,7 @@ export function EditTask({ task, updateTaskData }) {
   const [taskDescription, setTaskDescription] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
+  const [limitDate, setLimitDate] = useState("")
   const [color, setColor] = useState();
 
   const menuRef = useRef(null);
@@ -48,7 +51,7 @@ export function EditTask({ task, updateTaskData }) {
         console.error('Error updating task:', error);
       }
     }
-  };  
+  };
 
   const setSelectedColor = (color) => {
     setColor(color);
@@ -56,49 +59,44 @@ export function EditTask({ task, updateTaskData }) {
 
   return (
     <div>
-      <FaPen onClick={openModal} />
+      <button className={'black-button'} onClick={openModal}><FaPen /></button>
       {isOpen && (
-        <div className="modal">
-          <div className="modal-content"
-            style={{
-              backgroundImage: `linear-gradient(to bottom, #2D2D2D, ${color})`
-            }}
-          >
-            <div className="modal-header">
-              <h1>Edit task</h1>
-              
-              <ContextMenuColors menuRef={menuRef} setSelectedColor={setSelectedColor} />
-                
+        <Modal>
+          <div className="modal-content">
+            <TitleLabel label={'Edit Task'} />
+            <div className="input-label">
+              <p>Name</p>
+              <input
+                type="text"
+                placeholder="e.g Do something"
+                value={taskName}
+                onChange={(e) => setTaskName(e.target.value)}
+              />
             </div>
-            <div className="modal-body">
-              <div className='left-section'>
-                <h3 className='title-input'>Task name</h3>
-                <input
-                  className='modal-name-input'
-                  type="text"
-                  placeholder="e.g Do something"
-                  value={taskName}
-                  onChange={(e) => setTaskName(e.target.value)}
-                />
-                
-              </div>
-              <div className='right-section'>
-                <div className='description'>
-                  <h1 className='title-input'>Description</h1>
-                  <textarea
-                    placeholder="Task Description"
-                    value={taskDescription || ""}
-                    onChange={(e) => setTaskDescription(e.target.value)}
-                  />
-                </div>
-              </div>
+            <div className="input-label">
+              <p className='title-input'>Description</p>
+              <textarea
+                className="description-textarea"
+                placeholder="Task Description"
+                value={taskDescription || ""}
+                onChange={(e) => setTaskDescription(e.target.value)}
+              />
             </div>
+            
+            <div className='input-label'>
+              <p>Limit Date</p>
+              <input
+                type="date"
+                value={limitDate}
+                onChange={(e) => setLimitDate(e.target.value)} />
+            </div>
+
             <div className="modal-footer">
               <p className='button' onClick={pdtTask}>Save</p>{/*CAMBIAR <p> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
               <p className='button' onClick={closeModal}>Cancel</p>{/*CAMBIAR <button> POR <p> PARA QUE NO HAYA CONFLICTO DE BOTONES ANIDADOS*/}
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

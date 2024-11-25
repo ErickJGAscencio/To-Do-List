@@ -112,7 +112,6 @@ export const updateProject = async (id_project, updatedData, token) => {
       }
     );
 
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error('Error updating project:', error);
@@ -193,7 +192,7 @@ export const updateTask = async (id_task, updatedData, token) => {
         }
       });
     
-    console.log(`Service: ${id_task} - Updated Data: ${JSON.stringify(updatedData)} - Token: ${token}`);
+    // console.log(`Service: ${id_task} - Updated Data: ${JSON.stringify(updatedData)} - Token: ${token}`);
     
     return response.data;
   } catch (error) {

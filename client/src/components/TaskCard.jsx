@@ -4,23 +4,28 @@ import { deleteTask, updateTask } from '../api/todolist.api';
 import { EditTask } from './modal/EditTask';
 import SubTitleLabel from './atoms/SubTitleLabel';
 
-export function TaskCard({ task, removeTask }) {
+export function TaskCard({ task, removeTask, completeTask}) {
   const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
   const [currentTask, setCurrentTask] = useState(task);
 
   const updateTaskData = (updatedTask) => {
     setCurrentTask(updatedTask);
   };
-
+    
   const handleCheckStatus = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const updatedData = { is_completed: !currentTask.is_completed };
+        const updatedData = {
+          is_completed: !currentTask.is_completed
+        };
         setCurrentTask({ ...currentTask, ...updatedData });
         await updateTask(currentTask.id, updatedData, token);
+        
       } catch (error) {
         console.error('Error updating task status:', error);
+      } finally {
+        completeTask(currentTask.id);
       }
     }
   };
@@ -50,7 +55,7 @@ export function TaskCard({ task, removeTask }) {
         <div className='task-items'>
           <FaCheckCircle
             onClick={handleCheckStatus}
-            color={currentTask.is_completed ? 'green' : 'gray'}
+            color={currentTask.is_completed ? 'black' : 'gray'}
           />
           <div>{currentTask.task_name}</div>
         </div>
