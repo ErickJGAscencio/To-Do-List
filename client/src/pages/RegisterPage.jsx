@@ -19,14 +19,19 @@ export function RegisterPage() {
 
   const handleSingIn = async () => {
     setLoading(true);
-    if (password != confirmPass) {
-      console.log("password didn't match");
-      return
-    }
-    if (email == "") {
-      console.log("Email is required");
-      return
-    }
+      if (password !== confirmPass) {
+    console.log("Passwords don't match");
+    setError("Passwords don't match");
+    setLoading(false);
+    return;
+  }
+
+  if (!email) {
+    console.log("Email is required");
+    setError("Email is required");
+    setLoading(false);
+    return;
+  }
 
     try {
       const response = await registerUser(username, password, email);
