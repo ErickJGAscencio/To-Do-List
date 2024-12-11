@@ -23,7 +23,7 @@ export function RegisterPage() {
       console.log("password didn't match");
       return
     }
-    if (email != "") {
+    if (email == "") {
       console.log("Email is required");
       return
     }
