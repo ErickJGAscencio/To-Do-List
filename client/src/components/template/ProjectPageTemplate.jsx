@@ -270,7 +270,7 @@ function ProjectPageTemplate() {
           />
 
           {/* Comments */}
-          {/* <div className="card-section">
+          <div className="card-section">
             <TitleLabel label={"Comments"} />
             <div className="comments-list">
               {comments.length > 0 ? (
@@ -293,7 +293,7 @@ function ProjectPageTemplate() {
 
               <button className={"blue-button"} onClick={postComment} >Post</button>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
       {/* SIDEBAR */}
