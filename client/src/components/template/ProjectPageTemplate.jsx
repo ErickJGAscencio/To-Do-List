@@ -79,7 +79,7 @@ function ProjectPageTemplate() {
 
     setAmountTasks(totalTasks);
     setAmountTasksCompleted(completedTasks);
-    setProjectProgress(progress);
+    setProjectProgress(progress.toFixed(1));
     GetStatusProject();
     // Actualiza el progreso en la base de datos
     const token = localStorage.getItem('token');
