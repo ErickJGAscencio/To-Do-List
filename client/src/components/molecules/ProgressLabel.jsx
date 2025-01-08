@@ -14,7 +14,6 @@ function ProgressLabel({ status }) {
     3: 'Completed',
   });
 
-  // Se puede obtener el mensaje directamente desde el prop 'status'
   const message = messageLabel[status];
 
   return (

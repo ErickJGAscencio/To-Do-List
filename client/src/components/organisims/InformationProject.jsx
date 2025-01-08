@@ -5,9 +5,10 @@ import Label from '../atoms/Label'
 function InformationProject({ project, projectProgress }) {
   return (
     <div className="information-project">
-      <div className="card-section">
+      <div className="card-information-section">
         <Label text="Project Description" type="paragraph" />
-        <Label text={project.description}  type="default" />
+        <Label text={project.description} type="default" />
+        <button className='uwu'>ver más...</button>
       </div>
 
       <div className="card-section">
