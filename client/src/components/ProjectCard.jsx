@@ -6,7 +6,7 @@ import TitleLabel from './atoms/TitleLabel';
 import SubTitleLabel from './atoms/SubTitleLabel';
 import ProgressLabel from './molecules/ProgressLabel';
 
-export function ProjectCard({ project, updateDataProject, removeProject }) {
+export function ProjectCard({ project }) {
   const navigate = useNavigate();
   const [tasksRemaining, setTasksRemaining] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -18,13 +18,12 @@ export function ProjectCard({ project, updateDataProject, removeProject }) {
 
     switch (progress) {
       case (100): gotStatus = 3; 
-        break;
+      break;
       case (25): gotStatus = 2;
-        break;
+      break;
       default: gotStatus = 1; 
-        break;
+      break;
     }
-
     setStatusProject(gotStatus); 
   };
 

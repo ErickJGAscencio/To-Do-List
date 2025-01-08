@@ -134,7 +134,6 @@ button:active {
   display: flex;
   justify-content: space-between;
   color: #1E1E1E;
-  margin-top: 10px;
   margin-bottom: 10px;
 }
 
@@ -315,6 +314,26 @@ button:active {
   overflow-x: hidden;
 }
 
+
+
+
+.html{
+  font-weight: lighter;
+}
+
+
+
+.information-project{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+
+
+
+
 .cards-sections {
   display: flex;
   flex-direction: column;
@@ -330,9 +349,10 @@ button:active {
   background-color: #ffffff;
   border-radius: 5px;
   border: .5px solid #d6d6d6;
-  padding: 15px;
+  padding: 10px;
   color: #1E1E1E;
   box-shadow: 1px 10px 10px rgba(0, 0, 0, 0.2);
+  width: calc(100% - 22px);
   /* Desplazamiento horizontal, vertical, desenfoque, color */
 }
 
@@ -625,9 +645,7 @@ input {
   flex-direction: column;
   flex-wrap: 20px;
   gap: 10px;
-  width: 98%;
-  padding-left: 10px;
-  padding-right: 10px;
+  width: auto;
 }
 
 .suggestions-list,
