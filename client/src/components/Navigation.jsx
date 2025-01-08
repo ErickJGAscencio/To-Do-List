@@ -1,9 +1,9 @@
-import { FaBell, FaCloud, FaUser, FaUserMinus } from 'react-icons/fa';
+import { FaBell, FaCloud, FaUser } from 'react-icons/fa';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-export function Navigation({ filter }) {
+export function Navigation() {
   const navigate = useNavigate();
   const { username, logout } = useContext(AuthContext);
   const [menuOpen, setMenuOpen] = useState(false);

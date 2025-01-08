@@ -103,15 +103,33 @@ button:active {
 }
 
 .nav .greeting {
-  font-size: 15px
+  font-size: 15px;
+  opacity: 0;
+  animation: slideIn 1s forwards;
 }
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.icon-container{
+  display: flex;
+  gap: 8px;
+}
+
 
 .container-nav-user-mobile {
   background-color: yellow;
   padding: 10px;
   position: absolute;
   display: none;
-  /* Por defecto no se muestra */
 }
 
 
@@ -386,8 +404,32 @@ li:hover {
   cursor: pointer;
 }
 
+.uwu {
+  background-color: #3B82F6;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  float: right;
+  padding: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+  float: right;
+  width: auto;
+}
 
-
+.card-information-section {
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: 0.5px solid #d6d6d6;
+  padding: 10px;
+  color: #1E1E1E;
+  box-shadow: 1px 10px 10px rgba(0, 0, 0, 0.2);
+  width: calc(100% - 20px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .cards-sections {
   display: flex;

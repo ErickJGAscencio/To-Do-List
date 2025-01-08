@@ -5,7 +5,7 @@ import { TaskCard } from "../TaskCard";
 import SubTitleLabel from "../atoms/SubTitleLabel";
 import Label from "../atoms/Label";
 
-function ProjectTasks({ id_project, addNewTask, tasks, removeTask, completeTask }) {
+function ProjectTasks({ id_project, addNewTask, tasks, removeTask, completeTask, setStatusProject }) {
 
   return (
     <div className="card-section">
@@ -24,7 +24,8 @@ function ProjectTasks({ id_project, addNewTask, tasks, removeTask, completeTask 
           key={task.id}
           task={task}
           removeTask={removeTask}
-          completeTask={completeTask} />
+          completeTask={completeTask}
+        />
         ))
         ) : (
           <SubTitleLabel label={'You need make some tasks'} />
