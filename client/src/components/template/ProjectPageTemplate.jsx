@@ -20,6 +20,9 @@ import ProjectStadistics from "../organisims/ProjectStadistics";
 import ProjectMembers from "../organisims/ProjectMembers";
 import ProjectTasks from "../organisims/ProjectTasks";
 import ProjectFiles from "../organisims/ProjectFiles";
+import MenuProject from "../organisims/MenuProject";
+import InformationProject from "../organisims/InformationProject";
+import CommentsProject from "../organisims/CommentsProject";
 
 
 function ProjectPageTemplate() {
@@ -34,9 +37,7 @@ function ProjectPageTemplate() {
   const [loading, setLoading] = useState(false);
   const [statusProject, setStatusProject] = useState();
   //Comments
-  const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  const [refreshComments, setRefreshComments] = useState(true);
   // Statics
   const [projectProgress, setProjectProgress] = useState(project.progress || 0);
   const [amountTasks, setAmountTasks] = useState("");
@@ -81,19 +82,6 @@ function ProjectPageTemplate() {
     setAmountTasksCompleted(completedTasks);
     setProjectProgress(progress.toFixed(1));
     GetStatusProject();
-    // Actualiza el progreso en la base de datos
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const updateData = {
-          progress: progress
-        }
-        await updateProject(project.id, updateData, token);
-        console.log("Project progress updated successfully!");
-      } catch (error) {
-        console.error("Error updating project progress:", error);
-      }
-    }
   };
 
   useEffect(() => {
@@ -161,46 +149,8 @@ function ProjectPageTemplate() {
     getAllTasks();
   }, [project.id]);
 
-  //Comments
-  useEffect(() => {
-    async function getAllComments() {
-      const token = localStorage.getItem('token');
-      if (token && project.id) {
-        try {
-          const response = await fetchComments(project.id, token);
-          setComments(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    }
-    if (refreshComments) {
-      getAllComments();
-      setRefreshComments(false);
-    }
-  }, [project.id, refreshComments]);
 
-  const postComment = async () => {
-    if (comment && comment != null) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const response = await createComment(id, token, comment);
-          setComments((prevComments) => [...prevComments, response.data]);
-          setComment("");
-          setRefreshComments(true);
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    } else {
-      console.log("empty comment");
-    }
-  };
 
-  const backToHome = () => {
-    navigate('/home');
-  }
 
   const handleDeleteProject = async () => {
     const token = localStorage.getItem("token");
@@ -231,36 +181,11 @@ function ProjectPageTemplate() {
   return (
     <div className="content">
       <div className="main-content-items">
-        <div className="menu-project">
-          <div className="menu-group">
-            <button className={'blue-button'} onClick={backToHome}><FaArrowLeft /></button>
-            <TitleLabel label={project.project_name} />
-            <ProgressLabel status={statusProject} />
-          </div>
-          <EditProject project={project} updateDataProject={console.log} />
-        </div>
-
+        <MenuProject project={project} statusProject={statusProject} />       
+        
         <div className="cards-sections">
-          {/* Project Description */}
-          <div className="card-section">
-            <TitleLabel label={'Project Description'} />
-            <SubTitleLabel label={project.description} />
-          </div>
+          <InformationProject project={project} projectProgress={projectProgress} />
 
-          {/* Overall Progress */}
-          <div className="card-section">
-            <TitleLabel label={"Overall Progress"} />
-            <div className="progress-section">
-              <div className="progress-bar">
-                <div className="progress-bar-fill"
-                  style={{ width: `${projectProgress}%` }}
-                ></div>
-              </div>
-            </div>
-            <SubTitleLabel label={`${projectProgress}% completed`} />
-          </div>
-
-          {/* Tasks */}
           <ProjectTasks
             id_project={project.id}
             tasks={tasks}
@@ -269,31 +194,7 @@ function ProjectPageTemplate() {
             completeTask={completeTask}
           />
 
-          {/* Comments */}
-          <div className="card-section">
-            <TitleLabel label={"Comments"} />
-            <div className="comments-list">
-              {comments.length > 0 ? (
-                comments.slice().reverse().map(comment => (
-                  <div key={comment.id} className="comment">
-                    <p><strong>{comment.user}</strong>: {comment.comment}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No comments yet</p>
-              )}
-            </div>
-            <hr />
-            <div className="comment-adding">
-              <input
-                type="text"
-                placeholder="Add comment..."
-                value={comment}
-                onChange={(e) => setComment(e.target.value)} />
-
-              <button className={"blue-button"} onClick={postComment} >Post</button>
-            </div>
-          </div>
+          <CommentsProject project={project} />
         </div>
       </div>
       {/* SIDEBAR */}
