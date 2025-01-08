@@ -1,17 +1,17 @@
 import React from 'react'
-import TitleLabel from '../atoms/TitleLabel'
 import SubTitleLabel from '../atoms/SubTitleLabel'
+import Label from '../atoms/Label'
 
 function InformationProject({ project, projectProgress }) {
   return (
     <div className="information-project">
       <div className="card-section">
-        <TitleLabel label={'Project Description'} />
-        <SubTitleLabel label={project.description} />
+        <Label text="Project Description" type="paragraph" />
+        <Label text={project.description}  type="default" />
       </div>
 
       <div className="card-section">
-        <TitleLabel label={"Overall Progress"} />
+        <Label text="Overall Progress" type="paragraph" />
         <div className="progress-section">
           <div className="progress-bar">
             <div className="progress-bar-fill"

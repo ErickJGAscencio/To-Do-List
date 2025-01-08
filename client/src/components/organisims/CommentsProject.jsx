@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import TitleLabel from '../atoms/TitleLabel';
 import { createComment, fetchComments } from '../../api/todolist.api';
+import Label from '../atoms/Label';
 
 function CommentsProject({project}) {  
     const [comment, setComment] = useState("");
@@ -46,7 +46,8 @@ function CommentsProject({project}) {
   
   return (
     <div className="card-section">
-      <TitleLabel label={"Comments"} />
+      <Label text="Comments" type="paragraph" />
+      
       <div className="comments-list">
         {comments.length > 0 ? (
           comments.slice().reverse().map(comment => (
