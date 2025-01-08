@@ -3,13 +3,15 @@ import TitleLabel from "../atoms/TitleLabel";
 import CreateTask from "../modal/CreateTask";
 import { TaskCard } from "../TaskCard";
 import SubTitleLabel from "../atoms/SubTitleLabel";
+import Label from "../atoms/Label";
 
-function ProjectTasks({id_project, addNewTask, tasks, removeTask, completeTask}) {
+function ProjectTasks({ id_project, addNewTask, tasks, removeTask, completeTask }) {
 
   return (
     <div className="card-section">
       <div className="menu">
-        <TitleLabel label={"Tasks"} />
+        <Label text="Tasks" type="paragraph" />
+
         <CreateTask
           id_project={id_project}
           addNewTask={addNewTask}
@@ -18,12 +20,12 @@ function ProjectTasks({id_project, addNewTask, tasks, removeTask, completeTask})
       <div className="main-tasks">
         {/* {loading && <LoadingSpinner />} */}
         {tasks.length > 0 ? (tasks.map((task) =>
-          (<TaskCard
+        (<TaskCard
           key={task.id}
           task={task}
           removeTask={removeTask}
           completeTask={completeTask} />
-          ))
+        ))
         ) : (
           <SubTitleLabel label={'You need make some tasks'} />
         )}
