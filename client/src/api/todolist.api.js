@@ -75,12 +75,13 @@ export const fetchProjectsByUser = (userId, token) => {
   });
 };
 
-export const createProject = async (projectName, projectDescription, color, dateLimit, token) => {
+export const createProject = async (projectName, projectDescription, color, dateLimit, membersId, token) => {
   const data = {
     project_name: projectName,
     description: projectDescription,
     color: color,
-    due_date: dateLimit
+    due_date: dateLimit,
+    team_members: membersId 
   };
 
   let response;
@@ -98,6 +99,7 @@ export const createProject = async (projectName, projectDescription, color, date
 
   return response;
 };
+
 
 export const updateProject = async (id_project, updatedData, token) => {
   try {
