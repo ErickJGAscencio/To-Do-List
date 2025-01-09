@@ -83,7 +83,6 @@ export function CreateProject({ addNewProject }) {
         <Modal>
           <div className="modal-content">
             <TitleLabel label={'Create New Project'} />
-            <SubTitleLabel label={'* required'} />
             <div className='input-label'>
               <p>Name*</p>
               <input
@@ -92,7 +91,6 @@ export function CreateProject({ addNewProject }) {
                 value={titleProject}
                 onChange={(e) => setTitleProject(e.target.value)} />
             </div>
-
             <div className='input-label'>
               <p>Description*</p>
               <textarea
@@ -101,7 +99,6 @@ export function CreateProject({ addNewProject }) {
                 value={descripcionProject}
                 onChange={(e) => setDescriptionProject(e.target.value)} />
             </div>
-
             <div className='input-label'>
               <p>Limit Date*</p>
               <input
@@ -109,7 +106,6 @@ export function CreateProject({ addNewProject }) {
                 value={limitDate}
                 onChange={(e) => setLimitDate(e.target.value)} />
             </div>
-
             <div className='input-label'>
               <p>Members</p>
               <input
@@ -118,7 +114,6 @@ export function CreateProject({ addNewProject }) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
-
             <div>
               {suggestions.length > 0 && (
                 <ul className="suggestions-list">
@@ -138,9 +133,6 @@ export function CreateProject({ addNewProject }) {
                 ))}
               </ul>
             </div>
-
-
-
             <div className="modal-footer">
               <p className="button" onClick={sendRequest}>Create</p>
               <p className="button" onClick={closeModal}>Cancel</p>

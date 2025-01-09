@@ -145,9 +145,6 @@ export function EditProject({ project, updateDataProject }) {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)} />
             </div>
-
-
-
             <div>
               {suggestions.length > 0 && (
                 <ul className="suggestions-list">
@@ -167,7 +164,6 @@ export function EditProject({ project, updateDataProject }) {
                 ))}
               </ul>
             </div>
-
             <div className="modal-footer">
               <p className="button" onClick={pdtProject}>Save</p>
               <p className="button" onClick={closeModal}>Cancel</p>

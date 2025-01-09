@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FaCheckCircle, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import { FaCheckCircle, FaChevronDown, FaChevronUp, FaTrash } from 'react-icons/fa';
 import { deleteTask, updateTask } from '../api/todolist.api';
 import { EditTask } from './modal/EditTask';
 import SubTitleLabel from './atoms/SubTitleLabel';
@@ -69,10 +69,10 @@ export function TaskCard({ task, removeTask, completeTask}) {
       {isDescriptionVisible && (
         <div className='card-task-description'>
           <SubTitleLabel label={currentTask.description} />
-          <div>
+          <div className='card-task-controls'>
             {/* <EditTask task={task} modifySubtaskList={modifySubtaskData} /> */}
             <EditTask task={currentTask} updateTaskData={updateTaskData} />
-            <button onClick={deleteMethod}>Delete Task</button>
+            <button className={'black-button'} onClick={deleteMethod}> <FaTrash /></button>
           </div>
         </div>
       )}
