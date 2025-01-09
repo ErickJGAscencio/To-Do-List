@@ -62,7 +62,7 @@ export function CreateTask({ id_project, addNewTask, classStyle }) {
             <div className='input-label'>
               <p>Description</p>
               <textarea
-                className="description-textarea" // Clase CSS añadida
+                className="description-textarea" 
                 placeholder="Project description..."
                 value={descriptionTask}
                 onChange={(e) => setDescriptionTask(e.target.value)} />

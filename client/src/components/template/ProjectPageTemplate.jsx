@@ -220,9 +220,9 @@ function ProjectPageTemplate() {
           <div>
             <CreateTask id_project={project.id} addNewTask={addNewTask} classStyle={'black-button'} />
           </div>
-          <div>
+          {/* <div>
             <button className="white-button"><FaChartBar /> Generate Report</button>
-          </div>
+          </div> */}
           {isOwner && (
             <div>
               <Delete classStyle={"white-button"} name={project.project_name} deleteMethod={handleDeleteProject} type={'Project'} />
