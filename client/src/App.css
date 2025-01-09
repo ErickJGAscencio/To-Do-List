@@ -547,9 +547,16 @@ li:hover {
   border-radius: 5px;
   padding: 10px;
   width: 450px;
-  height: 450px;
+  max-height: 90vh;
+  overflow-y: auto;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.general-options-modal, .miembros{
+  display: flex;
   flex-direction: column;
   gap: 10px;
 }
@@ -773,9 +780,7 @@ input {
   padding: 0;
   margin: 10px 0 0 0;
   max-height: 150px;
-  /* Ajusta la altura máxima */
   overflow-y: auto;
-  /* Añade desplazamiento si es necesario */
   border: 1px solid #b7b7b7;
   border-radius: 5px;
 }

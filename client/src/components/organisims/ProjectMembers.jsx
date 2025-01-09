@@ -1,28 +1,22 @@
-import React from 'react'
-import TitleLabel from '../atoms/TitleLabel'
-import { FaPlus } from 'react-icons/fa'
+import React from 'react';
+import TitleLabel from '../atoms/TitleLabel';
+import Label from '../atoms/Label';
 
-function ProjectMembers({userId, members}) {
+function ProjectMembers({ members }) {
   return (
     <div>
       <div className="card-section">
-        <TitleLabel label={'Team Members'} />
+        <Label text='Team Members' type='paragraph'/>
         <div className="members">
-          <div className="member" >
-            {userId}
-          </div>
           {members.map((member, index) => (
             <div className="member" key={index}>
-              {member.id}
+              {member.username.charAt(0).toUpperCase()}
             </div>
           ))}
-          <div className="member">
-            <FaPlus />
-          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ProjectMembers
+export default ProjectMembers;

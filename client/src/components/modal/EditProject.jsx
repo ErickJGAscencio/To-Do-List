@@ -16,7 +16,7 @@ export function EditProject({ project, updateDataProject }) {
   const [limitDate, setLimitDate] = useState("");
 
   // Miembros
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState(project.team_members);
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
@@ -68,11 +68,11 @@ export function EditProject({ project, updateDataProject }) {
 
   useEffect(() => {
     const fetchUsersAsync = async () => {
-      if (searchQuery != "") {
+      if (searchQuery != "" && searchQuery.length >= 3) {
+        const token = localStorage.getItem('token');
         try {
           // Buscar miembros cuando el usuario escribe en el campo de búsqueda 
-          const response = await fetchUsers(searchQuery);
-          // console.log(response.data);
+          const response = await fetchUsers(searchQuery, token);
           setSuggestions(response.data);
         } catch (error) {
           console.error('Error fetching users:', error);
@@ -84,12 +84,16 @@ export function EditProject({ project, updateDataProject }) {
     fetchUsersAsync();
   }, [searchQuery]);
 
-  const pdtProject = async () => {
+  const handleUpdateProject = async () => {
     try {
       const token = localStorage.getItem("token");
+      let memberIds = [];
+      memberIds = [...memberIds, ...members.map(member => member.id)];     
+      
       const newData = {
         project_name: titleProject,
-        description: descripcionProject
+        description: descripcionProject,
+        team_members: memberIds
       };
 
       const response = await updateProject(idProject, newData, token);
@@ -136,9 +140,8 @@ export function EditProject({ project, updateDataProject }) {
                 value={limitDate}
                 onChange={(e) => setLimitDate(e.target.value)} />
             </div>
-
+            <label htmlFor="searchMembers">Add members</label>
             <div className='input-label'>
-              <p>Members</p>
               <input
                 type="text"
                 placeholder="Search members by email..."
@@ -155,6 +158,7 @@ export function EditProject({ project, updateDataProject }) {
                   ))}
                 </ul>
               )}
+              <label htmlFor="searchMembers">Members in project</label>
               <ul className="members-list">
                 {members.map((member, index) => (
                   <li key={index}>
@@ -165,7 +169,7 @@ export function EditProject({ project, updateDataProject }) {
               </ul>
             </div>
             <div className="modal-footer">
-              <p className="button" onClick={pdtProject}>Save</p>
+              <p className="button" onClick={handleUpdateProject}>Save</p>
               <p className="button" onClick={closeModal}>Cancel</p>
             </div>
           </div>

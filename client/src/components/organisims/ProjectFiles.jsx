@@ -2,11 +2,12 @@ import React from 'react'
 import TitleLabel from '../atoms/TitleLabel'
 import { FaDownload, FaFile, FaUpload } from 'react-icons/fa'
 import SubTitleLabel from '../atoms/SubTitleLabel'
+import Label from '../atoms/Label'
 
-function ProjectFiles({files, handleFileChange}) {
+function ProjectFiles({ files, handleFileChange }) {
   return (
     <div className="card-section">
-      <TitleLabel label={'Documents & Files'} />
+      <Label text='Documents & Files' type='paragraph' />
       <div className="files-items">
 
         {files.map((file, index) => (

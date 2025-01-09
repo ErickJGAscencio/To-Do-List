@@ -1,12 +1,13 @@
 import React from 'react'
-import TitleLabel from '../atoms/TitleLabel'
 import SubTitleLabel from '../atoms/SubTitleLabel'
+import Label from '../atoms/Label'
 
 function ProjectStadistics({ amountTasks, amountTasksCompleted, daysLeft }) {
-  
+
   return (
     <div className="card-section">
-      <TitleLabel label={'Project Stadistics'} />
+      <Label text='Project Stadistics' type='paragraph' />
+
       <div className="stadistic-item">
         <SubTitleLabel label={'Total tasks:'} />
         <SubTitleLabel label={amountTasks} />

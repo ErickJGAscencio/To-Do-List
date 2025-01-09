@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { FaPlus } from 'react-icons/fa';
+import React, { useContext, useEffect, useState } from 'react';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 import { createProject, fetchUsers, getUserProfile } from '../../api/todolist.api';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
 import SubTitleLabel from '../atoms/SubTitleLabel';
+import { AuthContext } from '../../context/AuthContext';
 
 export function CreateProject({ addNewProject }) {
+  const { userId } = useContext(AuthContext);
   const [titleProject, setTitleProject] = useState("");
   const [descripcionProject, setDescriptionProject] = useState("");
   const [limitDate, setLimitDate] = useState("");
@@ -58,23 +60,34 @@ export function CreateProject({ addNewProject }) {
     fetchUsersAsync();
   }, [searchQuery]);
 
-  const sendRequest = async () => {
+  const handlerCreateProject = async () => {
     if (!titleProject || !descripcionProject || !limitDate) {
-      console.error("Title, Description and Due date is requiered");
+      console.error("Title, Description, and Due date are required");
       return;
     }
-
+  
     try {
       const token = localStorage.getItem('token');
-      const newProject = await createProject(titleProject, descripcionProject, '#fff', limitDate, token);
+      let memberIds = [];
+      memberIds.push(userId); // Agregamos a la lista al usuario quien crea el proyecto
+      memberIds = [...memberIds, ...members.map(member => member.id)];       
 
+      const newProject = await createProject(
+        titleProject, 
+        descripcionProject, 
+        '#fff', 
+        limitDate, 
+        memberIds,
+        token
+      );
+  
       addNewProject(newProject.data);
-
       closeModal();
     } catch (error) {
-      console.error('Error sending trade request:', error);
+      console.error('Error creating project:', error);
     }
   };
+  
 
   return (
     <div>
@@ -82,63 +95,77 @@ export function CreateProject({ addNewProject }) {
       {isOpen && (
         <Modal>
           <div className="modal-content">
-            <TitleLabel label={'Create New Project'} />
-            <div className='input-label'>
-              <p>Name*</p>
-              <input
-                type="text"
-                placeholder="Project name..."
-                value={titleProject}
-                onChange={(e) => setTitleProject(e.target.value)} />
+            <div className='general-options-modal'>
+              <TitleLabel label={'Create New Project'} />
+              <div className='input-label'>
+                <label htmlFor="projectName">Name*</label>
+                <input
+                  id="projectName"
+                  type="text"
+                  placeholder="Project name..."
+                  value={titleProject}
+                  onChange={(e) => setTitleProject(e.target.value)} />
+              </div>
+              <div className='input-label'>
+                <label htmlFor="projectDescription">Description*</label>
+                <textarea
+                  id="projectDescription"
+                  className="description-textarea"
+                  placeholder="Project description..."
+                  value={descripcionProject}
+                  onChange={(e) => setDescriptionProject(e.target.value)} />
+              </div>
+              <div className='input-label'>
+                <label htmlFor="limitDate">Limit Date*</label>
+                <input
+                  id="limitDate"
+                  type="date"
+                  value={limitDate}
+                  onChange={(e) => setLimitDate(e.target.value)} />
+              </div>
             </div>
-            <div className='input-label'>
-              <p>Description*</p>
-              <textarea
-                className="description-textarea" // Clase CSS añadida
-                placeholder="Project description..."
-                value={descripcionProject}
-                onChange={(e) => setDescriptionProject(e.target.value)} />
-            </div>
-            <div className='input-label'>
-              <p>Limit Date*</p>
-              <input
-                type="date"
-                value={limitDate}
-                onChange={(e) => setLimitDate(e.target.value)} />
-            </div>
-            <div className='input-label'>
-              <p>Members</p>
-              <input
-                type="text"
-                placeholder="Search members by email..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)} />
-            </div>
-            <div>
-              {suggestions.length > 0 && (
-                <ul className="suggestions-list">
-                  {suggestions.map((suggestion, index) => (
-                    <li key={index} onClick={() => addMember(suggestion)}>
-                      {suggestion.email}
-                    </li>
-                  ))}
+            <div className='miembros'>
+              <label htmlFor="searchMembers">Add members</label>
+              <div className='input-label'>
+                <input
+                  id="searchMembers"
+                  type="text"
+                  placeholder="Search members by email..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)} />
+              </div>
+              <div>
+              <label htmlFor="searchMembers">Members in project</label>
+                {suggestions.length > 0 && (
+                  <ul className="suggestions-list">
+                    {suggestions.map((suggestion, index) => (
+                      <li key={index} onClick={() => addMember(suggestion)}>
+                        {suggestion.email}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <ul className="members-list">
+                  {members.length > 0 ? (                    
+                    members.map((member, index) => (
+                      <li key={index}>
+                      {member.email}
+                      <span className="remove-member" onClick={() => removeMember(index)}><FaTrash /></span>
+                      </li>
+                    ))
+                  ) : (
+                      <p>No members</p>
+                  )}
                 </ul>
-              )}
-              <ul className="members-list">
-                {members.map((member, index) => (
-                  <li key={index}>
-                    {member.email}
-                    <span className="remove-member" onClick={() => removeMember(index)}>x</span>
-                  </li>
-                ))}
-              </ul>
+              </div>
             </div>
             <div className="modal-footer">
-              <p className="button" onClick={sendRequest}>Create</p>
-              <p className="button" onClick={closeModal}>Cancel</p>
+              <button className="button" onClick={handlerCreateProject}>Create</button>
+              <button className="button" onClick={closeModal}>Cancel</button>
             </div>
           </div>
         </Modal>
+
       )}
     </div>
   );

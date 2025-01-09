@@ -119,10 +119,20 @@ class ProjectViewSet(viewsets.ModelViewSet):
             owned_projects = Project.objects.filter(user=user)
             shared_projects = Project.objects.filter(team_members=user)
             
-            all_projects = owned_projects | shared_projects
+            # Obtener IDs únicos de los proyectos
+            owned_project_ids = set(owned_projects.values_list('id', flat=True))
+            shared_project_ids = set(shared_projects.values_list('id', flat=True))
+            
+            # Unificar conjuntos sin duplicados
+            unique_project_ids = owned_project_ids.union(shared_project_ids)
+            
+            # Filtrar los proyectos únicos por ID
+            all_projects = Project.objects.filter(id__in=unique_project_ids)
             
             serializer = self.get_serializer(all_projects, many=True)
+            print(serializer.data)
             return Response(serializer.data, status=status.HTTP_200_OK)
+
         
         return Response({"error": "User not authenticated"}, status=status.HTTP_401_UNAUTHORIZED)        
 
@@ -132,6 +142,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         description = request.data.get('description')
         due_date = request.data.get('due_date')
         user = request.user
+        team_members_ids = request.data.get('team_members',[])
 
         if not project_name or not description:
             return Response({"error": "Project name and description are required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -140,9 +151,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
             project_name=project_name,
             description=description,
             due_date=due_date,
-            user=user
+            user=user,
         )
-
+        
+        for member_id in team_members_ids:
+            member = User.objects.get(id=member_id)
+            project.team_members.add(member)
+            
+        project.save()
         serializer = self.get_serializer(project)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -257,21 +273,7 @@ class TaskViewSet(viewsets.ModelViewSet):
             description = description,
             project = project
         )
-
-        created_subtasks = []
-
-        for subtask_data in subtasks_data:
-            subtask_name = subtask_data.get('subtask_name')
-            subtask_description = subtask_data.get('description')
-
-            if subtask_name:
-                subtask = SubTask.objects.create(
-                    task = task,
-                    subtask_name = subtask_name,
-                    description = subtask_description
-                )
-                created_subtasks.append(subtask)
-            
+                    
         serializer = self.get_serializer(task)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
