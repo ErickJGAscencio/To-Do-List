@@ -158,12 +158,12 @@ export const fetchTasksByProject = async (id_project, token) => {
   });
 };
 
-export const createTask = async (id_project, task_name, descriptionTask, subtasks, token) => {
+export const createTask = async (id_project, task_name, descriptionTask, token, memberAssignedId) => {
   const data = {
     task_name: task_name,
     description: descriptionTask,
     id_project: id_project,
-    subtasks: subtasks.map(subtask => ({ subtask_name: subtask }))
+    member_assigned: memberAssignedId
   };
 
   let response;

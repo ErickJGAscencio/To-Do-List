@@ -23,6 +23,7 @@ import ProjectFiles from "../organisims/ProjectFiles";
 import MenuProject from "../organisims/MenuProject";
 import InformationProject from "../organisims/InformationProject";
 import CommentsProject from "../organisims/CommentsProject";
+import { ProjectProvider } from "../../context/ProjectContext";
 
 
 function ProjectPageTemplate() {
@@ -135,6 +136,7 @@ function ProjectPageTemplate() {
           // Obtener las tareas
           const resTasks = await fetchTasksByProject(project.id, token);
           setTasks(resTasks.data);
+          // console.log(resTasks.data);
           setMembers(project.team_members);
 
           setLoading(false);
@@ -179,6 +181,8 @@ function ProjectPageTemplate() {
   };
 
   return (
+    <ProjectProvider project={project}>
+      
     <div className="content">
       <div className="main-content-items">
         <MenuProject project={project} statusProject={statusProject} />       
@@ -230,7 +234,8 @@ function ProjectPageTemplate() {
           )}
         </div>
       </div>
-    </div>
+      </div>
+    </ProjectProvider>
   )
 }
 

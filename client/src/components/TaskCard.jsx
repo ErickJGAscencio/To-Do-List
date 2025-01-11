@@ -1,12 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FaCheckCircle, FaChevronDown, FaChevronUp, FaTrash } from 'react-icons/fa';
 import { deleteTask, updateTask } from '../api/todolist.api';
 import { EditTask } from './modal/EditTask';
 import SubTitleLabel from './atoms/SubTitleLabel';
+import ProjectContext from '../context/ProjectContext';
 
-export function TaskCard({ task, removeTask, completeTask}) {
+export function TaskCard({ task, removeTask, completeTask }) {
+  const { members } = useContext(ProjectContext);
+  const [memberAssigned, setMemberAssigned] = useState("");
   const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
   const [currentTask, setCurrentTask] = useState(task);
+  
+  useEffect(() => {
+    if (task.assign_to) {
+      setMemberAssigned(members.find(member => member.id === task.assign_to));      
+    }
+  },[])
 
   const updateTaskData = (updatedTask) => {
     setCurrentTask(updatedTask);
@@ -60,6 +69,9 @@ export function TaskCard({ task, removeTask, completeTask}) {
           <div>{currentTask.task_name}</div>
         </div>
         <div className='task-items'>
+          {memberAssigned && (
+            <h6>Assign to { memberAssigned.username }</h6>
+          )}
           <SubTitleLabel className='due-date' label={'Due: 2023-12-31'} />
           <div onClick={toggleDescriptionVisibility}>
             {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}

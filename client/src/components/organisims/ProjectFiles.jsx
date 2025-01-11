@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import TitleLabel from '../atoms/TitleLabel'
 import { FaDownload, FaFile, FaUpload } from 'react-icons/fa'
 import SubTitleLabel from '../atoms/SubTitleLabel'
 import Label from '../atoms/Label'
+import ProjectContext from '../../context/ProjectContext'
 
 function ProjectFiles({ files, handleFileChange }) {
+  // const { projectName } = useContext(ProjectContext);
   return (
     <div className="card-section">
       <Label text='Documents & Files' type='paragraph' />
+      {/* <p>{projectName}</p> */}
       <div className="files-items">
 
         {files.map((file, index) => (

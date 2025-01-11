@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { createTask } from '../../api/todolist.api';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
-import Button from '../atoms/Button';
+import ProjectContext from '../../context/ProjectContext';
 
 export function CreateTask({ id_project, addNewTask, classStyle }) {
+  const { members } = useContext(ProjectContext);
+  const [isAssignment, setIsAssignment] = useState(false);
+  const [memberAssignedId, setMemberAssignedId] = useState('');
   const [titleTask, setTitleTask] = useState("");
   const [descriptionTask, setDescriptionTask] = useState("");
   const [subTasks, setSubTasks] = useState([]);
-  const [newSubTask, setNewSubTask] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [limitDate, setLimitDate] = useState("");
 
+  // console.log('asd', '\n', members);
   const openModal = () => {
     setIsOpen(true);
   };
@@ -32,7 +35,7 @@ export function CreateTask({ id_project, addNewTask, classStyle }) {
 
     try {
       const token = localStorage.getItem("token");
-      const newTask = await createTask(id_project, titleTask, descriptionTask, subTasks, token);
+      const newTask = await createTask(id_project, titleTask, descriptionTask, token, memberAssignedId);
 
       addNewTask(newTask.data);
 
@@ -42,11 +45,14 @@ export function CreateTask({ id_project, addNewTask, classStyle }) {
     }
   };
 
-
+  const handlerMemberToAssign = (memberId) => {
+    console.log('asignado a: ', memberId)
+    setMemberAssignedId(memberId);
+  }
 
   return (
     <div>
-      <button className={ classStyle } onClick={openModal}><FaPlus /> New Task</button>
+      <button className={classStyle} onClick={openModal}><FaPlus /> New Task</button>
       {isOpen && (
         <Modal>
           <div className="modal-content">
@@ -62,8 +68,8 @@ export function CreateTask({ id_project, addNewTask, classStyle }) {
             <div className='input-label'>
               <p>Description</p>
               <textarea
-                className="description-textarea" 
-                placeholder="Project description..."
+                className="description-textarea"
+                placeholder="project description..."
                 value={descriptionTask}
                 onChange={(e) => setDescriptionTask(e.target.value)} />
             </div>
@@ -73,6 +79,22 @@ export function CreateTask({ id_project, addNewTask, classStyle }) {
                 type="date"
                 value={limitDate}
                 onChange={(e) => setLimitDate(e.target.value)} />
+            </div>
+            <div>
+              <input type="checkbox" value={isAssignment} onChange={(e)=>setIsAssignment(e.target.checked)}/>
+              {isAssignment ? (
+                <div className='input-label'>
+                  <p>Assign to</p>
+                  <input type="text" name="" placeholder="search member to asign" id="" />
+                  <div>
+                    {members.map((item, index) => (
+                      <button onClick={() => handlerMemberToAssign(item.id)} key={index}>{item.username}</button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                  null
+              )}
             </div>
             <div className="modal-footer">
               <p className="button" onClick={sendRequest}>Save</p>

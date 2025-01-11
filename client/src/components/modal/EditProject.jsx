@@ -1,6 +1,6 @@
 // import './EditProject.css'
 import React, { useState, useEffect } from 'react';
-import { FaPen } from 'react-icons/fa';
+import { FaPen, FaTrash } from 'react-icons/fa';
 import { fetchTasksByProject, fetchUsers, updateProject } from '../../api/todolist.api';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
@@ -163,7 +163,7 @@ export function EditProject({ project, updateDataProject }) {
                 {members.map((member, index) => (
                   <li key={index}>
                     {member.email}
-                    <span className="remove-member" onClick={() => removeMember(index)}>x</span>
+                    <span className="remove-member" onClick={() => removeMember(index)}><FaTrash /></span>
                   </li>
                 ))}
               </ul>
