@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import SubTitleLabel from '../atoms/SubTitleLabel'
 import Label from '../atoms/Label'
+import ProjectContext from '../../context/ProjectContext'
 
-function InformationProject({ project, projectProgress }) {
+function InformationProject({ projectProgress }) {
+  const { projectDescription } = useContext(ProjectContext);
   return (
     <div className="information-project">
       <div className="card-information-section">
         <Label text="Project Description" type="paragraph" />
-        <Label text={project.description} type="default" />
+        <Label text={projectDescription} type="default" />
         <button className='uwu'>ver más...</button>
       </div>
 

@@ -11,7 +11,6 @@ export function CreateTask({ id_project, addNewTask, classStyle }) {
   const [memberAssignedId, setMemberAssignedId] = useState('');
   const [titleTask, setTitleTask] = useState("");
   const [descriptionTask, setDescriptionTask] = useState("");
-  const [subTasks, setSubTasks] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [limitDate, setLimitDate] = useState("");
 

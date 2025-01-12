@@ -1,11 +1,13 @@
 // import './EditProject.css'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
 import { fetchTasksByProject, fetchUsers, updateProject } from '../../api/todolist.api';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
+import ProjectContext from '../../context/ProjectContext';
 
 export function EditProject({ project, updateDataProject }) {
+  const { projectDescription, setProjectDescription } = useContext(ProjectContext);
   const [idProject, setIdProject] = useState("");
   const [titleProject, setTitleProject] = useState("");
   const [descripcionProject, setDescriptionProject] = useState("");
@@ -104,6 +106,8 @@ export function EditProject({ project, updateDataProject }) {
       };
 
       updateDataProject(updatedData);
+      setProjectDescription(descripcionProject);
+      // console.log(projectDescription);
       closeModal();
     } catch (error) {
       console.error('Error updating project:', error);

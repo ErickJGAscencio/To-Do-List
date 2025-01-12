@@ -3,17 +3,9 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect, useContext } from "react"
 // API
 import { createComment, deleteProject, fetchComments, fetchTasksByProject, updateProject } from "../../api/todolist.api";
-// Icons
-import { FaArrowLeft, FaChartBar, FaDownload, FaFile, FaPlus, FaUpload } from "react-icons/fa";
 // Modal
 import { CreateTask } from '../../components/modal/CreateTask';
 import Delete from "../../components/modal/Delete";
-import EditProject from "../../components/modal/EditProject";
-// Atoms
-import TitleLabel from "../../components/atoms/TitleLabel";
-import SubTitleLabel from "../../components/atoms/SubTitleLabel";
-// Molecules
-import ProgressLabel from "../../components/molecules/ProgressLabel";
 
 import { AuthContext } from "../../context/AuthContext";
 import ProjectStadistics from "../organisims/ProjectStadistics";
@@ -182,58 +174,57 @@ function ProjectPageTemplate() {
 
   return (
     <ProjectProvider project={project}>
-      
-    <div className="content">
-      <div className="main-content-items">
-        <MenuProject project={project} statusProject={statusProject} />       
-        
-        <div className="cards-sections">
-          <InformationProject project={project} projectProgress={projectProgress} />
+      <div className="content">
+        <div className="main-content-items">
+          <MenuProject project={project} statusProject={statusProject} />
 
-          <ProjectTasks
-            id_project={project.id}
-            tasks={tasks}
-            addNewTask={addNewTask}
-            removeTask={removeTask}
-            completeTask={completeTask}
-          />
+          <div className="cards-sections">
+            <InformationProject project={project} projectProgress={projectProgress} />
 
-          <CommentsProject project={project} />
-        </div>
-      </div>
-      {/* SIDEBAR */}
-      <div className="side-bar-project">
-        <div className="cards-sections">
-          {/* DOCUMENT & FILES */}
-          <ProjectFiles
-            files={files}
-            handleFileChange={handleFileChange} />
+            <ProjectTasks
+              id_project={project.id}
+              tasks={tasks}
+              addNewTask={addNewTask}
+              removeTask={removeTask}
+              completeTask={completeTask}
+            />
 
-          {/* TEAM MEMBERS */}
-          <ProjectMembers
-            userId={userId}
-            members={members} />
-
-          {/* PROJECTS STATICS */}
-          <ProjectStadistics
-            amountTasks={amountTasks}
-            amountTasksCompleted={amountTasksCompleted}
-            daysLeft={daysLeft} />
-        </div>
-        <div className="control-buttons">
-          <div>
-            <CreateTask id_project={project.id} addNewTask={addNewTask} classStyle={'black-button'} />
+            <CommentsProject project={project} />
           </div>
-          {/* <div>
+        </div>
+        {/* SIDEBAR */}
+        <div className="side-bar-project">
+          <div className="cards-sections">
+            {/* DOCUMENT & FILES */}
+            <ProjectFiles
+              files={files}
+              handleFileChange={handleFileChange} />
+
+            {/* TEAM MEMBERS */}
+            <ProjectMembers
+              userId={userId}
+              members={members} />
+
+            {/* PROJECTS STATICS */}
+            <ProjectStadistics
+              amountTasks={amountTasks}
+              amountTasksCompleted={amountTasksCompleted}
+              daysLeft={daysLeft} />
+          </div>
+          <div className="control-buttons">
+            <div>
+              <CreateTask id_project={project.id} addNewTask={addNewTask} classStyle={'black-button'} />
+            </div>
+            {/* <div>
             <button className="white-button"><FaChartBar /> Generate Report</button>
           </div> */}
-          {isOwner && (
-            <div>
-              <Delete classStyle={"white-button"} name={project.project_name} deleteMethod={handleDeleteProject} type={'Project'} />
-            </div>
-          )}
+            {isOwner && (
+              <div>
+                <Delete classStyle={"white-button"} name={project.project_name} deleteMethod={handleDeleteProject} type={'Project'} />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
       </div>
     </ProjectProvider>
   )

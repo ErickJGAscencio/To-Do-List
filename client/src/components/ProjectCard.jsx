@@ -13,18 +13,18 @@ export function ProjectCard({ project }) {
   const [statusProject, setStatusProject] = useState();
 
   const GetStatusProject = () => {
-    let gotStatus = 1; 
+    let gotStatus = 1;
     const progress = parseFloat(project.progress);
 
     switch (progress) {
-      case (100): gotStatus = 3; 
-      break;
+      case (100): gotStatus = 3;
+        break;
       case (25): gotStatus = 2;
-      break;
-      default: gotStatus = 1; 
-      break;
+        break;
+      default: gotStatus = 1;
+        break;
     }
-    setStatusProject(gotStatus); 
+    setStatusProject(gotStatus);
   };
 
 
@@ -34,7 +34,7 @@ export function ProjectCard({ project }) {
 
     const incompletedTasks = tasks.filter(task => !task.is_completed).length;
     setTasksRemaining(incompletedTasks);
-    
+
     const newProgress = (completedTasks / tasks.length) * 100;
 
     setProgress(newProgress);
@@ -62,7 +62,7 @@ export function ProjectCard({ project }) {
 
   return (
     <div className='card' onClick={() => {
-      navigate(`/home/project/${project.id}`, {state:{project}});
+      navigate(`/home/project/${project.id}`, { state: { project } });
     }}>
       <div className='top-side'>
         <TitleLabel label={project.project_name} />
@@ -74,8 +74,8 @@ export function ProjectCard({ project }) {
           </div>
         </div>
         <div className='progress-info'>
-        <SubTitleLabel label={project.due_date} />
-        <SubTitleLabel label={tasksRemaining.length != 0 ? `${tasksRemaining} tasks remaining` : "Non tasks"} />
+          <SubTitleLabel label={project.due_date} />
+          <SubTitleLabel label={tasksRemaining.length != 0 ? `${tasksRemaining} tasks remaining` : "Non tasks"} />
         </div>
       </div>
     </div>

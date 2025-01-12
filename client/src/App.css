@@ -228,7 +228,7 @@ button:active {
   transition: width 0.3s ease;
 }
 
-.aside .card-section {
+.aside > .card-section {
   background-color: #ffffff;
   border: .5px solid #d6d6d6;
   border-radius: 5px;
@@ -284,6 +284,11 @@ button:active {
 .stadistic-item {
   display: flex;
   justify-content: space-between;
+}
+
+
+.stadistic-item > p{
+  margin: 0.2em 0; 
 }
 
 .deadline-section {

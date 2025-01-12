@@ -69,7 +69,7 @@ export function TaskCard({ task, removeTask, completeTask }) {
           />
           <Label text={currentTask.task_name} type='default' />          
           {memberAssigned && (
-            <h6>Assign to {memberAssigned.username}</h6>
+            <h6>Assigned to {memberAssigned.username}</h6>
             // <Label text={`Assign to ${memberAssigned.username}`} type={ 'default' } />
           )}
         </div>
