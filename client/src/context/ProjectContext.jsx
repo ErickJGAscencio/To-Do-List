@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 export const ProjectContext = createContext();
 
@@ -8,6 +8,10 @@ export function ProjectProvider({ children, project }) {
   const [members, setMembers] = useState(project.team_members);
   // console.log(project);
   // console.log(project.team_members);
+  useEffect(() => {
+    
+  }, [])
+  
   return (
     <ProjectContext.Provider value={{
       projectName, setProjectName,

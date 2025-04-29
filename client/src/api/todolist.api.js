@@ -23,13 +23,15 @@ export const registerUser = async (username, password, email) => {
     password: password,
     email: email
   };
-  // console.log("URL - " + BASE_URL );
+  console.log(data);
+
   const response = await axios.post(`${BASE_URL}/register/`, data, {
     headers: {
       'Content-Type': 'application/json'
     }
   });
 
+  console.log(response);
   return response
 };
 

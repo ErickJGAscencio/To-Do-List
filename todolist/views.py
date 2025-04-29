@@ -51,6 +51,8 @@ def login(request):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def register(request):
+    print(request.data)
+
     username = request.data.get("username")
     email = request.data.get("email")
     password = request.data.get("password")

@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { registerUser } from "../api/todolist.api";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { LoadingSpinner } from "../components/LoadingSpinner";
+import LoadingSpinner from "../components/LoadingSpinner";
 import Button from "../components/atoms/Button";
 
 export function RegisterPage() {
@@ -16,83 +16,106 @@ export function RegisterPage() {
   const [fName, setFName] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [validationError, setValidationError] = useState("");
 
   const handleSingIn = async () => {
-    setLoading(true);
-    if (password != confirmPass) {
-      console.log("password didn't match");
-      return
-    }
-    if (email == "") {
-      console.log("Email is required");
-      return
+    // Limpia los errores previos
+    setError("");
+    setValidationError("");
+
+    // Validaciones iniciales
+    if (password !== confirmPass) {
+      setValidationError("Passwords do not match.");
+      return;
     }
 
+    if (!email) {
+      setValidationError("Email is required.");
+      return;
+    }
+
+    if (!username || !fName) {
+      setValidationError("Full Name and Username are required.");
+      return;
+    }
+
+    setLoading(true);
     try {
       const response = await registerUser(username, password, email);
-      // console.log(response);
 
       if (response.status === 200) {
         const token = response.data.token;
-        localStorage.setItem('token', token);
-        login(username, password).finally(() => {
-          setLoading(false);
-        });
+        localStorage.setItem("token", token);
+
+        // Inicia sesión automáticamente después de registrarse
+        await login(username, password);
+        navigate("/dashboard"); // Redirige al dashboard o página deseada
       }
     } catch (error) {
       console.error("Signin error:", error.response);
-      setError(error.response?.data || "Error during registration");
+      setError(error.response?.data?.w || "Error during registration");
+    } finally {
+      setLoading(false);
     }
   };
-
 
   return (
     <div className="container">
       <div className="main-content">
         <div>
-          <h1>SingIn</h1>
-          <p className='label-input'>Full Name</p>
+          <h1>Register</h1>
+          <p className="label-input">Full Name</p>
           <input
             type="text"
             value={fName}
             onChange={(e) => setFName(e.target.value)}
           />
-          <p className='label-input'>User</p>
+          <p className="label-input">Username</p>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <p className='label-input'>Password</p>
+          <p className="label-input">Password</p>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <p className='label-input'>Confirm Password</p>
+          <p className="label-input">Confirm Password</p>
           <input
             type="password"
             value={confirmPass}
             onChange={(e) => setConfirmPass(e.target.value)}
           />
-          <p className='label-input'>Email</p>
+          <p className="label-input">Email</p>
           <input
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className='btn-login'>
-          {/* <button onClick={handleSingIn}>Sing In</button> */}
-          <Button handle={handleSingIn} label={ "Singin" } />
+
+        <div className="btn-login">
+          <Button
+            label={"Sign up"}
+            handle={handleSingIn}
+            disabled={loading}
+            classStyle={"blue-button"}
+          />
           {loading && <LoadingSpinner />}
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {validationError && (
+            <p style={{ color: "red" }}>{validationError}</p>
+          )}
+          {error && <p style={{ color: "red" }}>{error}</p>}
           <div>
-            <p>Do you have an account?
+            <p>
+              Already have an account?{" "}
               <span
-                style={{ textDecoration: 'underline', cursor: "pointer" }}
-                onClick={() => navigate('/login')}>
-                click here
+                style={{ textDecoration: "underline", cursor: "pointer" }}
+                onClick={() => navigate("/login")}
+              >
+                Click here
               </span>
             </p>
           </div>

@@ -2,7 +2,7 @@ import './LoginPage.css';
 import { useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { LoadingSpinner } from '../components/LoadingSpinner'; // Importa el componente LoadingSpinner
+import LoadingSpinner from '../components/LoadingSpinner';
 import Button from '../components/atoms/Button';
 
 export function LogInPage() {
@@ -14,17 +14,20 @@ export function LogInPage() {
   // Estados para los mensajes de error
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [validationError, setValidationError] = useState("");
 
   const handleLogin = () => {
+    if (loading) return;
+
     setUsernameError("");
     setPasswordError("");
-    
+    setValidationError("");
     if (!username) {
-      setUsernameError("Username is required");
+      setValidationError("Username is required");
       return;
     }
     if (!password) {
-      setPasswordError("Password is required");
+      setValidationError("Password is required");
       return;
     }
 
@@ -43,19 +46,25 @@ export function LogInPage() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          {usernameError && <div className="error-message">{usernameError}</div>}
-          
+
           <p className='label-input'>Password</p>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {passwordError && <div className="error-message">{passwordError}</div>}
         </div>
         <div className='btn-login'>
+          <Button
+            label={"Login"}
+            handle={handleLogin}
+            disabled={loading}
+            classStyle={"blue-button"}
+          />
           {loading && <LoadingSpinner />}
-          <Button handle={handleLogin} disabled={loading} label={ "Login" } />
+          {validationError && (
+            <p style={{ color: "red" }}>{validationError}</p>
+          )}
           {error && <div className="error-message">{error}</div>} {/* Mostrar el error del backend */}
           <div>
             <p>Do you haven't an account?
