@@ -1,10 +1,3 @@
-import { useContext, useState } from "react";
-import { registerUser } from "../api/todolist.api";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import LoadingSpinner from "../components/LoadingSpinner";
-import Button from "../components/atoms/Button";
-
 export function RegisterPage() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -19,26 +12,30 @@ export function RegisterPage() {
   const [validationError, setValidationError] = useState("");
 
   const handleSingIn = async () => {
-    // Limpia los errores previos
+    // Limpia errores previos
     setError("");
     setValidationError("");
 
     // Validaciones iniciales
     if (password !== confirmPass) {
       setValidationError("Passwords do not match.");
+      setLoading(false);
       return;
     }
 
     if (!email) {
       setValidationError("Email is required.");
+      setLoading(false);
       return;
     }
 
     if (!username || !fName) {
       setValidationError("Full Name and Username are required.");
+      setLoading(false);
       return;
     }
 
+    // Procesa el registro del usuario
     setLoading(true);
     try {
       const response = await registerUser(username, password, email);
@@ -49,11 +46,11 @@ export function RegisterPage() {
 
         // Inicia sesión automáticamente después de registrarse
         await login(username, password);
-        navigate("/dashboard"); // Redirige al dashboard o página deseada
+        navigate("/dashboard"); // Redirige al dashboard
       }
     } catch (error) {
       console.error("Signin error:", error.response);
-      setError(error.response?.data?.w || "Error during registration");
+      setError(error.response?.data?.message || "Error during registration");
     } finally {
       setLoading(false);
     }
