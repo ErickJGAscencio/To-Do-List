@@ -47,16 +47,9 @@ input[type="password"] {
   align-items: center;
 }
 
-.main-content button {
-  width: 100px;
-  padding: 5px;
-  background-color: #3B82F6;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .main-content button:hover {

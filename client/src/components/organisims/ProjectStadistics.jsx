@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import SubTitleLabel from '../atoms/SubTitleLabel'
 import Label from '../atoms/Label'
+import ProjectContext from '../../context/ProjectContext'
 
 function ProjectStadistics({ amountTasks, amountTasksCompleted, daysLeft }) {
+  const { members } = useContext(ProjectContext);
 
   return (
     <div className="card-section">
@@ -22,7 +24,7 @@ function ProjectStadistics({ amountTasks, amountTasksCompleted, daysLeft }) {
       </div>
       <div className="stadistic-item">
         <SubTitleLabel label={'Team members:'} />
-        <SubTitleLabel label={amountTasks} />
+        <SubTitleLabel label={members.length} />
       </div>
     </div>
   )

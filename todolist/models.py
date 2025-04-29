@@ -14,15 +14,33 @@ class Project(models.Model):
     return self.project_name
 
 class Task(models.Model):
-  project = models.ForeignKey(Project, on_delete=models.CASCADE)
   task_name = models.CharField(max_length=50)
-  description = models.CharField(max_length=200) 
+  description = models.CharField(max_length=200)
   progress = models.DecimalField(max_digits=5, decimal_places=2, default= 0.0)
   is_completed = models.BooleanField(default=False)
   due_date = models.DateField(null=True, blank=True)
+  assign_to = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+  project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
   def __str__(self):
     return self.task_name
+    
+class NotificationType(models.Model):
+  identifier = models.CharField(max_length=50, unique=True) 
+  name = models.CharField(max_length=100)
+  description = models.TextField(blank=True, null=True) 
+    
+  def __str__(self):
+    return self.name
+
+class Notification(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  task_description = models.CharField(max_length=100)
+  notification_type = models.ForeignKey(NotificationType, on_delete=models.CASCADE)
+  is_read = models.BooleanField(default=False)
+  
+  def __str__(self):
+    return self.user.username
   
 class Document(models.Model):
   project = models.ForeignKey(Project, on_delete=models.CASCADE)

@@ -23,13 +23,15 @@ export const registerUser = async (username, password, email) => {
     password: password,
     email: email
   };
-  // console.log("URL - " + BASE_URL );
+  console.log(data);
+
   const response = await axios.post(`${BASE_URL}/register/`, data, {
     headers: {
       'Content-Type': 'application/json'
     }
   });
 
+  console.log(response);
   return response
 };
 
@@ -158,12 +160,12 @@ export const fetchTasksByProject = async (id_project, token) => {
   });
 };
 
-export const createTask = async (id_project, task_name, descriptionTask, subtasks, token) => {
+export const createTask = async (id_project, task_name, descriptionTask, token, memberAssignedId) => {
   const data = {
     task_name: task_name,
     description: descriptionTask,
     id_project: id_project,
-    subtasks: subtasks.map(subtask => ({ subtask_name: subtask }))
+    member_assigned: memberAssignedId
   };
 
   let response;

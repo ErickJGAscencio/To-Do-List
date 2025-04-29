@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import SubTitleLabel from '../atoms/SubTitleLabel';
 import { Sidebar } from '../Sidebar';
 import { ProjectCard } from '../ProjectCard';
-import { LoadingSpinner } from '../LoadingSpinner';
+import LoadingSpinner from '../LoadingSpinner';
 import CreateProject from '../modal/CreateProject';
 import TitleLabel from '../atoms/TitleLabel';
 import { useProjectFilter } from '../../hook/useProjectFilter';
 import { fetchProjectsByUser, getUserProfile } from '../../api/todolist.api';
+import FilterProjects from '../molecules/FilterProjects';
 
 function HomePageTemplate() {
   const [projects, setProjects] = useState([]);
@@ -81,6 +82,7 @@ function HomePageTemplate() {
           {/* <Modal label={ 'asd' } /> */}
           <CreateProject addNewProject={addNewProject} />
         </div>
+        <FilterProjects />
         <div className="main">
           {loading && <LoadingSpinner />}
           {filteredProjects.map((project) => (
@@ -106,7 +108,7 @@ function HomePageTemplate() {
             <SubTitleLabel label={'Projects completed'} />
           </div>
           <div className='card-section'>
-          <h2>{pendingTasks}--</h2>
+            <h2>{pendingTasks}--</h2>
             <SubTitleLabel label={'Pending tasks'} />
           </div>
         </div>

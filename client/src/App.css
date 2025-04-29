@@ -75,7 +75,6 @@ button:active {
   cursor: pointer;
 }
 
-
 .nav {
   background-color: #ffffff;
   padding: 0px 30px;
@@ -137,6 +136,45 @@ button:active {
   display: flex;
   justify-content: space-between;
 }
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  justify-content: space-evenly;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Aumenta el espaciado entre botones */
+}
+
+.filter-options button {
+  color: #333;
+  background-color: #e4e7eb;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.filter-options button:hover {
+  background-color: #2f68c3; /* Color verde más claro */
+  color: #fff; /* Texto blanco al pasar el mouse */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombras más profundas en hover */
+  transform: translateY(-2px); /* Efecto de "flotación" */
+}
+
+.filter-options button:active {
+  background-color: blue; /* Verde más oscuro al hacer clic */
+  transform: translateY(0); /* Vuelve a la posición original */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombras más ligeras */
+}
+
 
 .main-content-items {
   display: flex;
@@ -228,7 +266,7 @@ button:active {
   transition: width 0.3s ease;
 }
 
-.aside .card-section {
+.aside > .card-section {
   background-color: #ffffff;
   border: .5px solid #d6d6d6;
   border-radius: 5px;
@@ -284,6 +322,11 @@ button:active {
 .stadistic-item {
   display: flex;
   justify-content: space-between;
+}
+
+
+.stadistic-item > p{
+  margin: 0.2em 0; 
 }
 
 .deadline-section {
@@ -455,8 +498,16 @@ li:hover {
 
 .task-items {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
+  width: fit-content;
+  margin: 0;
+  padding: 0 5px;
+}
+
+.task-items > h6 {
+  margin: 0;
+  padding: 0 5px;
 }
 
 .card-task {
@@ -464,9 +515,7 @@ li:hover {
 }
 
 .card-task-info {
-  background-color: #f3f3f3;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 0 10px 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -480,12 +529,17 @@ li:hover {
   padding: 10px;
   justify-content: space-between;
   align-items: center;
+  border-radius: 0px 0px 5px 5px;
+  gap: 5px;
 }
 
 .card-task-description > p{
+  background-color: #2f68c3;
+  width: 100%;
   display: flex;
-  align-items: start;
-  justify-content: center;
+  justify-content: s;
+  margin: 0;
+  padding: 0;
 }
 
 .card-task-controls{

@@ -1,12 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FaCheckCircle, FaChevronDown, FaChevronUp, FaTrash } from 'react-icons/fa';
 import { deleteTask, updateTask } from '../api/todolist.api';
 import { EditTask } from './modal/EditTask';
 import SubTitleLabel from './atoms/SubTitleLabel';
+import ProjectContext from '../context/ProjectContext';
+import Label from './atoms/Label';
 
-export function TaskCard({ task, removeTask, completeTask}) {
+export function TaskCard({ task, removeTask, completeTask }) {
+  const { members } = useContext(ProjectContext);
+  const [memberAssigned, setMemberAssigned] = useState("");
   const [isDescriptionVisible, setDescriptionVisibility] = useState(false);
   const [currentTask, setCurrentTask] = useState(task);
+  
+  useEffect(() => {
+    if (task.assign_to) {
+      setMemberAssigned(members.find(member => member.id === task.assign_to));      
+    }
+  },[])
 
   const updateTaskData = (updatedTask) => {
     setCurrentTask(updatedTask);
@@ -57,9 +67,14 @@ export function TaskCard({ task, removeTask, completeTask}) {
             onClick={handleCheckStatus}
             color={currentTask.is_completed ? 'black' : 'gray'}
           />
-          <div>{currentTask.task_name}</div>
+          <Label text={currentTask.task_name} type='default' />          
+          {memberAssigned && (
+            <h6>Assigned to {memberAssigned.username}</h6>
+            // <Label text={`Assign to ${memberAssigned.username}`} type={ 'default' } />
+          )}
         </div>
         <div className='task-items'>
+          
           <SubTitleLabel className='due-date' label={'Due: 2023-12-31'} />
           <div onClick={toggleDescriptionVisibility}>
             {isDescriptionVisible ? <FaChevronUp /> : <FaChevronDown />}
@@ -68,7 +83,7 @@ export function TaskCard({ task, removeTask, completeTask}) {
       </div>
       {isDescriptionVisible && (
         <div className='card-task-description'>
-          <SubTitleLabel label={currentTask.description} />
+          <Label text={currentTask.description} type='default'/>
           <div className='card-task-controls'>
             {/* <EditTask task={task} modifySubtaskList={modifySubtaskData} /> */}
             <EditTask task={currentTask} updateTaskData={updateTaskData} />
