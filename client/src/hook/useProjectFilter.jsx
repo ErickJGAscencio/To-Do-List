@@ -18,12 +18,13 @@ export function useProjectFilter(projects) {
     setSearchTerm(searchTerm);
     const term = searchTerm.trim().toLowerCase();
     if (term === '') {
-      setFilteredProjects(projects);
+      setFilter("all");
     } else {
       setFilteredProjects(projects.filter(
         project => project.project_name.toLowerCase().includes(term)
       ));
     }
+    console.log(term);
   };
 
   useEffect(() => {

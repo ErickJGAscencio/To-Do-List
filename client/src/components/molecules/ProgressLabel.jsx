@@ -5,13 +5,11 @@ function ProgressLabel({ status }) {
   const [statusClass] = useState({
     1: 'progress-1',
     2: 'progress-2',
-    3: 'progress-3',
   });
 
   const [messageLabel] = useState({
-    1: 'To-do',
-    2: 'In progress',
-    3: 'Completed',
+    1: 'In progress',
+    2: 'Completed',
   });
 
   const message = messageLabel[status];

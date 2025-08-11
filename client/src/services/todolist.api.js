@@ -1,8 +1,10 @@
-import axios from 'axios';
+import axios from "axios";
 
 // Define the BASE_URL
-const isDevelopment = import.meta.env.MODE === 'development';
-const BASE_URL = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY;
+const isDevelopment = import.meta.env.MODE === "development";
+const BASE_URL = isDevelopment
+  ? import.meta.env.VITE_API_BASE_URL_LOCAL
+  : import.meta.env.VITE_API_BASE_URL_DEPLOY;
 
 // Authentication
 export const loginUser = (username, password) => {
@@ -10,10 +12,10 @@ export const loginUser = (username, password) => {
     username: username,
     password: password,
   };
-  return axios.post(`${BASE_URL}/login/`, data, {
+  return axios.post(`${BASE_URL}/auth/login/`, data, {
     headers: {
-      'Content-Type': 'application/json',
-    }
+      "Content-Type": "application/json",
+    },
   });
 };
 
@@ -21,25 +23,26 @@ export const registerUser = async (username, password, email) => {
   const data = {
     username: username,
     password: password,
-    email: email
+    email: email,
   };
   console.log(data);
 
   const response = await axios.post(`${BASE_URL}/register/`, data, {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      "Content-Type": "application/json",
+    },
   });
 
   console.log(response);
-  return response
+  return response;
 };
 
+//User
 export const getUserProfile = (token) => {
-  return axios.get(`${BASE_URL}/profile/`, {
+  return axios.get(`${BASE_URL}/auth/profile/`, {
     headers: {
-      'Authorization': `Token ${token}`
-    }
+      Authorization: `Token ${token}`,
+    },
   });
 };
 
@@ -47,53 +50,60 @@ export const fetchUsers = async (searchQuery, token) => {
   try {
     const response = await axios.get(`${BASE_URL}/api/v1/users/`, {
       params: {
-        search: searchQuery
+        search: searchQuery,
       },
       headers: {
-        'Authorization': `Token ${token}`
-      }
+        Authorization: `Token ${token}`,
+      },
     });
     return response;
-
   } catch (error) {
     console.error("ERROR:", error);
     return error;
   }
-}
-
-// Projects
-export const fetchProjects = () => {
-  return axios.get(`${BASE_URL}/api/v1/projects/`, {});
 };
 
-export const fetchProjectsByUser = (userId, token) => {
+//Projects
+export const getProjects = (userId, token) => {
+  // console.log(userId, token);
   return axios.get(`${BASE_URL}/api/v1/projects/by_user/`, {
     params: {
-      user_id: userId
+      user_id: userId,
     },
     headers: {
-      'Authorization': `Token ${token}`
-    }
+      Authorization: `Token ${token}`,
+    },
   });
 };
 
-export const createProject = async (projectName, projectDescription, color, dateLimit, membersId, token) => {
+export const createProject = async (
+  projectName,
+  projectDescription,
+  color,
+  dateLimit,
+  membersId,
+  token
+) => {
   const data = {
     project_name: projectName,
     description: projectDescription,
     color: color,
     due_date: dateLimit,
-    team_members: membersId 
+    team_members: membersId,
   };
 
   let response;
   try {
-    response = await axios.post(`${BASE_URL}/api/v1/projects/create_project/`, data, {
-      headers: {
-        'Authorization': `Token ${token}`,
-        'Content-Type': 'application/json'
+    response = await axios.post(
+      `${BASE_URL}/api/v1/projects/create_project/`,
+      data,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "application/json",
+        },
       }
-    });
+    );
   } catch (error) {
     console.error("Creating project error:", error);
     return { error: "Failed to create project" };
@@ -102,37 +112,41 @@ export const createProject = async (projectName, projectDescription, color, date
   return response;
 };
 
-
 export const updateProject = async (id_project, updatedData, token) => {
   try {
-    const response = await axios.put(`${BASE_URL}/api/v1/projects/update_project/`, {
-      id_project,
-      ...updatedData,
-    },
+    const response = await axios.put(
+      `${BASE_URL}/api/v1/projects/update_project/`,
+      {
+        id_project,
+        ...updatedData,
+      },
       {
         headers: {
-          Authorization: `Token ${token}`
-        }
+          Authorization: `Token ${token}`,
+        },
       }
     );
 
     return response.data;
   } catch (error) {
-    console.error('Error updating project:', error);
+    console.error("Error updating project:", error);
     throw error;
   }
 };
 
 export const deleteProject = async (idProject, token) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/api/v1/projects/delete_project/`, {
-      params: {
-        id_project: idProject
-      },
-      headers: {
-        Authorization: `Token ${token}`
+    const response = await axios.delete(
+      `${BASE_URL}/api/v1/projects/delete_project/`,
+      {
+        params: {
+          id_project: idProject,
+        },
+        headers: {
+          Authorization: `Token ${token}`,
+        },
       }
-    });
+    );
     return response;
   } catch (error) {
     console.error("Error deleting project:", error);
@@ -144,36 +158,42 @@ export const deleteProject = async (idProject, token) => {
 export const fetchTasks = async (id_project) => {
   return await axios.get(`${BASE_URL}/api/v1/tasks/`, {
     params: {
-      id_project: id_project
-    }
+      id_project: id_project,
+    },
   });
 };
 
 export const fetchTasksByProject = async (id_project, token) => {
   return await axios.get(`${BASE_URL}/api/v1/tasks/by_project/`, {
     params: {
-      id_project: id_project
+      id_project: id_project,
     },
     headers: {
-      'Authorization': `Token ${token}`
-    }
+      Authorization: `Token ${token}`,
+    },
   });
 };
 
-export const createTask = async (id_project, task_name, descriptionTask, token, memberAssignedId) => {
+export const createTask = async (
+  token,
+  id_project,
+  task_name,
+  descriptionTask,
+  // memberAssignedId
+) => {
   const data = {
     task_name: task_name,
     description: descriptionTask,
     id_project: id_project,
-    member_assigned: memberAssignedId
+    // member_assigned: memberAssignedId,
   };
 
   let response;
   try {
     response = await axios.post(`${BASE_URL}/api/v1/tasks/create_task/`, data, {
       headers: {
-        'Authorization': `Token ${token}`,
-        'Content-Type': 'application/json'
+        Authorization: `Token ${token}`,
+        "Content-Type": "application/json",
       },
     });
   } catch (error) {
@@ -186,35 +206,41 @@ export const createTask = async (id_project, task_name, descriptionTask, token, 
 
 export const updateTask = async (id_task, updatedData, token) => {
   try {
-    const response = await axios.put(`${BASE_URL}/api/v1/tasks/update_task/`, {
-      id_task,
-      ...updatedData
-    },
+    const response = await axios.put(
+      `${BASE_URL}/api/v1/tasks/update_task/`,
+      {
+        id_task,
+        ...updatedData,
+      },
       {
         headers: {
-          'Authorization': `Token ${token}`
-        }
-      });
-    
+          Authorization: `Token ${token}`,
+        },
+      }
+    );
+
     // console.log(`Service: ${id_task} - Updated Data: ${JSON.stringify(updatedData)} - Token: ${token}`);
-    
+
     return response.data;
   } catch (error) {
-    console.error('Error updating task:', error);
+    console.error("Error updating task:", error);
     throw error;
   }
 };
 
 export const deleteTask = async (id_task, token) => {
   try {
-    const response = await axios.delete(`${BASE_URL}/api/v1/tasks/delete_task/`, {
-      params: {
-        id_task: id_task
-      },
-      headers: {
-        'Authorization': `Token ${token}`
+    const response = await axios.delete(
+      `${BASE_URL}/api/v1/tasks/delete_task/`,
+      {
+        params: {
+          id_task: id_task,
+        },
+        headers: {
+          Authorization: `Token ${token}`,
+        },
       }
-    });
+    );
     return response;
   } catch (error) {
     console.error("Error deleting task:", error);
@@ -225,17 +251,19 @@ export const deleteTask = async (id_task, token) => {
 //COMMENTS
 export const fetchComments = async (id_project, token) => {
   try {
-    const response = await axios.get(`${BASE_URL}/api/v1/comments/by_project/`, {
-      params: {
-        id_project: id_project
-      },
-      headers: {
-        'Authorization': `Token ${token}`
+    const response = await axios.get(
+      `${BASE_URL}/api/v1/comments/by_project/`,
+      {
+        params: {
+          id_project: id_project,
+        },
+        headers: {
+          Authorization: `Token ${token}`,
+        },
       }
-    })
+    );
 
-    return response
-
+    return response;
   } catch (error) {
     console.error(`Error getting comments.`, error);
     return { error: "Error getting comments." };
@@ -245,21 +273,24 @@ export const fetchComments = async (id_project, token) => {
 export const createComment = async (id_project, token, comment) => {
   const data = {
     id_project: id_project,
-    comment: comment
+    comment: comment,
   };
 
   try {
-    const response = await axios.post(`${BASE_URL}/api/v1/comments/create_comment/`, data, {
-      headers: {
-        'Authorization': `Token ${token}`,
-        'Content-Type': 'application/json'
-      },
-    });
+    const response = await axios.post(
+      `${BASE_URL}/api/v1/comments/create_comment/`,
+      data,
+      {
+        headers: {
+          Authorization: `Token ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     return response;
-
   } catch (error) {
     console.error(`Error creating comment`, error);
     return { error: "Failed to create comment" };
   }
-}
+};

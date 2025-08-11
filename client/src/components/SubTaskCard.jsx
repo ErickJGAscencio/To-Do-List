@@ -2,7 +2,7 @@
 import { FaCheckCircle, FaEllipsisH, FaRegCircle } from 'react-icons/fa';
 import { EditSubTask } from "./modal/EditSubTask";
 import { useEffect, useState } from "react";
-import { deleteSubTask, updateSubtask } from "../api/todolist.api";
+import { deleteSubTask, updateSubtask } from "../services/todolist.api";
 import Delete from "./modal/Delete";
 
 export function SubTaskCard({ color, subtask, removeSubTask, modifySubtask }) {

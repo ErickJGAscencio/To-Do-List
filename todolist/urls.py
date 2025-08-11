@@ -11,13 +11,16 @@ router.register(r'tasks', views.TaskViewSet)
 router.register(r'documents', views.DocumentViewSet)
 router.register(r'comments', views.CommentViewSet)
 
-urlpatterns = [
-    # path('', RedirectView.as_view(url='/login/', permanent=False)),  # Redirige la ruta vacía a /login/
-    path('', include(router.urls)),
-    path('api/v1/', include(router.urls)),
-  
+auth_patterns = [
     path("login/", views.login, name='login'),
     path("register/", views.register, name='register'),
     path("profile/", views.profile, name='profile'),
+]
+
+urlpatterns = [
+    path('', RedirectView.as_view(url='/api/v1/', permanent=False)),
+    path('api/v1/', include(router.urls)),
+    path('auth/', include(auth_patterns)),
     path('docs/', include_docs_urls(title='WorkCloud Documentation')),
 ]
+

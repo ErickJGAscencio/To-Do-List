@@ -1,10 +1,17 @@
 import "../../pages/ProjectPage.css";
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useState, useEffect, useContext } from "react"
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 // API
-import { createComment, deleteProject, fetchComments, fetchTasksByProject, updateProject } from "../../api/todolist.api";
+import {
+  createComment,
+  deleteProject,
+  fetchComments,
+  fetchTasksByProject,
+  updateProject,
+  updateTask,
+} from "../../services/todolist.api";
 // Modal
-import { CreateTask } from '../../components/modal/CreateTask';
+import { CreateTask } from "../../components/modal/CreateTask";
 import Delete from "../../components/modal/Delete";
 
 import { AuthContext } from "../../context/AuthContext";
@@ -16,10 +23,10 @@ import MenuProject from "../organisims/MenuProject";
 import InformationProject from "../organisims/InformationProject";
 import CommentsProject from "../organisims/CommentsProject";
 import { ProjectProvider } from "../../context/ProjectContext";
-
+import axios from "axios";
+import { FaChartBar } from "react-icons/fa";
 
 function ProjectPageTemplate() {
-  const navigate = useNavigate();
   const location = useLocation();
   const { project } = location.state;
 
@@ -53,10 +60,9 @@ function ProjectPageTemplate() {
 
   const daysLeft = getDaysLeft(project.due_date);
 
-
   const addNewTask = (newTask) => {
     setTasks([...tasks, newTask]);
-    updateProgressAndStatistics();
+    // updateProgressAndStatistics();
   };
 
   const removeTask = (idToRemove) => {
@@ -75,19 +81,21 @@ function ProjectPageTemplate() {
     setAmountTasksCompleted(completedTasks);
     setProjectProgress(progress.toFixed(1));
     GetStatusProject();
-  };
 
-  useEffect(() => {
-    GetProjectStadistics();
-  }, [tasks]);
+    const token = localStorage.getItem("token");
+    if(progress>=100){
+      project.is_completed = true;
+    }else{
+      project.is_completed = false;
+    }
 
-  const GetProjectStadistics = () => {
-    const totalTasks = tasks.length;
-    const completedTasks = tasks.filter((task) => task.is_completed).length;
-
-    setAmountTasks(totalTasks);
-    setAmountTasksCompleted(completedTasks);
-    GetStatusProject();
+    const updatedData = {
+      ...project,
+      progress: Math.round(progress * 10) / 10,
+    };
+    console.log(updatedData);
+    // console.log(project.id, updatedData, token);
+    await updateProject(project.id, updatedData, token);
   };
 
   const GetStatusProject = () => {
@@ -95,11 +103,14 @@ function ProjectPageTemplate() {
     const progress = parseFloat(project.progress);
 
     switch (progress) {
-      case (100): gotStatus = 3;
+      case 100:
+        gotStatus = 3;
         break;
-      case (25): gotStatus = 2;
+      case 25:
+        gotStatus = 2;
         break;
-      default: gotStatus = 1;
+      default:
+        gotStatus = 1;
         break;
     }
     setStatusProject(gotStatus);
@@ -115,14 +126,12 @@ function ProjectPageTemplate() {
         task.id == taskId ? { ...task, is_completed: !task.is_completed } : task
       )
     );
-    updateProgressAndStatistics();
   };
-
 
   useEffect(() => {
     async function getAllTasks() {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (token && project.id) {
         try {
           // Obtener las tareas
@@ -130,9 +139,7 @@ function ProjectPageTemplate() {
           setTasks(resTasks.data);
           // console.log(resTasks.data);
           setMembers(project.team_members);
-
           setLoading(false);
-          updateProgressAndStatistics();
         } catch (error) {
           console.error(error);
         } finally {
@@ -143,15 +150,12 @@ function ProjectPageTemplate() {
     getAllTasks();
   }, [project.id]);
 
-
-
-
   const handleDeleteProject = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         await deleteProject(project.id, token);
-        backToHome()
+        backToHome();
       } catch (error) {
         console.error(error);
       }
@@ -162,10 +166,10 @@ function ProjectPageTemplate() {
     const file = event.target.files[0];
     // if (file) {
     //   try {
-    //     // Supongamos que uploadFile maneja la lógica de subida 
+    //     // Supongamos que uploadFile maneja la lógica de subida
     //     await uploadFile(file);
     setFiles([...files, { name: file.name }]);
-    //     // Añade el nuevo archivo a la lista 
+    //     // Añade el nuevo archivo a la lista
     //   } catch (error) {
     //     console.error('Error uploading file:', error);
     //   }
@@ -179,8 +183,7 @@ function ProjectPageTemplate() {
           <MenuProject project={project} statusProject={statusProject} />
 
           <div className="cards-sections">
-            <InformationProject project={project} projectProgress={projectProgress} />
-
+            <InformationProject projectProgress={projectProgress} />
             <ProjectTasks
               id_project={project.id}
               tasks={tasks}
@@ -196,38 +199,37 @@ function ProjectPageTemplate() {
         <div className="side-bar-project">
           <div className="cards-sections">
             {/* DOCUMENT & FILES */}
-            <ProjectFiles
-              files={files}
-              handleFileChange={handleFileChange} />
+            <ProjectFiles files={files} handleFileChange={handleFileChange} />
 
             {/* TEAM MEMBERS */}
-            <ProjectMembers
-              userId={userId}
-              members={members} />
+            <ProjectMembers userId={userId} members={members} />
 
             {/* PROJECTS STATICS */}
             <ProjectStadistics
               amountTasks={amountTasks}
               amountTasksCompleted={amountTasksCompleted}
-              daysLeft={daysLeft} />
+              daysLeft={daysLeft}
+            />
           </div>
           <div className="control-buttons">
             <div>
-              <CreateTask id_project={project.id} addNewTask={addNewTask} classStyle={'black-button'} />
-            </div>
-            {/* <div>
-            <button className="white-button"><FaChartBar /> Generate Report</button>
-          </div> */}
+            <button className="black-button"><FaChartBar /> Generate Report</button>
+          </div>
             {isOwner && (
               <div>
-                <Delete classStyle={"white-button"} name={project.project_name} deleteMethod={handleDeleteProject} type={'Project'} />
+                <Delete
+                  classStyle={"white-button"}
+                  name={project.project_name}
+                  deleteMethod={handleDeleteProject}
+                  type={"Project"}
+                />
               </div>
             )}
           </div>
         </div>
       </div>
     </ProjectProvider>
-  )
+  );
 }
 
 export default ProjectPageTemplate;

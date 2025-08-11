@@ -5,12 +5,12 @@ import ProjectContext from '../../context/ProjectContext'
 
 function InformationProject({ projectProgress }) {
   const { projectDescription } = useContext(ProjectContext);
+  
   return (
     <div className="information-project">
-      <div className="card-information-section">
+      <div className="card-section">
         <Label text="Project Description" type="paragraph" />
         <Label text={projectDescription} type="default" />
-        <button className='uwu'>ver más...</button>
       </div>
 
       <div className="card-section">

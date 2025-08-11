@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { createComment, fetchComments } from '../../api/todolist.api';
+import { createComment, fetchComments } from '../../services/todolist.api';
 import Label from '../atoms/Label';
 
 function CommentsProject({project}) {  

@@ -1,7 +1,7 @@
 import './ProjectCard.css';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchTasksByProject } from '../api/todolist.api';
+import { fetchTasksByProject } from '../services/todolist.api';
 import TitleLabel from './atoms/TitleLabel';
 import SubTitleLabel from './atoms/SubTitleLabel';
 import ProgressLabel from './molecules/ProgressLabel';
@@ -36,7 +36,6 @@ export function ProjectCard({ project }) {
     setTasksRemaining(incompletedTasks);
 
     const newProgress = (completedTasks / tasks.length) * 100;
-
     setProgress(newProgress);
   };
 
@@ -66,7 +65,8 @@ export function ProjectCard({ project }) {
     }}>
       <div className='top-side'>
         <TitleLabel label={project.project_name} />
-        <ProgressLabel status={statusProject} /></div>
+        {/* <ProgressLabel status={statusProject} /> */}
+        </div>
       <div className='bottom-side'>
         <div className="progress-section">
           <div className="progress-bar">

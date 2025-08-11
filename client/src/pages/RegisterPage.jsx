@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { registerUser } from "../api/todolist.api";
+import { registerUser } from "../services/todolist.api";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import LoadingSpinner from "../components/LoadingSpinner";

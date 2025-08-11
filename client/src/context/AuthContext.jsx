@@ -1,10 +1,14 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { getUserProfile } from '../api/todolist.api';
-import { loginUser } from "../api/todolist.api";
+import { getUserProfile } from '../services/todolist.api';
+import { loginUser } from "../services/todolist.api";
+import { useContext } from 'react';
+import { UserDataContext } from './UserDataContext';
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  const {saveDataUser} = useContext(UserDataContext)
+
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState(null);
@@ -18,6 +22,7 @@ export function AuthProvider({ children }) {
           const res = await getUserProfile(token);
           setUsername(res.data.username);
           setUserId(res.data.id);
+          saveDataUser(res.data);
           setIsLoggedIn(true);
         } catch (error) {
           setIsLoggedIn(false);
@@ -28,7 +33,7 @@ export function AuthProvider({ children }) {
       }
     }
     checkLoginStatus();
-  });
+  },[isLoggedIn]);
 
   const login = async (username, password) => {
     try {
