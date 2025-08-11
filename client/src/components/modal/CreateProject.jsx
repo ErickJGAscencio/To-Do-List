@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
-import { createProject, fetchUsers, getUserProfile } from '../../api/todolist.api';
+import { createProject, fetchUsers, getUserProfile } from '../../services/todolist.api';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
 import SubTitleLabel from '../atoms/SubTitleLabel';

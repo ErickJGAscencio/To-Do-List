@@ -1,7 +1,7 @@
 // import './EditProject.css'
 import React, { useState, useEffect, useContext } from 'react';
 import { FaPen, FaTrash } from 'react-icons/fa';
-import { fetchTasksByProject, fetchUsers, updateProject } from '../../api/todolist.api';
+import { fetchTasksByProject, fetchUsers, updateProject } from '../../services/todolist.api';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
 import ProjectContext from '../../context/ProjectContext';

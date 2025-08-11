@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import SubTitleLabel from '../atoms/SubTitleLabel';
-import { Sidebar } from '../Sidebar';
-import { ProjectCard } from '../ProjectCard';
-import LoadingSpinner from '../LoadingSpinner';
-import CreateProject from '../modal/CreateProject';
-import TitleLabel from '../atoms/TitleLabel';
-import { useProjectFilter } from '../../hook/useProjectFilter';
-import { fetchProjectsByUser, getUserProfile } from '../../api/todolist.api';
-import FilterProjects from '../molecules/FilterProjects';
+import React, { useEffect, useState } from "react";
+import SubTitleLabel from "../atoms/SubTitleLabel";
+import { Sidebar } from "../Sidebar";
+import { ProjectCard } from "../ProjectCard";
+import LoadingSpinner from "../LoadingSpinner";
+import CreateProject from "../modal/CreateProject";
+import TitleLabel from "../atoms/TitleLabel";
+import { useProjectFilter } from "../../hook/useProjectFilter";
+import { getProjects } from "../../services/todolist.api";
+import FilterProjects from "../molecules/FilterProjects";
+import { useUserData } from "../../hook/useUserData";
+import Modal from "../organisims/Modal";
 
 function HomePageTemplate() {
-  const [projects, setProjects] = useState([]);
-  const { filteredProjects, setFilter } = useProjectFilter(projects);
-  const [loading, setLoading] = useState(false);
+  const { userData, saveDataUser } = useUserData();
 
+  const [projects, setProjects] = useState([]);
+  const { filteredProjects, setFilter, handleSearch } = useProjectFilter(projects);
+  const [termSearch, setTermSearch] = useState("");
   // Dashboard
   const [activeProjects, setActiveProjects] = useState("");
-  const [projectsCompleted, setProjectsCompleted] = useState("");
+  // const [projectsCompleted, setProjectsCompleted] = useState("");
   const [pendingTasks, setPendingTasks] = useState("");
 
+  const [loading, setLoading] = useState(true);
 
   const addNewProject = (newProject) => {
     console.log("adding project");
@@ -40,21 +44,22 @@ function HomePageTemplate() {
 
   useEffect(() => {
     async function getAllProjects() {
-      setLoading(true);
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          const resUser = await getUserProfile(token);
-          const id = resUser.data.id;
-          const res = await fetchProjectsByUser(id, token);
+          const id = userData.id;
+          // console.log(id, token);
+          const res = await getProjects(id, token);
           setProjects(res.data);
-          setLoading(false);
           setActiveProjects(res.data.length);
           GetCompletedProjects(res.data);
+          console.log("HOME-USER-DATA: ", userData);
+          console.log("HOME-PROJECTS: ", res.data);
           // setPendingTasks(pendingTasks);
-
         } catch (error) {
-          console.error('Error fetching projects:', error);
+          console.error("Error fetching projects:", error);
+        } finally {
+          setLoading(false);
         }
       }
     }
@@ -62,11 +67,12 @@ function HomePageTemplate() {
   }, []);
 
   const GetCompletedProjects = (projects) => {
-    const completed_amount = projects.filter(project => project.is_completed === true).length;
+    const completed_amount = projects.filter(
+      (project) => project.is_completed === true
+    ).length;
     const porcent = (completed_amount / projects.length) * 100;
-    setProjectsCompleted(porcent.toFixed(1));
-  }
-
+    // setProjectsCompleted(porcent.toFixed(1));
+  };
 
   return (
     <div className="content">
@@ -74,15 +80,17 @@ function HomePageTemplate() {
       <div className="main-content-items">
         <div className="menu-project">
           <div className="menu-group">
-            <TitleLabel label={'My Projects'} />
+            <TitleLabel label={"My Projects"} />
             <input
               type="text"
-              placeholder="Search projects..." />
+              placeholder="Search projects..."
+              onChange={(event) => handleSearch(event.target.value)}
+            />
           </div>
           {/* <Modal label={ 'asd' } /> */}
           <CreateProject addNewProject={addNewProject} />
         </div>
-        <FilterProjects />
+        <FilterProjects setFilter={setFilter} />
         <div className="main">
           {loading && <LoadingSpinner />}
           {filteredProjects.map((project) => (
@@ -98,34 +106,35 @@ function HomePageTemplate() {
       {/* SIDEBAR */}
       <Sidebar setFilter={setFilter}>
         <div>
-          <TitleLabel label={'Dashboard'} />
-          <div className='card-section'>
+          <TitleLabel label={"Dashboard"} />
+          <div className="card-section">
             <h2>{activeProjects}</h2>
-            <SubTitleLabel label={'Active projects'} />
+            <SubTitleLabel label={"Active projects"} />
           </div>
-          <div className='card-section'>
-            <h2>{projectsCompleted}%</h2>
-            <SubTitleLabel label={'Projects completed'} />
+          <div className="card-section">
+            {/* <h2>{projectsCompleted}%</h2> */}
+            <h2>--</h2>
+            <SubTitleLabel label={"Projects completed"} />
           </div>
-          <div className='card-section'>
+          <div className="card-section">
             <h2>{pendingTasks}--</h2>
-            <SubTitleLabel label={'Pending tasks'} />
+            <SubTitleLabel label={"Pending tasks"} />
           </div>
         </div>
 
-        <div className='deadline-section'>
+        <div className="deadline-section">
           <h5>Upcoming Deadlines</h5>
-          <div className='deadline-list'>
-            <SubTitleLabel label={'Grand Mansion Tokyo:'} />
-            <SubTitleLabel label={'2024-02-08'} />
+          <div className="deadline-list">
+            <SubTitleLabel label={"Grand Mansion Tokyo:"} />
+            <SubTitleLabel label={"2024-02-08"} />
           </div>
-          <div className='deadline-list'>
-            <SubTitleLabel label={'Workcloud:'} />
-            <SubTitleLabel label={'2024-02-08'} />
+          <div className="deadline-list">
+            <SubTitleLabel label={"Workcloud:"} />
+            <SubTitleLabel label={"2024-02-08"} />
           </div>
-          <div className='deadline-list'>
-            <SubTitleLabel label={'Grand Mansion Tokyo:'} />
-            <SubTitleLabel label={'2024-02-08'} />
+          <div className="deadline-list">
+            <SubTitleLabel label={"Grand Mansion Tokyo:"} />
+            <SubTitleLabel label={"2024-02-08"} />
           </div>
         </div>
       </Sidebar>
@@ -133,4 +142,4 @@ function HomePageTemplate() {
   );
 }
 
-export default HomePageTemplate
+export default HomePageTemplate;

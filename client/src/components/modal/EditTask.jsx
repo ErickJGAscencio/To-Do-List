@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { FaPen } from 'react-icons/fa';
 
-import { updateTask } from '../../api/todolist.api';
+import { updateTask } from '../../services/todolist.api';
 import { ContextMenuColors } from '../ContextMenuColors';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
-import { createTask } from '../../api/todolist.api';
+import { createTask } from '../../services/todolist.api';
 import Modal from '../organisims/Modal';
 import TitleLabel from '../atoms/TitleLabel';
 import ProjectContext from '../../context/ProjectContext';
@@ -14,35 +14,57 @@ export function CreateTask({ id_project, addNewTask, classStyle }) {
   const [isOpen, setIsOpen] = useState(false);
   const [limitDate, setLimitDate] = useState("");
 
-  // console.log('asd', '\n', members);
   const openModal = () => {
     setIsOpen(true);
   };
 
-  const closeModal = () => {
+  const handleCloseModal = () => {
     setIsOpen(false);
     setTitleTask("");
     setDescriptionTask("");
-    setSubTasks([]);
+    // setSubTasks([]);
     setLimitDate("");
   };
 
-  const sendRequest = async () => {
-    if (!titleTask) {
-      return;
+const handleCreateTask = async () => {
+  if (!titleTask?.trim()) {
+    console.warn("Task title is required.");
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.error("No token found. User might not be authenticated.");
+    return;
+  }
+
+  try {
+    const payload = {
+      id_project,
+      title: titleTask.trim(),
+      description: descriptionTask?.trim() || "",
+      // assigned_to: memberAssignedId || null,
+    };
+
+    // Crear tarea
+    const response = await createTask(
+      token,
+      payload.id_project,
+      payload.title,
+      payload.description,
+      // payload.assigned_to
+    );
+
+    if (response?.data) {
+      addNewTask(response.data);
+      handleCloseModal();
+    } else {
+      console.error("Unexpected response format:", response);
     }
-
-    try {
-      const token = localStorage.getItem("token");
-      const newTask = await createTask(id_project, titleTask, descriptionTask, token, memberAssignedId);
-
-      addNewTask(newTask.data);
-
-      closeModal();
-    } catch (error) {
-      console.error('Error sending trade request:', error);
-    }
-  };
+  } catch (err) {
+    console.error("Error creating task:", err.message || err);
+  }
+};
 
   const handlerMemberToAssign = (memberId) => {
     console.log('asignado a: ', memberId)
@@ -96,8 +118,8 @@ export function CreateTask({ id_project, addNewTask, classStyle }) {
               )}
             </div>
             <div className="modal-footer">
-              <p className="button" onClick={sendRequest}>Save</p>
-              <p className="button" onClick={closeModal}>Cancel</p>
+              <p className="button" onClick={handleCreateTask}>Save</p>
+              <p className="button" onClick={handleCloseModal}>Cancel</p>
             </div>
           </div>
         </Modal>

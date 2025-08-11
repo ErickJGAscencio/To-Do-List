@@ -1,3 +1,10 @@
+import { useContext, useState } from "react";
+import { registerUser } from "../services/todolist.api";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import LoadingSpinner from "../components/LoadingSpinner";
+import Button from "../components/atoms/Button";
+
 export function RegisterPage() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();

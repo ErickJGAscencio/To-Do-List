@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { FaCheckCircle, FaChevronDown, FaChevronUp, FaTrash } from 'react-icons/fa';
-import { deleteTask, updateTask } from '../api/todolist.api';
+import { deleteTask, updateTask } from '../services/todolist.api';
 import { EditTask } from './modal/EditTask';
 import SubTitleLabel from './atoms/SubTitleLabel';
 import ProjectContext from '../context/ProjectContext';
@@ -22,7 +22,7 @@ export function TaskCard({ task, removeTask, completeTask }) {
     setCurrentTask(updatedTask);
   };
     
-  const handleCheckStatus = async () => {
+  const handleChangeStatus = async () => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
@@ -64,13 +64,12 @@ export function TaskCard({ task, removeTask, completeTask }) {
       <div className='card-task-info'>
         <div className='task-items'>
           <FaCheckCircle
-            onClick={handleCheckStatus}
+            onClick={handleChangeStatus}
             color={currentTask.is_completed ? 'black' : 'gray'}
           />
           <Label text={currentTask.task_name} type='default' />          
           {memberAssigned && (
             <h6>Assigned to {memberAssigned.username}</h6>
-            // <Label text={`Assign to ${memberAssigned.username}`} type={ 'default' } />
           )}
         </div>
         <div className='task-items'>

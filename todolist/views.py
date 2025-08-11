@@ -36,7 +36,7 @@ def login(request):
 
     if not user.check_password(password):
         return Response(
-            {"error": "Invalid password"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST
         )
 
     token, created = Token.objects.get_or_create(user=user)
@@ -257,7 +257,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         task_name = request.data.get('task_name')
         description = request.data.get('description')
         id_project = request.data.get('id_project')
-        member_assigned = request.data.get('member_assigned')
+        # member_assigned = request.data.get('member_assigned')
         
         if not id_project:
             return Response({"error": "Project Id is required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -270,17 +270,17 @@ class TaskViewSet(viewsets.ModelViewSet):
         except Project.DoesNotExist:
             return Response({"error": "Project not found"}, status=status.HTTP_404_NOT_FOUND)
         
-        try:
-            if member_assigned is not None:
-                user = User.objects.get(id=member_assigned)
-        except User.DoesNotExist:
-            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        # try:
+        #     if member_assigned is not None:
+        #         user = User.objects.get(id=member_assigned)
+        # except User.DoesNotExist:
+        #     return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
 
         task = Task.objects.create(
             task_name=task_name,
             description=description,
             project=project,
-            assign_to=user if user is not None else None
+            # assign_to=user if user is not None else None
         )
                             
         serializer = self.get_serializer(task)
